@@ -140,6 +140,12 @@ class PayPalSandbox:
                     "amount": {
                         "currency_code": purchase["currency"],
                         "value": purchase["price"],
+                        "breakdown": {
+                            "item_total": {
+                                "currency_code": purchase["currency"],
+                                "value": purchase["price"],
+                            }
+                        },
                     },
                     "description": description,
                     "custom_id": custom_id,

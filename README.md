@@ -12,7 +12,7 @@ https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/
 
 ![Second Look](docs/screenshot.png)
 
-> Live PayPal sandbox verification pending - order creation is exercised with mocked calls in the test suite.
+> Verified live on the PayPal sandbox (29 Oct 2026): the crowd cleared a purchase, the order was created, approved by a sandbox buyer and captured (status COMPLETED).
 
 ## How it works
 

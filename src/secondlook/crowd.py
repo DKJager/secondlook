@@ -241,7 +241,7 @@ def judge_purchase(
     if hold_reasons:
         summary = f"{clear_count}/{total} clear; holds: {'; '.join(hold_reasons)}"
     else:
-        summary = f"{clear_count}/{total} clear; holds: "
+        summary = f"{clear_count}/{total} clear"
     
     return {
         "verdicts": verdicts,

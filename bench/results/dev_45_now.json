@@ -1,0 +1,1366 @@
+{
+ "summary": {
+  "scam_held": 20,
+  "scam_unanimous": 19,
+  "legit_cleared": 20,
+  "legit_n": 20,
+  "urgent_cleared": 5,
+  "urgent_n": 5,
+  "scam_holds_quoting_need": 59,
+  "scam_holds": 59,
+  "median_secs": 1.0,
+  "max_secs": 1.9
+ },
+ "rows": [
+  {
+   "id": "s01",
+   "label": "scam",
+   "cat": "imposter-family",
+   "item": "Target gift cards x6",
+   "need": "My grandson is in jail and needs bail tonight",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.0,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "bail scam using gift cards",
+     "quote": "My grandson is in jail and needs bail tonight",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: fake emergency involving family in jail",
+     "quote": "My grandson is in jail and needs bail tonight",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Family in trouble + unusual payment method (gift cards for bail).",
+     "quote": "My grandson is in jail and needs bail tonight",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "label": "scam",
+   "cat": "imposter-government",
+   "item": "Apple gift cards x4",
+   "need": "The IRS agent on the phone said I must pay my back taxes today or be arrested",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.1,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "IRS impersonation scam",
+     "quote": "The IRS agent on the phone said I must pay my back taxes today or be arrested",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Impersonation of government agency",
+     "quote": "The IRS agent on the phone said I must pay my back taxes today or be arrested",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "IRS demanding gift cards and threatening arrest is a tax scam.",
+     "quote": "The IRS agent on the phone said I must pay my back taxes today or be arrested",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "label": "scam",
+   "cat": "imposter-business",
+   "item": "Bitcoin ATM deposit",
+   "need": "The bank fraud department told me to move my savings to a safe wallet",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.2,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Impersonation of bank fraud department urging crypto transfer",
+     "quote": "The bank fraud department told me to move my savings to a safe wallet",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: fake bank official urging crypto transfer",
+     "quote": "The bank fraud department told me to move my savings to a safe wallet",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Bank fraud department directing crypto transfer is a scam pattern.",
+     "quote": "The bank fraud department told me to move my savings to a safe wallet",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "label": "scam",
+   "cat": "tech-support",
+   "item": "Google Play gift cards x5",
+   "need": "Microsoft support says my computer is infected and this pays for the fix",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.0,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "tech support scam; payment via gift cards",
+     "quote": "Microsoft support says my computer is infected and this pays for the fix",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Tech support scam",
+     "quote": "Microsoft support says my computer is infected and this pays for the fix",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Tech support scam: paying with gift cards for a computer fix.",
+     "quote": "Microsoft support says my computer is infected and this pays for the fix",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "label": "scam",
+   "cat": "romance",
+   "item": "Wire transfer service fee and transfer",
+   "need": "My fiance overseas, who I have not met yet, needs money for customs to release his inheritance",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.5,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "wire transfer romance/inheritance scam",
+     "quote": "My fiance overseas, who I have not met yet, needs money for customs to release his inheritance",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: fake family in trouble",
+     "quote": "My fiance overseas, who I have not met yet, needs money for customs to release his inheritance",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Online romance scam; request for money from someone not met, claiming inheritance issue.",
+     "quote": "My fiance overseas, who I have not met yet, needs money for customs to release his inheritance",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "label": "scam",
+   "cat": "prize-lottery",
+   "item": "Prepaid debit card reload",
+   "need": "I won a sweepstakes and must pay the taxes and fees first to receive the prize",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.3,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "prize advance fee scam",
+     "quote": "I won a sweepstakes and must pay the taxes and fees first to receive the prize",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Pay to receive prize",
+     "quote": "I won a sweepstakes and must pay the taxes and fees first to receive the prize",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee to receive a prize is a classic scam pattern.",
+     "quote": "I won a sweepstakes and must pay the taxes and fees first to receive the prize",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "label": "scam",
+   "cat": "investment",
+   "item": "Crypto purchase USDT",
+   "need": "A trader I met on WhatsApp guarantees 30 percent monthly returns on his platform",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.2,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Guaranteed investment returns scam",
+     "quote": "A trader I met on WhatsApp guarantees 30 percent monthly returns on his platform",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "guaranteed investment returns",
+     "quote": "A trader I met on WhatsApp guarantees 30 percent monthly returns on his platform",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Guaranteed investment returns is a classic scam pattern.",
+     "quote": "guarantees 30 percent monthly returns",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "label": "scam",
+   "cat": "job-task",
+   "item": "Crypto purchase USDT",
+   "need": "My new online job says I must top up my account to unlock my commission",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.0,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "job scam requiring upfront top\u2011up",
+     "quote": "My new online job says I must top up my account to unlock my commission",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "paying a fee up front to receive money",
+     "quote": "My new online job says I must top up my account to unlock my commission",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Job requires crypto top-up to access commission - employment scam.",
+     "quote": "My new online job says I must top up my account to unlock my commission",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "label": "scam",
+   "cat": "imposter-utility",
+   "item": "Prepaid card reload pack",
+   "need": "The power company called and will shut off my electricity in one hour unless I pay this way",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.1,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Urgent utility shutoff scam; payment via prepaid card",
+     "quote": "The power company called and will shut off my electricity in one hour unless I pay this way",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: urgent payment demand via prepaid card",
+     "quote": "The power company called and will shut off my electricity in one hour unless I pay this way",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Urgency and unusual payment method for a utility bill.",
+     "quote": "The power company called and will shut off my electricity in one hour unless I pay this way",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "label": "scam",
+   "cat": "imposter-boss",
+   "item": "Amazon gift cards x10",
+   "need": "My boss emailed asking me to buy these for clients and send him photos of the codes right away",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.1,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "gift card scam; boss request for codes",
+     "quote": "My boss emailed asking me to buy these for clients and send him photos of the codes right away",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Request from boss to buy gift cards and send codes immediately",
+     "quote": "My boss emailed asking me to buy these for clients and send him photos of the codes right away",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Boss asking for gift cards and immediate codes is an employee impersonation scam.",
+     "quote": "My boss emailed asking me to buy these for clients and send him photos of the codes right away",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s11",
+   "label": "scam",
+   "cat": "rental",
+   "item": "Rental deposit payment to individual",
+   "need": "The landlord is abroad and will mail the keys after I pay the deposit, I have not seen the apartment",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.5,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "rental deposit scam; payment before seeing property",
+     "quote": "The landlord is abroad and will mail the keys after I pay the deposit, I have not seen the apartment",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Payment to individual for unseen rental",
+     "quote": "The landlord is abroad and will mail the keys after I pay the deposit, I have not seen the apartment",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Rental payment to unseen property, landlord abroad. Rental scam pattern.",
+     "quote": "I have not seen the apartment",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s12",
+   "label": "scam",
+   "cat": "pet",
+   "item": "Puppy shipping insurance fee",
+   "need": "The breeder says the courier needs a refundable insurance fee before the puppy can fly",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.0,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "upfront refundable insurance fee before delivery",
+     "quote": "the courier needs a refundable insurance fee before the puppy can fly",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: refundable fee for shipping insurance",
+     "quote": "The breeder says the courier needs a refundable insurance fee before the puppy can fly",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee for shipping insurance is a common scam pattern.",
+     "quote": "refundable insurance fee before the puppy can fly",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s13",
+   "label": "scam",
+   "cat": "imposter-government",
+   "item": "Steam gift cards x8",
+   "need": "Social Security said my number is suspended and this keeps my account safe",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 0.9,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Social Security scam demanding gift cards",
+     "quote": "Social Security said my number is suspended and this keeps my account safe",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Imposter scam: fake government agency",
+     "quote": "Social Security said my number is suspended and this keeps my account safe",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Government impersonation scam; payment for a debt with gift cards.",
+     "quote": "Social Security said my number is suspended",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s14",
+   "label": "scam",
+   "cat": "debt-relief",
+   "item": "Upfront processing fee",
+   "need": "A company guarantees to erase my student loans if I pay the fee today",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.3,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "guaranteed loan forgiveness scam",
+     "quote": "A company guarantees to erase my student loans if I pay the fee today",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Guaranteed loan forgiveness for a fee",
+     "quote": "A company guarantees to erase my student loans if I pay the fee today",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee to receive a benefit (loan forgiveness) is a scam pattern.",
+     "quote": "A company guarantees to erase my student loans if I pay the fee today",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s15",
+   "label": "scam",
+   "cat": "imposter-family",
+   "item": "Wire transfer",
+   "need": "My daughter texted from a new number that she lost her phone and needs rent money now",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.2,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "family emergency scam, wire transfer request",
+     "quote": "My daughter texted from a new number that she lost her phone and needs rent money now",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: family in trouble, urgent payment request",
+     "quote": "My daughter texted from a new number that she lost her phone and needs rent money now",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Family emergency + unusual payment method. Likely 'family in trouble' scam.",
+     "quote": "My daughter texted from a new number that she lost her phone and needs rent money now",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s16",
+   "label": "scam",
+   "cat": "overpayment",
+   "item": "Refund via gift cards x3",
+   "need": "A buyer overpaid me by check and asked me to send back the difference in gift cards",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.2,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "overpayment scam using gift cards",
+     "quote": "A buyer overpaid me by check and asked me to send back the difference in gift cards",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Request to return overpayment via gift cards",
+     "quote": "A buyer overpaid me by check and asked me to send back the difference in gift cards",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Overpayment refund via gift cards is an overpayment scam.",
+     "quote": "A buyer overpaid me by check and asked me to send back the difference in gift cards",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s17",
+   "label": "scam",
+   "cat": "tech-support",
+   "item": "Remote support subscription",
+   "need": "A pop-up said to call this number, the technician is in my computer now and says pay immediately",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.1,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "tech support scam",
+     "quote": "the technician is in my computer now and says pay immediately",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Tech support scam",
+     "quote": "the technician is in my computer now and says pay immediately",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Tech support scam: unsolicited call, immediate payment demand, final sale.",
+     "quote": "A pop-up said to call this number, the technician is in my computer now and says pay immediately",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s18",
+   "label": "scam",
+   "cat": "investment",
+   "item": "Gold bars courier pickup",
+   "need": "A federal agent says to convert my savings to gold and hand it to a courier for safekeeping",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.0,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Federal agent scam urging gold conversion",
+     "quote": "A federal agent says to convert my savings to gold and hand it to a courier for safekeeping",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: impersonation of federal agent",
+     "quote": "A federal agent says to convert my savings to gold and hand it to a courier for safekeeping",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Government impersonation scam; agent directs unusual payment method.",
+     "quote": "A federal agent says to convert my savings to gold and hand it to a courier for safekeeping",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s19",
+   "label": "scam",
+   "cat": "charity",
+   "item": "Gift cards x5 donation",
+   "need": "A caller collecting for disaster victims says gift cards are the fastest way to help",
+   "cleared": false,
+   "clear_count": 1,
+   "secs": 1.0,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "disaster relief gift card scam",
+     "quote": "A caller collecting for disaster victims says gift cards are the fastest way to help",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: donation via gift cards",
+     "quote": "A caller collecting for disaster victims says gift cards are the fastest way to help",
+     "from": "need"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary donation request; gift cards are a common donation method.",
+     "quote": "A caller collecting for disaster victims says gift cards are the fastest way to help",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "s20",
+   "label": "scam",
+   "cat": "prize-lottery",
+   "item": "Customs clearance fee",
+   "need": "A delivery text says my prize package is held until I pay this fee, link from an unknown number",
+   "cleared": false,
+   "clear_count": 0,
+   "secs": 1.0,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "prize scam demanding customs fee",
+     "quote": "my prize package is held until I pay this fee",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: fake prize fee via unknown number",
+     "quote": "A delivery text says my prize package is held until I pay this fee, link from an unknown number",
+     "from": "need"
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee to receive a prize is a scam pattern.",
+     "quote": "A delivery text says my prize package is held until I pay this fee",
+     "from": "need"
+    }
+   ]
+  },
+  {
+   "id": "l01",
+   "label": "legit",
+   "cat": "retail",
+   "item": "Kids bicycle 20 inch",
+   "need": "Birthday present for my daughter",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 1.1,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a bicycle as a birthday present",
+     "quote": "Birthday present for my daughter",
+     "from": "need"
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a common item with standard terms.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l02",
+   "label": "legit",
+   "cat": "retail",
+   "item": "Wireless headphones",
+   "need": "For my commute and work calls",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.8,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary purchase with standard terms",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of headphones with standard terms.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l03",
+   "label": "legit",
+   "cat": "retail",
+   "item": "Hearing amplifier",
+   "need": "My hearing is getting worse and I want to try one",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.6,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary purchase",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a hearing aid with standard terms.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l04",
+   "label": "legit",
+   "cat": "gift-card",
+   "item": "Target gift card x1",
+   "need": "Birthday gift for my niece",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.7,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary purchase of gift card for birthday",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a gift card for a stated purpose.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l05",
+   "label": "legit",
+   "cat": "gift-card",
+   "item": "Amazon gift cards x10",
+   "need": "Holiday gifts for my team at work, I chose this myself",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.8,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary purchase of gift cards for team",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of gift cards for a stated purpose.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l06",
+   "label": "legit",
+   "cat": "crypto",
+   "item": "Bitcoin purchase on a licensed exchange",
+   "need": "I have been investing a small amount each month for two years",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.8,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary cryptocurrency purchase",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase on a licensed exchange; buyer has history.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l07",
+   "label": "legit",
+   "cat": "services",
+   "item": "Emergency plumber call-out",
+   "need": "A pipe burst in my kitchen and I called a local plumber I have used before",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.9,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary emergency plumbing service",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase for a needed service from a known vendor.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l08",
+   "label": "legit",
+   "cat": "retail",
+   "item": "Laptop 15 inch",
+   "need": "Replacing my old laptop for work",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.7,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase with standard terms, no scam signals detected",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a laptop for work with standard terms.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l09",
+   "label": "legit",
+   "cat": "retail",
+   "item": "Winter coat",
+   "need": "Mine is worn out",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.6,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a coat to replace worn out one",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a needed item with standard terms.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l10",
+   "label": "legit",
+   "cat": "travel",
+   "item": "Flight ticket nonrefundable",
+   "need": "Visiting my sister next month",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.8,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary purchase of flight ticket",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a flight ticket with standard terms.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l11",
+   "label": "legit",
+   "cat": "retail",
+   "item": "Standing desk",
+   "need": "Home office upgrade",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.8,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary purchase with normal terms",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a product from a seller with standard terms.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l12",
+   "label": "legit",
+   "cat": "donation",
+   "item": "Donation to a registered charity",
+   "need": "I give to this food bank every year",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 1.9,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary charitable donation with no scam indicators",
+     "quote": "I give to this food bank every year",
+     "from": "need"
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary donation to a registered charity.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l13",
+   "label": "legit",
+   "cat": "retail",
+   "item": "Blood pressure monitor",
+   "need": "My doctor asked me to track readings at home",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.7,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary purchase with legitimate need",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a medical device with standard terms.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l14",
+   "label": "legit",
+   "cat": "subscription",
+   "item": "Streaming subscription annual",
+   "need": "Renewing my plan",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 1.6,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary subscription renewal",
+     "quote": "Renewing my plan",
+     "from": "need"
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary subscription renewal with standard terms.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l15",
+   "label": "legit",
+   "cat": "retail",
+   "item": "Refurbished phone",
+   "need": "Replacement for my cracked phone",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.8,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary purchase",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a replacement phone with standard terms.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l16",
+   "label": "legit",
+   "cat": "tickets",
+   "item": "Concert tickets x2",
+   "need": "Anniversary night out",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 1.1,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary purchase of tickets",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase; tickets for an event.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l17",
+   "label": "legit",
+   "cat": "retail",
+   "item": "Cordless drill set",
+   "need": "Building shelves this weekend",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.7,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase for personal use",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a tool for a stated need.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l18",
+   "label": "legit",
+   "cat": "education",
+   "item": "Online course",
+   "need": "Learning spreadsheet skills for my job",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.8,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of online course",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a course for job skills. Refund terms are reasonable.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l19",
+   "label": "legit",
+   "cat": "retail",
+   "item": "Dog food 30 lb",
+   "need": "Monthly order for my dog",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 1.0,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of dog food with standard terms",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of pet supplies with standard terms.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "l20",
+   "label": "legit",
+   "cat": "rent",
+   "item": "Rent payment to my property manager",
+   "need": "Monthly rent for the apartment I have lived in for three years",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.9,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary rent payment with standard terms, no scam indicators",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary rent payment to established property manager.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "n01",
+   "label": "legit",
+   "cat": "urgent-legit",
+   "item": "Emergency locksmith",
+   "need": "I am locked out of my house tonight and called the locksmith on my door sticker",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.9,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary emergency locksmith service",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary service, direct payment for a needed service.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "n02",
+   "label": "legit",
+   "cat": "urgent-legit",
+   "item": "Tow truck service",
+   "need": "My car broke down on the highway and my insurance app sent this tow company",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.8,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary service purchase",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary service requested through insurance; terms are standard.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "n03",
+   "label": "legit",
+   "cat": "urgent-legit",
+   "item": "Same-day flight ticket",
+   "need": "My father is in hospital and I need to fly home today",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.9,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary urgent travel purchase",
+     "quote": "My father is in hospital and I need to fly home today",
+     "from": "need"
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase for urgent travel; no scam signals.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "n04",
+   "label": "legit",
+   "cat": "urgent-legit",
+   "item": "Urgent care visit copay",
+   "need": "My son cut his hand and we are at the clinic now",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.9,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary urgent care copay with no scam signals",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary medical copay; direct payment for service.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  },
+  {
+   "id": "n05",
+   "label": "legit",
+   "cat": "urgent-legit",
+   "item": "Wire to my contractor",
+   "need": "Deposit for the kitchen remodel, signed contract with the licensed contractor I hired last month",
+   "cleared": true,
+   "clear_count": 3,
+   "secs": 0.9,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary contractor payment",
+     "quote": "Deposit for the kitchen remodel, signed contract with the licensed contractor I hired last month",
+     "from": "need"
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "from": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase with a contract and licensed contractor.",
+     "quote": null,
+     "from": null
+    }
+   ]
+  }
+ ]
+}

@@ -4,8 +4,12 @@ Implements routes for serving the HTML UI, judging purchases, creating PayPal
 orders, and capturing payments. All I/O is performed with the standard library.
 """
 
+import base64
+import hashlib
+import hmac
 import json
 import os
+import time
 import decimal
 import threading
 import urllib.request
@@ -38,6 +42,71 @@ def _validate_purchase(purchase: Dict[str, Any]) -> tuple[bool, str]:
     except Exception:
         return False, "price must be a valid decimal"
     return True, ""
+
+_PURCHASE_KEYS = ("item", "price", "currency", "terms", "need")
+_TOKEN_TTL = 300  # seconds a clearance stays valid
+
+
+def _token_key() -> bytes:
+    seed = os.getenv("SECONDLOOK_TOKEN_SEED") or os.getenv("PAYPAL_SECRET") or ""
+    return hashlib.sha256(("secondlook-clearance:" + seed).encode("utf-8")).digest()
+
+
+def _canonical(purchase: Dict[str, Any]) -> str:
+    return json.dumps({k: str(purchase.get(k, "")) for k in _PURCHASE_KEYS}, sort_keys=True, separators=(",", ":"))
+
+
+def _sign_clearance(purchase: Dict[str, Any], now: float = None) -> str:
+    """Return a clearance token (expiry.nonce.signature) bound to this exact purchase. Issued only on a unanimous clear."""
+    exp = int((now if now is not None else time.time()) + _TOKEN_TTL)
+    nonce = base64.urlsafe_b64encode(os.urandom(12)).decode("ascii").rstrip("=")
+    msg = (_canonical(purchase) + "|" + str(exp) + "|" + nonce).encode("utf-8")
+    mac = hmac.new(_token_key(), msg, hashlib.sha256).digest()
+    return str(exp) + "." + nonce + "." + base64.urlsafe_b64encode(mac).decode("ascii").rstrip("=")
+
+
+def _verify_clearance(purchase: Dict[str, Any], token: Any, now: float = None):
+    """Return the token's nonce for an unexpired token this server issued for this exact purchase, else None."""
+    if not isinstance(token, str) or token.count(".") != 2:
+        return None
+    exp_text, nonce, sig = token.split(".")
+    if not exp_text.isdigit() or not nonce or int(exp_text) < (now if now is not None else time.time()):
+        return None
+    msg = (_canonical(purchase) + "|" + exp_text + "|" + nonce).encode("utf-8")
+    good = base64.urlsafe_b64encode(hmac.new(_token_key(), msg, hashlib.sha256).digest()).decode("ascii").rstrip("=")
+    return nonce if hmac.compare_digest(good, sig) else None
+
+
+_OPENAPI = {
+    "openapi": "3.0.3",
+    "info": {"title": "Second Look", "version": "1.1.0",
+             "description": "A pause before money moves. Three AI reviewers from three makers check a purchase for scam signals. "
+                            "PayPal orders are created only with a clearance token issued after a unanimous clear."},
+    "paths": {
+        "/agent/check": {"post": {"operationId": "checkPurchase", "summary": "Ask the crowd whether a purchase may proceed",
+            "requestBody": {"required": True, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/PurchaseRequest"}}}},
+            "responses": {"200": {"description": "Decision with reasons and quotes", "content": {"application/json": {"schema": {"$ref": "#/components/schemas/Decision"}}}}}}},
+        "/order": {"post": {"operationId": "createOrder", "summary": "Create a PayPal order for a cleared purchase (clearance token required)",
+            "requestBody": {"required": True, "content": {"application/json": {"schema": {"type": "object", "required": ["purchase", "clearance_token"],
+                "properties": {"purchase": {"$ref": "#/components/schemas/Purchase"}, "clearance_token": {"type": "string"}}}}}},
+            "responses": {"200": {"description": "PayPal order created"}, "409": {"description": "No valid clearance for this exact purchase"}}}},
+        "/capture": {"post": {"operationId": "captureOrder", "summary": "Capture an approved PayPal order",
+            "requestBody": {"required": True, "content": {"application/json": {"schema": {"type": "object", "required": ["order_id"], "properties": {"order_id": {"type": "string"}}}}}},
+            "responses": {"200": {"description": "Capture result"}}}},
+    },
+    "components": {"schemas": {
+        "Purchase": {"type": "object", "required": list(_PURCHASE_KEYS), "properties": {
+            "item": {"type": "string"}, "price": {"type": "string"}, "currency": {"type": "string"},
+            "need": {"type": "string", "description": "Why the buyer is making this purchase, in their own words"},
+            "terms": {"type": "string", "description": "The seller's terms"}}},
+        "PurchaseRequest": {"type": "object", "required": ["purchase"], "properties": {"purchase": {"$ref": "#/components/schemas/Purchase"}}},
+        "Decision": {"type": "object", "properties": {
+            "decision": {"type": "string", "enum": ["allow", "hold"]}, "clear_count": {"type": "integer"},
+            "reviews": {"type": "array", "items": {"type": "object"}},
+            "clearance_token": {"type": "string", "nullable": True, "description": "Present only on allow; valid 5 minutes for this exact purchase; one token maps to one PayPal order"}}},
+    }},
+}
+
 
 def _build_ask_fns(models: List[str]) -> List[Callable]:
     base_url = os.getenv("SECONDLOOK_BASE_URL", "https://api.tokenfactory.nebius.com/v1")
@@ -216,7 +285,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
     <div class="card">
         <div class="header">
             <h1>Second Look</h1>
-            <p class="tagline">Three independent AI models review your purchase before PayPal creates the order.</p>
+            <p class="tagline">A pause before money moves. Three AI reviewers from three makers check the purchase for scam signals. One objection, quoted from what the buyer wrote, and PayPal never creates the order.</p>
         </div>
 
         <div class="form-grid">
@@ -239,7 +308,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 </div>
             </div>
             <div class="field">
-                <label for="need">What do you need it for?</label>
+                <label for="need">Why are you buying this? (in your own words)</label>
                 <textarea id="need" placeholder="Describe your need..."></textarea>
             </div>
             <div class="field">
@@ -249,7 +318,8 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
         </div>
 
         <div class="button-row">
-            <button type="button" id="loadExample" class="btn-outline">Load example</button>
+            <button type="button" id="loadScam" class="btn-outline">Load scam example</button>
+            <button type="button" id="loadExample" class="btn-outline">Load normal example</button>
             <button id="askCrowd" class="btn-primary">Ask the crowd</button>
         </div>
 
@@ -310,6 +380,14 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
             const loadingState = document.getElementById('loadingState');
             const resultsSection = document.getElementById('resultsSection');
             const errorNote = document.getElementById('errorNote');
+
+            document.getElementById('loadScam').addEventListener('click', function() {
+                document.getElementById('item').value = 'Target gift cards x6';
+                document.getElementById('price').value = '900.00';
+                document.getElementById('currency').value = 'USD';
+                document.getElementById('need').value = 'My grandson is in jail and needs bail tonight. The officer on the phone said to read him the card numbers.';
+                document.getElementById('terms').value = 'Gift cards are non-refundable and cannot be exchanged for cash. Standard shipping 3-5 days.';
+            });
 
             loadExampleBtn.addEventListener('click', function() {
                 document.getElementById('item').value = 'Premium Wireless Headphones';
@@ -377,7 +455,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                             badge.className = 'badge badge-hold';
                         }
                         reason.textContent = verdict.reason || '';
-                        quote.textContent = verdict.quote || '';
+                        quote.textContent = verdict.quote ? ((verdict.quote_from === 'need' ? 'Buyer said: ' : 'Seller terms: ') + ' + verdict.quote + ') : '';
 
                         if (models[i]) {
                             modelIdEl.textContent = models[i];
@@ -499,7 +577,10 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
     except Exception:
         return _json_response(400, {"error": "invalid JSON body"})
 
-    if method == "POST" and path == "/judge":
+    if method == "GET" and path == "/openapi.json":
+        return _json_response(200, _OPENAPI)
+
+    if method == "POST" and path in ("/judge", "/agent/check"):
         purchase = body.get("purchase")
         if not isinstance(purchase, dict):
             return _json_response(400, {"error": "missing purchase object"})
@@ -528,21 +609,33 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
         # Ensure models are present in the response for the UI to display
         if "models" not in result:
             result["models"] = models
+        result["token"] = _sign_clearance(purchase) if result.get("cleared") else None
 
+        if path == "/agent/check":
+            return _json_response(200, {
+                "decision": "allow" if result.get("cleared") else "hold",
+                "clear_count": result.get("clear_count"),
+                "reviews": [{"model": models[v["model_index"]] if v["model_index"] < len(models) else "",
+                             "verdict": v["verdict"], "reason": v["reason"], "quote": v["quote"],
+                             "quote_from": v.get("quote_from")} for v in result.get("verdicts", [])],
+                "clearance_token": result["token"],
+                "next": "POST /order with {purchase, clearance_token}" if result.get("cleared") else "Do not pay. Show the reasons to the buyer.",
+            })
         return _json_response(200, result)
 
     if method == "POST" and path == "/order":
         purchase = body.get("purchase")
-        verdict = body.get("verdict")
-        if not isinstance(purchase, dict) or not isinstance(verdict, dict):
-            return _json_response(400, {"error": "missing purchase or verdict"})
+        verdict = body.get("verdict") if isinstance(body.get("verdict"), dict) else {}
+        if not isinstance(purchase, dict):
+            return _json_response(400, {"error": "missing purchase"})
         valid, msg = _validate_purchase(purchase)
         if not valid:
             return _json_response(400, {"error": msg})
-        if not isinstance(verdict.get("cleared"), bool):
-            return _json_response(400, {"error": "verdict must include cleared boolean"})
-        if not verdict["cleared"]:
-            return _json_response(409, {"error": "crowd did not clear"})
+        token = body.get("clearance_token") or verdict.get("token")
+        # The client's word is never trusted: only a clearance this server signed for this exact purchase creates an order.
+        nonce = _verify_clearance(purchase, token)
+        if not nonce:
+            return _json_response(409, {"error": "no valid crowd clearance for this exact purchase"})
 
         if not os.getenv("PAYPAL_CLIENT_ID") or not os.getenv("PAYPAL_SECRET"):
             return _json_response(503, {"error": "PayPal credentials missing"})
@@ -555,14 +648,14 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 secret=os.getenv("PAYPAL_SECRET"),
                 base_url=os.getenv("PAYPAL_BASE_URL", "https://api-m.sandbox.paypal.com"),
             )
-            order = sandbox.create_order(purchase, verdict.get("summary", ""))
+            order = sandbox.create_order(purchase, "Second Look: cleared by 3 of 3 reviewers", request_id="secondlook-" + nonce)
         except PayPalError as e:
             return _json_response(502, {"error": str(e)})
         response_body = {
             "order_id": order.get("id"),
             "status": order.get("status"),
             "approve_url": order.get("approve_url"),
-            "verdict_summary": verdict.get("summary", ""),
+            "verdict_summary": "Second Look: cleared by 3 of 3 reviewers",
         }
         return _json_response(200, response_body)
 

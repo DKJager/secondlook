@@ -101,7 +101,7 @@ class PayPalSandbox:
         except Exception as exc:
             raise SecondLookError(f"Invalid token response: {raw}") from exc
 
-    def create_order(self, purchase: Dict[str, str], verdict_summary: str) -> Dict[str, Any]:
+    def create_order(self, purchase: Dict[str, str], verdict_summary: str, request_id: str = None) -> Dict[str, Any]:
         """Create a PayPal order with the verdict summary embedded.
 
         Args:
@@ -116,7 +116,7 @@ class PayPalSandbox:
         """
         order_url = f"{self.base_url}/v2/checkout/orders"
         token = self._ensure_token()
-        request_id = str(uuid.uuid4())
+        request_id = request_id or str(uuid.uuid4())
 
         # Truncate description and custom_id to 127 characters as required.
         description = verdict_summary[:127]

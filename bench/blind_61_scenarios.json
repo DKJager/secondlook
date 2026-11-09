@@ -1,0 +1,490 @@
+[
+ {
+  "label": "scam",
+  "category": "tech support",
+  "item": "virus removal service",
+  "price": 299,
+  "need": "I keep getting pop-ups saying my computer is infected and need to call this number immediately.",
+  "terms": "We will remotely access your computer to diagnose and remove all malicious software. Payment is required upfront via wire transfer or gift cards before service begins."
+ },
+ {
+  "label": "legit",
+  "category": "electronics",
+  "item": "new smartphone",
+  "price": 899,
+  "need": "I need to upgrade my phone before my old one completely dies.",
+  "terms": "Brand new, sealed in box with manufacturer's warranty. Free shipping. Returns accepted within 14 days for unused items."
+ },
+ {
+  "label": "scam",
+  "category": "imposter: government",
+  "item": "IRS back taxes settlement",
+  "price": 2500,
+  "need": "I got a call saying I owe back taxes and will be arrested if I don't pay today.",
+  "terms": "This one-time payment via prepaid debit card will settle your outstanding tax liability and prevent legal action."
+ },
+ {
+  "label": "legit",
+  "category": "services",
+  "item": "emergency plumbing repair",
+  "price": 650,
+  "need": "My basement is flooding from a burst pipe, I need someone here now.",
+  "terms": "Emergency service call includes diagnosis and the first hour of labor. Parts are additional. Payment due upon completion via cash, check, or credit card."
+ },
+ {
+  "label": "scam",
+  "category": "romance",
+  "item": "flight ticket for partner",
+  "price": 1200,
+  "need": "My online boyfriend needs money for a plane ticket to finally come see me.",
+  "terms": "The funds are non-refundable once the ticket is purchased. Please send via wire transfer or gift cards for immediate processing."
+ },
+ {
+  "label": "scam",
+  "category": "investment",
+  "item": "cryptocurrency trading opportunity",
+  "price": 5000,
+  "need": "This advisor promised me a guaranteed 300% return in just two weeks if I invest now.",
+  "terms": "This exclusive opportunity requires an initial deposit to access the high-yield trading platform. Returns are guaranteed and paid weekly."
+ },
+ {
+  "label": "legit",
+  "category": "gifts",
+  "item": "$500 in retail gift cards",
+  "price": 500,
+  "need": "I want to give my nieces and nephews gift cards for their birthdays.",
+  "terms": "Gift cards are delivered electronically via email within 2 hours. All sales are final; cards cannot be refunded or replaced if lost."
+ },
+ {
+  "label": "scam",
+  "category": "prize",
+  "item": "processing fee for lottery winnings",
+  "price": 450,
+  "need": "I won a foreign lottery! I just need to pay the release fee to get my millions.",
+  "terms": "A one-time processing and transfer fee is required to release your prize winnings. Payment must be made via wire transfer."
+ },
+ {
+  "label": "legit",
+  "category": "travel",
+  "item": "non-refundable airline ticket",
+  "price": 380,
+  "need": "I found a great deal for a flight to my sister's wedding, but it's non-refundable.",
+  "terms": "This is a basic economy fare. Changes, cancellations, and refunds are not permitted. Seat assignment is available for an additional fee."
+ },
+ {
+  "label": "scam",
+  "category": "rental",
+  "item": "apartment security deposit",
+  "price": 1200,
+  "need": "I found a perfect apartment online, but the owner is out of the country and wants a deposit sent to hold it.",
+  "terms": "To secure the property, send the deposit via money transfer. I will express mail the keys to you upon receipt."
+ },
+ {
+  "label": "legit",
+  "category": "charity",
+  "item": "donation to disaster relief",
+  "price": 100,
+  "need": "I want to help the families affected by the recent hurricane.",
+  "terms": "Your donation is tax-deductible. A receipt will be emailed to you. Due to the urgency, we cannot process refunds on donations."
+ },
+ {
+  "label": "scam",
+  "category": "pet",
+  "item": "rare breed puppy",
+  "price": 800,
+  "need": "I found my dream puppy online, but the breeder requires payment before shipping.",
+  "terms": "Due to high demand, full payment via wire transfer or gift cards is required to reserve your puppy. Shipping fees are separate and will be arranged by our partner."
+ },
+ {
+  "label": "scam",
+  "category": "overpayment",
+  "item": "vintage guitar resale",
+  "price": 1300,
+  "need": "A buyer for my guitar sent me a check for too much and asked me to wire back the difference.",
+  "terms": "My assistant mistakenly issued the check for the wrong amount. Please deposit it and wire back the overage. I will arrange pickup once the check clears."
+ },
+ {
+  "label": "legit",
+  "category": "family",
+  "item": "loan to brother for car repair",
+  "price": 900,
+  "need": "My brother's car broke down and he needs it for work, so I'm helping him out.",
+  "terms": "This is a personal loan between family members. I'll pay you back in three installments over the next few months."
+ },
+ {
+  "label": "scam",
+  "category": "imposter: grandparent",
+  "item": "bail money",
+  "price": 3000,
+  "need": "My grandson just called from jail and is scared, he needs bail money wired right away.",
+  "terms": "Funds must be sent via Western Union to the name provided. Do not discuss this with anyone, as per the lawyer's instructions. I will repay you as soon as I'm out."
+ },
+ {
+  "label": "legit",
+  "category": "medical",
+  "item": "specialist consultation fee",
+  "price": 275,
+  "need": "My new specialist doesn't take insurance and requires payment at the time of service.",
+  "terms": "Payment is due in full at the time of your appointment. We accept cash, check, or major credit cards. This fee is for the consultation only; any procedures are additional."
+ },
+ {
+  "label": "scam",
+  "category": "utility",
+  "item": "past-due electric bill",
+  "price": 280,
+  "need": "I got a robocall saying my power will be shut off in an hour if I don't pay immediately.",
+  "terms": "To avoid immediate disconnection, make a payment via prepaid debit card or wire transfer using our automated system. A confirmation code will be provided."
+ },
+ {
+  "label": "scam",
+  "category": "delivery fee",
+  "item": "redelivery charge for package",
+  "price": 3.99,
+  "need": "I got a text about a missed package delivery with a link to pay a small fee to reschedule.",
+  "terms": "A small re-delivery administration fee is required to schedule your next delivery attempt. Please enter your payment details on the secure portal."
+ },
+ {
+  "label": "legit",
+  "category": "cryptocurrency",
+  "item": "Bitcoin purchase",
+  "price": 3000,
+  "need": "I'm diversifying my investment portfolio by adding some cryptocurrency.",
+  "terms": "Cryptocurrency purchases are final and non-reversible. The price is subject to change until the transaction is confirmed on the blockchain. We are not responsible for subsequent value fluctuations."
+ },
+ {
+  "label": "scam",
+  "category": "fake invoice",
+  "item": "office supplies renewal",
+  "price": 299,
+  "need": "I got an invoice for our usual printer paper and toner subscription that's due.",
+  "terms": "Please remit payment within 14 days to avoid service interruption. Our banking details have been updated; use the information on this invoice."
+ },
+ {
+  "label": "legit",
+  "category": "marketplace",
+  "item": "used designer handbag",
+  "price": 450,
+  "need": "I've been looking for this specific bag in good condition for a while.",
+  "terms": "Sold as-is, final sale. Authenticity guaranteed. Cash payment preferred upon local meet-up in a public location."
+ },
+ {
+  "label": "scam",
+  "category": "account takeover",
+  "item": "account verification fee",
+  "price": 50,
+  "need": "My bank just texted me an alert that my account is locked and I need to pay to verify my identity.",
+  "terms": "To restore access and secure your account, a small verification fee is required. This will be credited back to your account within 24 hours."
+ },
+ {
+  "label": "scam",
+  "category": "job",
+  "item": "background check fee",
+  "price": 150,
+  "need": "I got a great work-from-home job offer, but they need me to pay for the mandatory background check.",
+  "terms": "The employment offer is contingent on a satisfactory background investigation. The fee, payable via gift card, covers processing through our third-party vendor."
+ },
+ {
+  "label": "legit",
+  "category": "home improvement",
+  "item": "roof replacement deposit",
+  "price": 5000,
+  "need": "We're getting a new roof and the contractor needs a 50% deposit to order materials.",
+  "terms": "A 50% deposit is required to secure your project date and order materials. The balance is due upon satisfactory completion of the work. Contract provided upon deposit receipt."
+ },
+ {
+  "label": "scam",
+  "category": "debt relief",
+  "item": "upfront debt consolidation fee",
+  "price": 1200,
+  "need": "This company guarantees they can cut my credit card debt in half if I pay their program fee.",
+  "terms": "Our program requires an initial setup and negotiation fee. We will contact your creditors on your behalf and settle your debts for a fraction of what you owe."
+ },
+ {
+  "label": "legit",
+  "category": "family",
+  "item": "wire to son studying abroad",
+  "price": 2000,
+  "need": "My son needs money for his upcoming semester's housing deposit.",
+  "terms": "International wire transfers are typically completed within 1-3 business days. Please ensure all recipient details are correct, as transactions are irreversible."
+ },
+ {
+  "label": "scam",
+  "category": "imposter: tech company",
+  "item": "subscription renewal for cloud storage",
+  "price": 159.99,
+  "need": "I got an email saying my cloud storage is full and will be deleted if I don't renew my subscription.",
+  "terms": "Renew now to prevent permanent data loss. Click the link to confirm your payment details and complete the renewal for another year of service."
+ },
+ {
+  "label": "legit",
+  "category": "automotive",
+  "item": "used car private sale",
+  "price": 9500,
+  "need": "I'm buying a car from a guy I found online, we agreed on cash.",
+  "terms": "Sale is as-is, where-is. Cash only. Bill of sale will be provided. Title will be signed over upon receipt of full payment."
+ },
+ {
+  "label": "scam",
+  "category": "charity",
+  "item": "donation for fake police fundraiser",
+  "price": 75,
+  "need": "A very polite caller from the police benevolent association asked for my support.",
+  "terms": "Your donation supports the families of fallen officers. We accept credit card over the phone or can send a courier to pick up a check."
+ },
+ {
+  "label": "scam",
+  "category": "imposter: romance (subtle)",
+  "item": "help with medical emergency",
+  "price": 600,
+  "need": "The woman I've been talking to online had a minor accident and needs help with the hospital bill her insurance won't cover.",
+  "terms": "I'm so embarrassed to ask. I can pay you back as soon as I get my next paycheck. A wire transfer would be the fastest way for me to access it."
+ },
+ {
+  "label": "legit",
+  "category": "services",
+  "item": "high-end watch repair",
+  "price": 1200,
+  "need": "I need my vintage watch serviced by this one specialist I found who requires prepayment.",
+  "terms": "Due to the cost of specialized parts, a 100% deposit is required before work begins. The service takes 8-10 weeks. No refunds once parts are ordered."
+ },
+ {
+  "label": "scam",
+  "category": "marketplace (subtle)",
+  "item": "concert tickets",
+  "price": 400,
+  "need": "I found tickets for the sold-out show at face value from someone who can't go.",
+  "terms": "I can transfer the tickets via the official app as soon as the Venmo payment clears. Please send as 'friends and family' to avoid fees."
+ },
+ {
+  "label": "legit",
+  "category": "business",
+  "item": "wire transfer to known supplier",
+  "price": 15000,
+  "need": "We need to pay our overseas supplier for the shipment that just arrived.",
+  "terms": "Please reference our invoice number on the wire. Payment must be received in full before goods are released from the port."
+ },
+ {
+  "label": "scam",
+  "category": "investment (subtle)",
+  "item": "pre-IPO shares opportunity",
+  "price": 10000,
+  "need": "A friend of a friend offered me a chance to invest in a hot tech company before it goes public.",
+  "terms": "This is a private placement available only to accredited investors. Funds must be wired to the escrow account by Friday to secure your shares. Documentation will follow."
+ },
+ {
+  "label": "legit",
+  "category": "legal",
+  "item": "attorney retainer fee",
+  "price": 5000,
+  "need": "I need to hire a lawyer for a complicated business matter and they require a retainer.",
+  "terms": "The retainer fee is an advance on future services, billed at an hourly rate. Any unused portion is refundable. Please sign the engagement agreement prior to payment."
+ },
+ {
+  "label": "scam",
+  "category": "tech support (subtle)",
+  "item": "annual security software subscription",
+  "price": 179,
+  "need": "A pop-up appeared during my browsing saying my system's security certificate expired and I need to renew.",
+  "terms": "Renew your premium protection now to maintain real-time threat detection and firewall. Your existing license will be extended for 12 months upon payment confirmation."
+ },
+ {
+  "label": "legit",
+  "category": "rental",
+  "item": "vacation rental booking",
+  "price": 2200,
+  "need": "We're booking a beach house for a family reunion this summer.",
+  "terms": "A 50% deposit is required to confirm the booking. The deposit is non-refundable if canceled within 60 days of arrival. Balance is due 30 days prior to check-in."
+ },
+ {
+  "label": "scam",
+  "category": "imposter: family (subtle)",
+  "item": "new phone after loss",
+  "price": 850,
+  "need": "My daughter texted saying she lost her phone, is using a friend's, and needs money for a replacement to be shipped to her at college.",
+  "terms": "Hey Mom, it's me. My phone fell in a puddle. Can you Zelle the money to my friend's account [email] and I'll pay her back? Don't call, the service is bad here."
+ },
+ {
+  "label": "legit",
+  "category": "education",
+  "item": "online course tuition",
+  "price": 1200,
+  "need": "I'm enrolling in a professional certification course that requires upfront payment.",
+  "terms": "Tuition is due in full prior to the course start date to gain access to the learning platform. Refunds are only available within the first 7 days of the course."
+ },
+ {
+  "label": "scam",
+  "category": "utility (subtle)",
+  "item": "green energy opt-in fee",
+  "price": 75,
+  "need": "I got an email from what looks like my power company offering a discount if I enroll in their green energy program with a small fee.",
+  "terms": "Enroll in our Green Future program today. A one-time $75 enrollment fee guarantees you a 10% discount on your monthly bill for 24 months. Update your billing information on our secure portal."
+ },
+ {
+  "label": "scam",
+  "category": "job (subtle)",
+  "item": "software license for remote work",
+  "price": 350,
+  "need": "My new remote job needs me to purchase the proprietary software license to get started.",
+  "terms": "Welcome to the team! To access our systems, you'll need to purchase the required software suite from our approved vendor using this link. Reimbursement will occur after your first 90 days."
+ },
+ {
+  "label": "legit",
+  "category": "donation",
+  "item": "political campaign contribution",
+  "price": 250,
+  "need": "I want to support a local candidate running for city council.",
+  "terms": "Contributions are not tax-deductible. Must be a U.S. citizen or lawful permanent resident. Contributions from corporations, foreign nationals, and federal contractors are prohibited. No refunds."
+ },
+ {
+  "label": "scam",
+  "category": "fake invoice (subtle)",
+  "item": "domain name renewal",
+  "price": 199,
+  "need": "I received an official-looking notice that my business's domain name is up for renewal at a higher price.",
+  "terms": "Your domain registration is expiring soon. Renew now to avoid losing your online presence. This invoice reflects the current renewal rate. Pay online via credit card or bank transfer."
+ },
+ {
+  "label": "legit",
+  "category": "membership",
+  "item": "exclusive club initiation fee",
+  "price": 2500,
+  "need": "I've been invited to join a private networking club and need to pay the initiation.",
+  "terms": "The one-time initiation fee is non-refundable. Annual dues are billed separately. Membership is subject to board approval after payment is received."
+ },
+ {
+  "label": "scam",
+  "category": "imposter: delivery",
+  "item": "customs clearance fee for gift",
+  "price": 125,
+  "need": "I got a text from a delivery service saying a package from abroad is held and needs a fee to clear customs.",
+  "terms": "A package addressed to you requires a customs and handling fee for release. Please pay via the link to schedule delivery within 48 hours."
+ },
+ {
+  "label": "legit",
+  "category": "entertainment",
+  "item": "sports event suite tickets",
+  "price": 5000,
+  "need": "My firm is entertaining clients at the big game and needs to secure the suite.",
+  "terms": "Full payment is required to confirm the suite rental. This includes catering and a dedicated server. All sales are final, no cancellations or refunds."
+ },
+ {
+  "label": "scam",
+  "category": "debt relief (subtle)",
+  "item": "credit report audit fee",
+  "price": 299,
+  "need": "A service promised they can find and remove inaccurate items from my credit report to boost my score.",
+  "terms": "Our audit service identifies errors and disputable items across all three bureaus. The one-time fee covers our initial investigation and dispute preparation. Results are not guaranteed."
+ },
+ {
+  "label": "legit",
+  "category": "cryptocurrency",
+  "item": "Ethereum purchase for NFT project",
+  "price": 2200,
+  "need": "I need ETH in my wallet to mint an NFT from a well-known artist's new collection.",
+  "terms": "Cryptocurrency transactions are final. Ensure you are sending to the correct wallet address for the minting event. We are not responsible for gas fees or failed transactions due to network congestion."
+ },
+ {
+  "label": "scam",
+  "category": "romance (subtle)",
+  "item": "help with business permit",
+  "price": 1200,
+  "need": "My online boyfriend's new business is almost ready to launch, but he's short on cash for the final permit.",
+  "terms": "This is just a short-term loan, my love. As soon as the permit is issued next week, the investors release the funds and I'll wire you back the money plus a thank you gift."
+ },
+ {
+  "label": "legit",
+  "category": "family",
+  "item": "support for elderly parent's care",
+  "price": 3000,
+  "need": "I'm sending money to help cover my mom's monthly assisted living costs.",
+  "terms": "This is a personal transfer for family support. Please ensure the account details are correct before sending."
+ },
+ {
+  "label": "scam",
+  "category": "prize (subtle)",
+  "item": "tax withholding on free vacation",
+  "price": 720,
+  "need": "I won an all-expenses-paid trip, but the company says I need to cover the estimated taxes upfront.",
+  "terms": "Congratulations! Per IRS regulations, the approximate tax liability on the prize value must be collected before we can issue your travel vouchers. Payment can be made via credit card."
+ },
+ {
+  "label": "legit",
+  "category": "home",
+  "item": "custom furniture deposit",
+  "price": 2800,
+  "need": "We're commissioning a custom dining table and the artisan needs a deposit.",
+  "terms": "A 70% deposit is required to begin work and purchase the specific materials for your piece. The deposit is non-refundable as materials are custom-ordered. Completion is estimated in 12 weeks."
+ },
+ {
+  "label": "scam",
+  "category": "imposter: bank",
+  "item": "account upgrade fee",
+  "price": 50,
+  "need": "My bank texted me about a new security upgrade and asked me to confirm my details with a small charge.",
+  "terms": "To activate enhanced security features on your account, a temporary $50 authorization hold will be placed. Please reply with your card number and CVV to verify and proceed."
+ },
+ {
+  "label": "legit",
+  "category": "business",
+  "item": "payment for freelance consultant",
+  "price": 4200,
+  "need": "I need to pay an international consultant via wire for work completed last month.",
+  "terms": "Wire transfer instructions are attached. Please include the invoice number. Payment is due within 30 days of invoice date; a 2% monthly fee is applied to late payments."
+ },
+ {
+  "label": "scam",
+  "category": "pet (subtle)",
+  "item": "special transport crate for puppy",
+  "price": 350,
+  "need": "The breeder says my new puppy needs a specific FAA-approved crate for the flight, which is an extra cost.",
+  "terms": "For the safety and comfort of your puppy during transport, we require the use of our certified airline crate. The crate fee is separate from the puppy price and must be paid via gift card to our transport partner."
+ },
+ {
+  "label": "legit",
+  "category": "charity",
+  "item": "silent auction win for charity",
+  "price": 600,
+  "need": "I won a weekend getaway package at a charity silent auction and need to pay for it.",
+  "terms": "Congratulations on your winning bid! All auction sales are final and support our charitable mission. Payment is due within 48 hours via cash, check, or credit card."
+ },
+ {
+  "label": "scam",
+  "category": "imposter: publisher",
+  "item": "publication fee for academic paper",
+  "price": 850,
+  "need": "A journal accepted my research paper but requires an article processing charge.",
+  "terms": "Your manuscript has been accepted for publication. The open access fee covers peer review and production. Payment must be received within one week to secure your slot in the upcoming issue."
+ },
+ {
+  "label": "legit",
+  "category": "automotive",
+  "item": "extended car warranty",
+  "price": 3200,
+  "need": "My car is out of factory warranty and I want peace of mind for major repairs.",
+  "terms": "This is a service contract that covers major components for 5 years/60,000 miles. The contract is non-refundable after a 30-day review period. Deductible applies per repair visit."
+ },
+ {
+  "label": "legit",
+  "category": "marketplace",
+  "item": "vintage jewelry from online seller",
+  "price": 750,
+  "need": "I'm buying a signed vintage brooch from a collector in another state.",
+  "terms": "Payment via PayPal Goods & Services is accepted. Item will be shipped with insurance and signature confirmation within two business days of cleared payment."
+ },
+ {
+  "label": "scam",
+  "category": "rental (subtle)",
+  "item": "application fee for rental house",
+  "price": 65,
+  "need": "I applied for a rental house and the property manager emailed me a link to pay the application fee.",
+  "terms": "The $65 application fee per adult is non-refundable and covers credit and background checks. Please use the third-party payment portal linked in this email. We will process your application upon receipt."
+ },
+ {
+  "label": "legit",
+  "category": "medical",
+  "item": "cosmetic surgery procedure",
+  "price": 8000,
+  "need": "I'm paying upfront for a scheduled elective procedure.",
+  "terms": "Full payment is required two weeks prior to the scheduled surgery date. This fee is non-refundable if you cancel within 72 hours of the procedure, as the surgical time is reserved."
+ }
+]

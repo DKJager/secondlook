@@ -1,29 +1,69 @@
 # Second Look
 
-Second Look takes a purchase description and asks three independent open-weight AI models to review the merchant terms before PayPal creates an order. A buyer pastes item details, price, terms, and their need. Each model returns a strict JSON verdict of "clear" or "hold" with a reason and a direct quote from the terms. The product only creates a PayPal order when every reviewer clears the purchase. When any reviewer holds, the UI shows who held and why, and the payment button stays disabled. The service embeds the verdict summary in the PayPal order's description and custom_id fields for verification in the sandbox console. No data is stored server-side.
+**A pause before money moves.** Before PayPal creates an order, three AI reviewers from three makers check the purchase for scam signals. One objection stops the payment, and the objection quotes the exact words that caused it. PayPal's Orders API is called only with a clearance the server signed for that exact purchase.
 
-## The falsifiable claim
+## Try it in one minute
 
-> If the crowd disagrees, PayPal never creates the order.
+Open the live demo: https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/
 
-## Live demo
+| Do this | See this |
+|---|---|
+| Click **Load scam example**, then **Ask the crowd** | Three HOLD verdicts, each quoting the buyer ("My grandson is in jail and needs bail tonight..."). The pay button stays locked. |
+| Click **Load normal example**, then **Ask the crowd**, then **Confirm & Pay** | Three CLEAR verdicts, then a PayPal sandbox order ID and an approval link. |
+| Run the forged-order command below | HTTP 409: `no valid crowd clearance for this exact purchase` |
 
-https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/
+```bash
+curl -s -X POST https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/order \
+  -H 'content-type: application/json' \
+  -d '{"purchase":{"item":"x","price":"5.00","currency":"USD","need":"n","terms":"t"},"verdict":{"cleared":true}}'
+```
+
+## Measured results (9 Nov 2026)
+
+A different AI model (DeepSeek) wrote 61 purchases blind: 33 scams in the FTC's fraud categories with ordinary-looking seller terms, and 28 normal purchases, half of them chosen to look risky. We never tuned against this set.
+
+| Blind test, 61 purchases | Before the 9 Nov update | Now |
+|---|---|---|
+| Scams stopped (of 33) | 30 | 28 |
+| Normal purchases approved (of 28) | 18 | 25 |
+
+- **The trade-off:** the update misses 5 scams where the earlier version missed 3, and approves 7 more normal purchases. The earlier version blocked 10 of 28 normal purchases, mostly because one model refused to "process a transaction".
+- **What it misses:** quiet fake invoices where nothing in the text looks wrong (a toner invoice, a domain renewal notice, a utility program email, a journal fee, a rental application link).
+- **Urgent but normal purchases:** 5 tested (a locksmith, a tow truck, a same-day flight to a hospital, an urgent-care copay, a wire to a contractor under contract); none blocked.
+- **Our own 40 purchases** (the set we tuned on): the live demo stops 20 of 20 scams and approves 20 of 20 normal purchases; the median answer takes about 1 second.
+
+Everything is in [`bench/`](bench/): the scenarios, the result files, and two scripts that re-run the tests against the live demo with no key:
+
+```bash
+python bench/run_blind_61_live.py
+python bench/run_dev_40_live.py
+```
+
+Results vary slightly from run to run because the reviewers are language models.
 
 ![Second Look](docs/screenshot.png)
 
-> Verified live on the PayPal sandbox (29 Oct 2026): the crowd cleared a purchase, the order was created, approved by a sandbox buyer and captured (status COMPLETED).
-
 ## How it works
 
-1. The buyer pastes purchase details into the web form: item, price, merchant terms, and their need.
-2. Three independent AI models review the same prompt in parallel.
-3. Each model must return "clear" or "hold" with a reason and a verbatim quote from the terms.
-4. If all three models return "clear", the "Confirm & Pay with PayPal (sandbox)" button becomes active.
-5. If any model returns "hold", the button stays disabled and the UI displays the hold reasons.
-6. On confirmation, the backend calls PayPal Orders v2 with the verdict embedded in the order's description and custom_id.
-7. The buyer approves the order through PayPal's sandbox approval flow.
-8. The backend captures the approved order.
+1. The buyer, or the buyer's AI agent, sends the item, the price, why they are buying it, and the seller's terms.
+2. Three open-weight models from three makers review it independently, in parallel.
+3. Each returns `clear` or `hold`, a short reason that names the scam pattern, and a quote. The server keeps a quote only if it appears word for word in what the buyer or the seller wrote.
+4. If any reviewer holds, the server issues no clearance and PayPal is never called.
+5. If all three clear, the server issues a clearance token: an HMAC-SHA256 signature over the exact purchase fields, a 5-minute expiry and a random nonce.
+6. `POST /order` creates a PayPal order only with a valid token for that exact purchase. The token's nonce is sent as `PayPal-Request-Id`, so a replayed token returns the same order and never a second one.
+7. The buyer approves in PayPal, and the server captures the payment.
+
+## For AI shopping agents
+
+`POST /agent/check` is the same review as a single call for an agent to make before checkout:
+
+```bash
+curl -s -X POST https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/agent/check \
+  -H 'content-type: application/json' \
+  -d '{"purchase":{"item":"Target gift cards x6","price":"900.00","currency":"USD","need":"My grandson is in jail and needs bail tonight","terms":"Gift cards are non-refundable."}}'
+```
+
+It returns `decision` (`allow` or `hold`), each reviewer's `verdict`, `reason`, `quote` and `quote_from`, and a `clearance_token` on allow. The agent then calls `POST /order` with `{purchase, clearance_token}`. The API is described at [`/openapi.json`](https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/openapi.json).
 
 ## PayPal integration
 
@@ -32,7 +72,7 @@ The product uses PayPal Orders v2 sandbox API:
 - `POST /v2/checkout/orders` with `intent` = `CAPTURE`
 - `POST /v2/checkout/orders/{id}/capture`
 
-All calls include the `PayPal-Request-Id` header for idempotency and target the sandbox base URL `api-m.sandbox.paypal.com`.
+All calls include the `PayPal-Request-Id` header and target the sandbox base URL `api-m.sandbox.paypal.com`. For order creation the header is the clearance token's nonce, which ties one clearance to one order. The order's `description` and `custom_id` record that Second Look cleared it.
 
 ## Models
 
@@ -57,16 +97,12 @@ The system handles reviewer failures without blocking the overall verdict:
 - A reviewer that errors counts as a hold with reason "model error: {details}".
 - A reviewer with no parseable JSON counts as a hold with reason "unparseable answer".
 - A reviewer that returns nothing counts as a hold with reason "no answer from reviewer".
-- Quotes not found verbatim in the submitted terms are dropped from the verdict.
+- A reviewer that refuses to review ("transaction disallowed") is asked once more; a refusal is not a reasoned hold.
+- Quotes not found word for word in the buyer's reason or the seller's terms are dropped from the verdict.
 
 ## Verify in the sandbox console
 
-After a cleared purchase, log into the PayPal sandbox console and locate the order by its ID. The order details show:
-
-- **Description**: the truncated verdict summary (up to 127 characters).
-- **Custom ID**: a string formatted as `secondlook:{clear}/{total}:{reason}` (up to 127 characters).
-
-Both fields appear under the purchase unit and confirm the verdict data embedded during order creation.
+After a cleared purchase, find the order by its ID in the PayPal sandbox console. The purchase unit's description reads "Second Look: cleared by 3 of 3 reviewers", and the custom ID starts with `secondlook:`.
 
 ## Run locally
 
@@ -76,7 +112,7 @@ Start the handler on localhost:8080:
 python -m src.secondlook.handler
 ```
 
-The server implements the same routes as the Lambda deployment: `GET /` serves the HTML UI, `POST /judge` runs the model reviewers, `POST /order` creates a sandbox PayPal order, and `POST /capture` captures an approved order.
+The server implements the same routes as the Lambda deployment: `GET /` serves the page, `POST /judge` and `POST /agent/check` run the reviewers, `POST /order` creates a sandbox PayPal order for a valid clearance, `POST /capture` captures an approved order, and `GET /openapi.json` describes the API.
 
 Environment variables:
 
@@ -88,10 +124,11 @@ Environment variables:
 | `SECONDLOOK_MIN_CLEAR` | Minimum clear votes required (default: 3) |
 | `PAYPAL_CLIENT_ID` | PayPal sandbox client ID |
 | `PAYPAL_SECRET` | PayPal sandbox secret |
+| `SECONDLOOK_TOKEN_SEED` | Optional secret for signing clearance tokens (default: derived from the PayPal secret) |
 
 ## Tests
 
-Run the 10 automated tests with a fake model and PayPal calls, no network or keys needed:
+Run the 15 automated tests with a fake model and PayPal calls, no network or keys needed:
 
 ```bash
 python -m pytest tests -q

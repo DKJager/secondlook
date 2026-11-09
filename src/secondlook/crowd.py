@@ -10,6 +10,9 @@ import threading
 from typing import List, Dict, Any, Callable
 
 
+_REFUSAL = re.compile(r"disallowed|not allowed|cannot (process|assist|book|complete)|can.t (process|assist|book|complete)|(not able|unable) to (help|assist|process)", re.I)
+
+
 class SecondLookError(RuntimeError):
     """Error raised during crowd evaluation."""
     pass
@@ -130,11 +133,23 @@ def _call_reviewer(
         result_lock: Mutex for thread-safe list access.
     """
     system_prompt = (
-        "You are one independent reviewer. Your answer must be ONLY a single "
-        "JSON object on one line. No markdown, no reasoning, no code fences. "
-        "Example: {\"verdict\":\"clear\",\"reason\":\"...\",\"quote\":null}. "
-        "Use verdict \"clear\" or \"hold\", reason <=30 words, quote must be "
-        "a verbatim substring of the terms or null."
+        "You are one independent reviewer in a family scam guard that runs before a payment. "
+        "You do not make the purchase; you only judge whether it is safe to let it proceed. Never refuse to answer. "
+        "Answer \"hold\" when the buyer's stated need or the seller's terms show a scam signal: "
+        "payment by gift cards, wire, crypto, prepaid cards or gold for a debt, fine, bail, fee, tax or prize; "
+        "urgency or secrecy; someone claiming to be family in trouble, police, a government agency, a bank, "
+        "a utility, a boss or tech support; an online contact the buyer has not met asking for money; "
+        "guaranteed investment returns; paying a fee up front to receive money, a job, a prize, a pet or a rental not yet seen; "
+        "sending back an overpayment. Also hold when the seller's terms are clearly unfair for this purchase. "
+        "Answer \"clear\" for an ordinary purchase with an ordinary reason, even if it is a gift card, crypto, "
+        "a final sale, a donation or an urgent repair, when no scam signal is present. "
+        "Urgency or a family emergency alone is not a scam signal: a buyer paying a business directly for its own "
+        "product or service (an airline, a clinic, a repair service, a contractor they hired under a contract) is ordinary. "
+        "The signal is someone else telling the buyer to pay in an unusual way, or money going to a person the buyer cannot verify. "
+        "Your answer must be ONLY a single JSON object on one line. No markdown, no reasoning, no code fences. "
+        "Example: {\"verdict\":\"hold\",\"reason\":\"...\",\"quote\":\"...\"}. "
+        "Use verdict \"clear\" or \"hold\"; reason <=30 words and, on a hold, name the scam pattern; "
+        "quote must be copied word for word from the Need or the Terms (the words that decided it), or null."
     )
     user_message = (
         f"Item: {purchase['item']}\n"
@@ -150,6 +165,12 @@ def _call_reviewer(
     
     try:
         raw_answer = ask_fn(messages)
+        if isinstance(raw_answer, str) and _REFUSAL.search(raw_answer):
+            raw_answer = ask_fn(messages + [
+                {"role": "assistant", "content": raw_answer[:300]},
+                {"role": "user", "content": "You are not being asked to make or process a purchase. "
+                 "Review it for scam signals only and answer with the JSON object."},
+            ])
     except Exception as exc:
         # ask_fn itself raised an exception – model error
         exc_text = str(exc)
@@ -165,12 +186,17 @@ def _call_reviewer(
     else:
         # Successfully got an answer, try to parse JSON
         try:
-            parsed = _parse_verdict(raw_answer, purchase["terms"])
+            parsed = _parse_verdict(raw_answer, purchase["terms"] + "\n" + purchase["need"])
         except Exception:
             parsed = {"verdict": "hold", "reason": "unparseable answer", "quote": None}
         raw = (raw_answer or "")[:300] if isinstance(raw_answer, str) else ""
     
+    q = parsed.get("quote")
+    quote_from = None
+    if isinstance(q, str):
+        quote_from = "need" if q.lower() in purchase["need"].lower() else "terms"
     result = {
+        "quote_from": quote_from,
         "model_index": index,
         "verdict": parsed["verdict"],
         "reason": parsed["reason"],

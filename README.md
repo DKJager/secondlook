@@ -41,7 +41,9 @@ python bench/run_dev_40_live.py
 
 Results vary slightly from run to run because the reviewers are language models.
 
-![Second Look](docs/screenshot.png)
+![A scam stopped](docs/screenshot.png)
+
+![A normal purchase cleared and a PayPal sandbox order created](docs/screenshot_order.png)
 
 ## How it works
 

@@ -455,7 +455,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                             badge.className = 'badge badge-hold';
                         }
                         reason.textContent = verdict.reason || '';
-                        quote.textContent = verdict.quote ? ((verdict.quote_from === 'need' ? 'Buyer said: ' : 'Seller terms: ') + ' + verdict.quote + ') : '';
+                        quote.textContent = verdict.quote ? ((verdict.quote_from === 'need' ? 'Buyer said: ' : 'Seller terms: ') + '“' + verdict.quote + '”') : '';
 
                         if (models[i]) {
                             modelIdEl.textContent = models[i];

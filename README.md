@@ -32,7 +32,7 @@ A different AI model (DeepSeek) wrote 61 purchases blind: 33 scams in the FTC's 
 - **Urgent but normal purchases:** 5 tested (a locksmith, a tow truck, a same-day flight to a hospital, an urgent-care copay, a wire to a contractor under contract); none blocked.
 - **Our own 40 purchases** (the set we tuned on): the live demo stops 20 of 20 scams and approves 20 of 20 normal purchases; the median answer takes about 1 second.
 
-Everything is in [`bench/`](bench/): the scenarios, the result files, and two scripts that re-run the tests against the live demo with no key:
+Every row of the blind test is on the live [results page](https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/results), an [AG Grid](https://www.ag-grid.com/) table you can sort, filter and search, with a "Misses only" view. Everything is also in [`bench/`](bench/): the scenarios, the result files, and two scripts that re-run the tests against the live demo with no key:
 
 ```bash
 python bench/run_blind_61_live.py
@@ -64,6 +64,21 @@ curl -s -X POST https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on
   -H 'content-type: application/json' \
   -d '{"purchase":{"item":"Target gift cards x6","price":"900.00","currency":"USD","need":"My grandson is in jail and needs bail tonight","terms":"Gift cards are non-refundable."}}'
 ```
+
+### With the PayPal Agent Toolkit
+
+[`agent/guard.py`](agent/guard.py) wraps PayPal's own [Agent Toolkit](https://developer.paypal.com/tools/agent-toolkit) so an agent's `create_order` goes through Second Look first. The agent is handed `checked_create_order` in place of the raw tool. A held purchase never reaches PayPal, and on a clear the toolkit creates the order with the clearance nonce as its `PayPal-Request-Id`.
+
+[`agent/shopping_agent.py`](agent/shopping_agent.py) is a small tool-calling agent whose only way to pay is that guard. A real run is in [`docs/agent_demo_transcript.txt`](docs/agent_demo_transcript.txt): asked to buy $900 of gift cards for "bail", the agent is stopped with three reasons; asked to buy a bicycle, it gets a PayPal sandbox order.
+
+```bash
+pip install paypal-agent-toolkit
+export PAYPAL_CLIENT_ID=... PAYPAL_SECRET=...            # a PayPal sandbox app
+export AGENT_BASE_URL=... AGENT_API_KEY=...              # any OpenAI-compatible endpoint
+python -m agent.shopping_agent
+```
+
+### The API
 
 It returns `decision` (`allow` or `hold`), each reviewer's `verdict`, `reason`, `quote` and `quote_from`, and a `clearance_token` on allow. The agent then calls `POST /order` with `{purchase, clearance_token}`. The API is described at [`/openapi.json`](https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/openapi.json).
 
@@ -130,7 +145,7 @@ Environment variables:
 
 ## Tests
 
-Run the 15 automated tests with a fake model and PayPal calls, no network or keys needed:
+Run the 16 automated tests with a fake model and PayPal calls, no network or keys needed:
 
 ```bash
 python -m pytest tests -q

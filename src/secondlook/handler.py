@@ -108,6 +108,70 @@ _OPENAPI = {
 }
 
 
+_RESULTS_PAGE = """<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Second Look: blind test results</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/styles/ag-grid.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/styles/ag-theme-quartz.css">
+<style>
+body{font-family:Inter,system-ui,sans-serif;background:#f7f8fa;color:#111;margin:0;padding:24px}
+.wrap{max-width:1200px;margin:0 auto}h1{font-size:26px;margin:0 0 6px}p{color:#555;margin:0 0 14px;line-height:1.5}
+.tiles{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}.tile{background:#fff;border:1px solid #e3e6ea;border-radius:10px;padding:14px 18px;min-width:170px}
+.tile b{display:block;font-size:26px}.tile span{color:#666;font-size:13px}
+.bar{display:flex;gap:8px;margin:10px 0}.bar button{border:1px solid #1a7fdb;background:#fff;color:#1a7fdb;border-radius:8px;padding:8px 14px;font-weight:600;cursor:pointer}
+.bar button.on{background:#1a7fdb;color:#fff}#grid{height:620px;width:100%}a{color:#1a7fdb}
+</style></head><body><div class="wrap">
+<h1>Blind test: 61 purchases Second Look had never seen</h1>
+<p>A different AI model wrote these purchases: 33 scams with ordinary-looking seller terms and 28 normal purchases, half of them chosen to look risky.
+Every row is one run of the three reviewers. Sort, filter or search any column. <a href="/">Back to the demo</a> &middot;
+<a href="https://github.com/DKJager/secondlook/tree/main/bench">Data and re-run scripts</a></p>
+<div class="tiles" id="tiles"></div>
+<div class="bar"><button data-f="all" class="on">All 61</button><button data-f="miss">Misses only</button><button data-f="scam">Scams</button><button data-f="normal">Normal purchases</button>
+<input id="q" placeholder="Search..." style="flex:1;border:1px solid #cfd4da;border-radius:8px;padding:8px 12px"></div>
+<div id="grid" class="ag-theme-quartz"></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/dist/ag-grid-community.min.js"></script>
+<script>
+const rows = __ROWS__;
+const scams = rows.filter(r => r.label === 'scam'), normal = rows.filter(r => r.label === 'normal');
+const tile = (n, t) => '<div class="tile"><b>' + n + '</b><span>' + t + '</span></div>';
+document.getElementById('tiles').innerHTML =
+  tile(scams.filter(r => r.decision === 'hold').length + ' of ' + scams.length, 'scams stopped') +
+  tile(normal.filter(r => r.decision === 'allow').length + ' of ' + normal.length, 'normal purchases approved') +
+  tile(rows.filter(r => !r.correct).length, 'misses, all listed below');
+let mode = 'all';
+const api = agGrid.createGrid(document.getElementById('grid'), {
+  rowData: rows,
+  defaultColDef: { sortable: true, filter: true, resizable: true, wrapText: true, autoHeight: true },
+  columnDefs: [
+    { colId: 'result', headerName: 'Result', width: 110, valueGetter: p => p.data.correct ? 'Correct' : 'MISS',
+      cellStyle: p => ({ color: p.value === 'Correct' ? '#1e8e3e' : '#d93025', fontWeight: 600 }) },
+    { field: 'label', headerName: 'Truth', width: 100 },
+    { field: 'decision', headerName: 'Second Look', width: 130,
+      cellStyle: p => ({ color: p.value === 'hold' ? '#d93025' : '#1e8e3e', fontWeight: 600 }) },
+    { field: 'clears', headerName: 'Clear votes', width: 120, valueFormatter: p => p.value + ' of 3' },
+    { field: 'category', width: 170 },
+    { field: 'item', width: 220 },
+    { field: 'price', width: 110, valueFormatter: p => '$' + Number(p.value).toLocaleString() },
+    { field: 'need', headerName: 'Buyer said', flex: 2, minWidth: 280 },
+    { field: 'reasons', headerName: 'Hold reasons', flex: 2, minWidth: 280 }
+  ],
+  isExternalFilterPresent: () => mode !== 'all',
+  doesExternalFilterPass: n => mode === 'miss' ? !n.data.correct : n.data.label === mode
+});
+document.querySelectorAll('.bar button').forEach(b => b.addEventListener('click', () => {
+  mode = b.dataset.f; document.querySelectorAll('.bar button').forEach(x => x.classList.toggle('on', x === b)); api.onFilterChanged();
+}));
+document.getElementById('q').addEventListener('input', e => api.setGridOption('quickFilterText', e.target.value));
+</script></body></html>"""
+
+
+def _results_page() -> str:
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "blind_results.json")
+    with open(path, encoding="utf-8") as fh:
+        return _RESULTS_PAGE.replace("__ROWS__", fh.read())
+
+
 def _build_ask_fns(models: List[str]) -> List[Callable]:
     base_url = os.getenv("SECONDLOOK_BASE_URL", "https://api.tokenfactory.nebius.com/v1")
     api_key = os.getenv("SECONDLOOK_API_KEY")
@@ -285,7 +349,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
     <div class="card">
         <div class="header">
             <h1>Second Look</h1>
-            <p class="tagline">A pause before money moves. Three AI reviewers from three makers check the purchase for scam signals. One objection, quoted from what the buyer wrote, and PayPal never creates the order.</p>
+            <p class="tagline">A pause before money moves. Three AI reviewers from three makers check the purchase for scam signals. One objection, quoted from what the buyer wrote, and PayPal never creates the order. <a href="/results" style="color:#1a7fdb">See every result from our blind test of 61 purchases</a>.</p>
         </div>
 
         <div class="form-grid">
@@ -576,6 +640,9 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
         body = json.loads(raw_body) if raw_body else {}
     except Exception:
         return _json_response(400, {"error": "invalid JSON body"})
+
+    if method == "GET" and path == "/results":
+        return {"statusCode": 200, "headers": {"Content-Type": "text/html; charset=utf-8"}, "body": _results_page()}
 
     if method == "GET" and path == "/openapi.json":
         return _json_response(200, _OPENAPI)

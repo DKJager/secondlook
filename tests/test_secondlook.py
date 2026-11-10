@@ -521,3 +521,29 @@ def test_openapi_and_page_expose_agent_check_and_scam_example():
     assert "/agent/check" in spec["paths"] and "/order" in spec["paths"]
     page = handler.lambda_handler(_event("GET", "/"), None)["body"]
     assert "Load scam example" in page and "Load normal example" in page
+
+
+def test_agent_guard_never_calls_paypal_on_hold_and_binds_request_id_on_allow(monkeypatch):
+    from agent.guard import SecondLookGuard
+    made = []
+
+    class FakeAPI:
+        def __init__(self, request_id):
+            self.request_id = request_id
+
+        def run(self, method, params):
+            made.append((self.request_id, method, params))
+            return json.dumps({"id": "ORDER1", "status": "CREATED", "links": [{"rel": "approve", "href": "https://paypal.example/approve"}]})
+
+    guard = SecondLookGuard("id", "secret", paypal_api_factory=FakeAPI)
+    monkeypatch.setattr(guard, "check", lambda p: {"decision": "hold", "clearance_token": None,
+                        "reviews": [{"model": "m1", "verdict": "hold", "reason": "bail scam", "quote": "needs bail tonight"}]})
+    held = guard.checked_create_order("Gift cards x6", 900, "My grandson needs bail tonight", "Non-refundable.")
+    assert held["status"] == "HELD" and held["paypal_called"] is False and made == []
+    assert held["reasons"][0]["reason"] == "bail scam"
+
+    monkeypatch.setattr(guard, "check", lambda p: {"decision": "allow", "clearance_token": "1999999999.NONCE123.sig", "reviews": []})
+    ok = guard.checked_create_order("Kids bicycle", 149.99, "Birthday present", "30-day returns.")
+    assert ok["status"] == "ORDER_CREATED" and ok["order_id"] == "ORDER1"
+    assert made[0][0] == "secondlook-NONCE123" and made[0][1] == "create_order"
+    assert made[0][2]["items"][0]["item_total"] == 149.99

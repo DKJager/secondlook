@@ -446,7 +446,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
             const errorNote = document.getElementById('errorNote');
 
             document.getElementById('loadScam').addEventListener('click', function() {
-                document.getElementById('item').value = 'Target gift cards x6';
+                document.getElementById('item').value = 'Gift cards x6';
                 document.getElementById('price').value = '900.00';
                 document.getElementById('currency').value = 'USD';
                 document.getElementById('need').value = 'My grandson is in jail and needs bail tonight. The officer on the phone said to read him the card numbers.';

@@ -62,7 +62,7 @@ Results vary slightly from run to run because the reviewers are language models.
 ```bash
 curl -s -X POST https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/agent/check \
   -H 'content-type: application/json' \
-  -d '{"purchase":{"item":"Target gift cards x6","price":"900.00","currency":"USD","need":"My grandson is in jail and needs bail tonight","terms":"Gift cards are non-refundable."}}'
+  -d '{"purchase":{"item":"Gift cards x6","price":"900.00","currency":"USD","need":"My grandson is in jail and needs bail tonight","terms":"Gift cards are non-refundable."}}'
 ```
 
 ### With the PayPal Agent Toolkit

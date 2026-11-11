@@ -764,3 +764,44 @@ def test_page_asks_how_the_request_reached_the_buyer_and_the_agent_tool_requires
     assert "origin" in props["required"] and props["properties"]["origin"]["enum"] == ["self", "contacted", "known_person"]
     assert "never answer the check yourself" in shopping_agent.SYSTEM and len(shopping_agent.TASKS) == 3
     assert handler._OPENAPI["components"]["schemas"]["Purchase"]["properties"]["origin"]["enum"] == ["self", "contacted", "known_person"]
+
+
+def test_paypal_rate_limit_is_waited_out_with_the_same_request_id_and_gives_up_after_three():
+    import io
+    import urllib.error
+
+    class Limited:
+        def __init__(self, fails, retry_after=None):
+            self.fails, self.requests, self.retry_after = fails, [], retry_after
+
+        def open(self, request, timeout=None):
+            self.requests.append(request)
+            if "oauth2" in request.full_url:
+                return FakeResponse(json.dumps({"access_token": "t"}).encode())
+            if self.fails > 0:
+                self.fails -= 1
+                hdrs = {"Retry-After": self.retry_after} if self.retry_after else {}
+                raise urllib.error.HTTPError(request.full_url, 429, "Too Many Requests", hdrs, io.BytesIO(b"{}"))
+            return FakeResponse(json.dumps({"id": "O1", "status": "CREATED", "links": []}).encode())
+
+    waits = []
+    op = Limited(2)
+    sb = paypal.PayPalSandbox("id", "secret", opener=op, sleep=waits.append)
+    out = sb.create_order({"item": "Kettle", "price": "30.00", "currency": "USD"}, "cleared", request_id="secondlook-abc")
+    assert out["id"] == "O1" and waits == [0.5, 1.0] and sb.retries == 2
+    ids = [r.get_header("Paypal-request-id") for r in op.requests if "orders" in r.full_url]
+    assert ids == ["secondlook-abc"] * 3, "every retry must carry the same request id, so PayPal makes one order"
+
+    waits = []
+    sb = paypal.PayPalSandbox("id", "secret", opener=Limited(1, retry_after="3"), sleep=waits.append)
+    sb.create_order({"item": "Kettle", "price": "30.00", "currency": "USD"}, "cleared", request_id="secondlook-abc")
+    assert waits == [3.0], "PayPal's Retry-After is honoured"
+
+    waits = []
+    sb = paypal.PayPalSandbox("id", "secret", opener=Limited(99), sleep=waits.append)
+    try:
+        sb.create_order({"item": "Kettle", "price": "30.00", "currency": "USD"}, "cleared", request_id="secondlook-abc")
+        assert False, "should have given up"
+    except paypal.SecondLookError as e:
+        assert "429" in str(e)
+    assert waits == [0.5, 1.0, 2.0]

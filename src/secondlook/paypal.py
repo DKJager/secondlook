@@ -7,7 +7,9 @@ environment, handling authentication and request IDs.
 import base64
 import json
 import os
+import time
 import uuid
+import urllib.error
 import urllib.request
 import urllib.parse
 from typing import Dict, Any, Optional
@@ -31,6 +33,8 @@ class PayPalSandbox:
         secret: str,
         base_url: str = "https://api-m.sandbox.paypal.com",
         opener: Optional[urllib.request.OpenerDirector] = None,
+        sleep=time.sleep,
+        max_retries: int = 3,
     ) -> None:
         """Initialize the sandbox client.
 
@@ -45,6 +49,9 @@ class PayPalSandbox:
         self.base_url = base_url.rstrip("/")
         self.opener = opener if opener is not None else urllib.request.build_opener()
         self._access_token: Optional[str] = None
+        self._sleep = sleep
+        self.max_retries = max_retries
+        self.retries = 0  # how many times this client waited and tried again
 
     def _http_request(
         self,
@@ -53,11 +60,31 @@ class PayPalSandbox:
         headers: Dict[str, str],
         data: Optional[bytes] = None,
     ) -> urllib.response.addinfourl:
-        """Perform an HTTP request using the configured opener."""
-        request = urllib.request.Request(url, data=data, method=method)
-        for name, value in headers.items():
-            request.add_header(name, value)
-        return self.opener.open(request)
+        """Perform an HTTP request using the configured opener.
+
+        If PayPal answers 429 (rate limited) or 503, wait and send the same request again:
+        0.5 s, 1 s, 2 s, or the Retry-After header when PayPal gives one (capped at 5 s).
+        The request carries the same PayPal-Request-Id each time, so a retry can never
+        create a second order.
+        """
+        attempt = 0
+        while True:
+            request = urllib.request.Request(url, data=data, method=method)
+            for name, value in headers.items():
+                request.add_header(name, value)
+            try:
+                return self.opener.open(request)
+            except urllib.error.HTTPError as exc:
+                if exc.code not in (429, 503) or attempt >= self.max_retries:
+                    raise
+                wait = 0.5 * (2 ** attempt)
+                try:
+                    wait = max(wait, float(exc.headers.get("Retry-After", "")))
+                except (TypeError, ValueError, AttributeError):
+                    pass
+                self._sleep(min(wait, 5.0))
+                attempt += 1
+                self.retries += 1
 
     def _ensure_token(self) -> str:
         """Return a valid access token, fetching it if necessary."""

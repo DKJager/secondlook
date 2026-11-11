@@ -38,7 +38,7 @@ Four AI models from four other makers (Microsoft MAI, Zhipu GLM-5, Amazon Nova P
 
 A scam counts as stopped only if it was not allowed at first **and** was still not allowed after the buyer answered "how did you check?" the way a fooled buyer truthfully would ("I clicked the link in the email").
 
-**Speed:** about 2 to 4 seconds per check (median 3.6 s, 90th percentile 6.6 s over 28 single requests from outside the cloud). The review finishes before PayPal is called, so nothing on PayPal's side waits on it.
+**Speed:** about 2 to 4 seconds per check. Two measurements of about 30 single requests each, from outside the cloud, gave medians of 1.9 s and 3.6 s and 90th percentiles of 3.2 s and 6.6 s. Twenty simultaneous checkouts all produced PayPal sandbox orders with no rate-limit errors. The review finishes before PayPal is called, so nothing on PayPal's side waits on it.
 
 Every row is on the live [results page](https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/results), an [AG Grid](https://www.ag-grid.com/) table you can sort, filter and search, with a "Misses only" view. The test sets, raw outputs and scripts are in [`bench/verify_first/`](bench/verify_first/).
 

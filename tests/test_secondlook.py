@@ -828,3 +828,41 @@ def test_agent_that_does_not_say_how_the_request_arrived_is_treated_as_inbound_a
     monkeypatch.setattr(shopping_agent, "chat", lambda messages, tools=None: replies.pop(0))
     out = shopping_agent.run_task(G(), "t", "pay this invoice", "I logged in myself")
     assert seen == [("contacted", None), ("contacted", "I logged in myself")] and out["status"] == "ORDER_CREATED"
+
+
+def test_a_slow_reviewer_is_asked_a_second_time_and_the_first_answer_wins():
+    import threading
+    import time as t
+    calls = []
+    gate = threading.Event()
+
+    def slow_then_fast(messages):
+        calls.append(1)
+        if len(calls) == 1:
+            gate.wait(2)          # the first call hangs
+            return "late"
+        return "quick"
+
+    assert handler._first_answer(slow_then_fast, [], 0.05) == "quick" and len(calls) == 2
+    gate.set()
+
+    calls.clear()
+    assert handler._first_answer(lambda m: calls.append(1) or "one", [], 0.5) == "one" and len(calls) == 1, "a fast reviewer is asked once"
+
+    def boom(messages):
+        raise RuntimeError("down")
+    try:
+        handler._first_answer(boom, [], 0.5)
+        assert False
+    except RuntimeError:
+        pass
+
+    n = []
+
+    def fail_slow_then_ok(messages):
+        n.append(1)
+        if len(n) == 1:
+            t.sleep(0.15)
+            raise RuntimeError("first failed late")
+        return "second ok"
+    assert handler._first_answer(fail_slow_then_ok, [], 0.05) == "second ok"

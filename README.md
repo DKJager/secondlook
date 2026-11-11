@@ -169,13 +169,14 @@ Environment variables:
 | `SECONDLOOK_MIN_CLEAR` | Minimum clear votes required (default: 3) |
 | `SECONDLOOK_TEMPERATURE` | Reviewer temperature (default: 0) |
 | `SECONDLOOK_MAX_TOKENS` | Reviewer answer budget (default: 1500) |
+| `SECONDLOOK_HEDGE_SECONDS` | A reviewer that has not answered after this many seconds is asked a second time and the first answer is used (default: 5; speed only, never the decision) |
 | `PAYPAL_CLIENT_ID` | PayPal sandbox client ID |
 | `PAYPAL_SECRET` | PayPal sandbox secret |
 | `SECONDLOOK_TOKEN_SEED` | Optional secret for signing clearance tokens (default: derived from the PayPal secret) |
 
 ## Tests
 
-Run the 32 automated tests with a fake model and fake PayPal calls, no network or keys needed:
+Run the 33 automated tests with a fake model and fake PayPal calls, no network or keys needed:
 
 ```bash
 python -m pytest tests -q

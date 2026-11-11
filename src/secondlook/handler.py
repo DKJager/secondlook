@@ -215,6 +215,37 @@ def _results_page() -> str:
     return _RESULTS_PAGE.replace("__SETS__", safe(data["sets"])).replace("__ROWS__", safe(data["rows"]))
 
 
+def _first_answer(once: Callable, messages: List[Dict], hedge_after: float) -> str:
+    """Call once(messages); if no answer after hedge_after seconds, call it a second time in parallel.
+    Returns the first answer to arrive. Raises only if every attempt made has failed."""
+    import queue
+    import threading
+
+    box: "queue.Queue" = queue.Queue()
+
+    def run():
+        try:
+            box.put((True, once(messages)))
+        except Exception as exc:  # noqa: BLE001
+            box.put((False, exc))
+
+    threading.Thread(target=run, daemon=True).start()
+    started, failed, last = 1, 0, None
+    try:
+        ok, val = box.get(timeout=hedge_after)
+    except queue.Empty:
+        threading.Thread(target=run, daemon=True).start()
+        started = 2
+        ok, val = box.get()
+    while not ok:
+        failed += 1
+        last = val
+        if failed >= started:
+            raise last
+        ok, val = box.get()
+    return val
+
+
 def _build_ask_fns(models: List[str], max_tokens: int = None) -> List[Callable]:
     base_url = os.getenv("SECONDLOOK_BASE_URL", "https://api.tokenfactory.nebius.com/v1")
     api_key = os.getenv("SECONDLOOK_API_KEY")
@@ -224,20 +255,28 @@ def _build_ask_fns(models: List[str], max_tokens: int = None) -> List[Callable]:
     temperature = float(os.getenv("SECONDLOOK_TEMPERATURE", "0"))
     timeout = 40.0
 
+    hedge_after = float(os.getenv("SECONDLOOK_HEDGE_SECONDS", "5"))
+
     def _make_fn(model_id: str) -> Callable:
+        def once(messages: List[Dict]) -> str:
+            response = chat(
+                base_url=base_url,
+                key=api_key,
+                model=model_id,
+                messages=messages,
+                max_tokens=max_tokens,
+                temperature=temperature,
+                timeout=timeout,
+            )
+            return response["choices"][0]["message"]["content"]
+
         def fn(messages: List[Dict]) -> str:
+            # Speed only, never the decision: if this reviewer has not answered after hedge_after seconds, the same
+            # question is sent to the same model a second time and whichever answer arrives first is used.
             try:
-                response = chat(
-                    base_url=base_url,
-                    key=api_key,
-                    model=model_id,
-                    messages=messages,
-                    max_tokens=max_tokens,
-                    temperature=temperature,
-                    timeout=timeout,
-                )
-                content = response["choices"][0]["message"]["content"]
-                return content
+                if hedge_after <= 0:
+                    return once(messages)
+                return _first_answer(once, messages, hedge_after)
             except Exception as exc:
                 raise CrowdError(f"Model {model_id} call failed: {exc}")
         return fn

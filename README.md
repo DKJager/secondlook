@@ -41,9 +41,15 @@ python bench/run_dev_40_live.py
 
 Results vary slightly from run to run because the reviewers are language models.
 
+**Demo video (2:36):** https://youtu.be/gaY7x_UZATA
+
 ![A scam stopped](docs/screenshot.png)
 
 ![A normal purchase cleared and a PayPal sandbox order created](docs/screenshot_order.png)
+
+![A real agent through the PayPal Agent Toolkit: one purchase held, one order created](docs/agent_run.jpg)
+
+![Every blind-test row in an AG Grid table, misses only](docs/results_grid.jpg)
 
 ## How it works
 

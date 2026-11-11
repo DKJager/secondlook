@@ -88,7 +88,9 @@ def _parse_verdict(raw_answer: str, terms: str) -> Dict[str, Any]:
     quote = normalized.get("quote")
     
     # Determine verdict: "clear" or "hold" based on substring match
-    if "clear" in verdict_raw:
+    if "verify" in verdict_raw:
+        verdict = "verify"
+    elif "clear" in verdict_raw:
         verdict = "clear"
     elif "hold" in verdict_raw:
         verdict = "hold"
@@ -109,10 +111,13 @@ def _parse_verdict(raw_answer: str, terms: str) -> Dict[str, Any]:
             else:
                 reason = "quote not found in terms"
     
+    step = normalized.get("step")
+    step = step.strip()[:240] if isinstance(step, str) and step.strip() and verdict == "verify" else None
     return {
         "verdict": verdict,
         "reason": reason if reason else "",
-        "quote": quote
+        "quote": quote,
+        "step": step,
     }
 
 
@@ -135,21 +140,40 @@ def _call_reviewer(
     system_prompt = (
         "You are one independent reviewer in a family scam guard that runs before a payment. "
         "You do not make the purchase; you only judge whether it is safe to let it proceed. Never refuse to answer. "
-        "Answer \"hold\" when the buyer's stated need or the seller's terms show a scam signal: "
+        "There are three answers: \"hold\", \"verify\" and \"clear\". "
+        "HOLD when the buyer's stated need or the seller's terms show a scam signal: "
         "payment by gift cards, wire, crypto, prepaid cards or gold for a debt, fine, bail, fee, tax or prize; "
         "urgency or secrecy; someone claiming to be family in trouble, police, a government agency, a bank, "
         "a utility, a boss or tech support; an online contact the buyer has not met asking for money; "
         "guaranteed investment returns; paying a fee up front to receive money, a job, a prize, a pet or a rental not yet seen; "
         "sending back an overpayment. Also hold when the seller's terms are clearly unfair for this purchase. "
-        "Answer \"clear\" for an ordinary purchase with an ordinary reason, even if it is a gift card, crypto, "
+        "VERIFY when nothing is an outright scam signal, but the buyer is paying because a message reached THEM "
+        "(an invoice, bill, renewal or expiry notice, email, text, letter, call or payment link they received, or an offer or invitation they did not seek out) "
+        "and at least one of these is true: the payment details, bank account or payee have changed or are new; "
+        "the price is new, higher or not what the buyer expected; the buyer is told to pay through a link, portal or contact details that came inside the message; "
+        "the buyer is not sure who sent it (\"looks like\", \"official-looking\", \"claims to be\"); there is a deadline or a threat of interruption, loss or a missed slot; "
+        "a fee is asked to unlock a discount, refund, acceptance, publication, membership, application or listing; "
+        "or the request is unexpected and the buyer names no account, order or contract of theirs that it belongs to. "
+        "Also VERIFY a large prepayment or cash payment to a private person or small provider the buyer found online and has not dealt with before. "
+        "Verify is not an accusation: most such requests are real. It means check first through a channel the buyer already had. "
+        "CLEAR for an ordinary purchase the buyer chose to make, with an ordinary reason, even if it is a gift card, crypto, "
         "a final sale, a donation or an urgent repair, when no scam signal is present. "
+        "CLEAR an expected, regular bill for the usual amount paid the usual way. "
+        "CLEAR a bill or invoice when the buyer says they logged in to their own account, called a number they already had, "
+        "matched it to their own order, contract or usual amount, or otherwise checked it without using the message's own links or contacts. "
         "Urgency or a family emergency alone is not a scam signal: a buyer paying a business directly for its own "
         "product or service (an airline, a clinic, a repair service, a contractor they hired under a contract) is ordinary. "
-        "The signal is someone else telling the buyer to pay in an unusual way, or money going to a person the buyer cannot verify. "
+        "The signal is someone else telling the buyer to pay in an unusual way, money going to a person the buyer cannot verify, "
+        "or a payment request the buyer has not checked for themselves. "
+        "If a line 'Buyer's verification' is present, judge it: it counts only if it is independent of the message "
+        "(their own account or app, a number or address from an old bill or the official site they typed in, a person they already know). "
+        "Replying to the message, clicking its link or calling the number in it does not count: answer \"verify\" again. "
         "Your answer must be ONLY a single JSON object on one line. No markdown, no reasoning, no code fences. "
-        "Example: {\"verdict\":\"hold\",\"reason\":\"...\",\"quote\":\"...\"}. "
-        "Use verdict \"clear\" or \"hold\"; reason <=30 words and, on a hold, name the scam pattern; "
-        "quote must be copied word for word from the Need or the Terms (the words that decided it), or null."
+        "Example: {\"verdict\":\"verify\",\"reason\":\"...\",\"quote\":\"...\",\"step\":\"...\"}. "
+        "Use verdict \"clear\", \"verify\" or \"hold\"; reason <=30 words and, on a hold, name the scam pattern; "
+        "quote must be copied word for word from the Need or the Terms (the words that decided it), or null; "
+        "step is null unless the verdict is verify, then it is ONE concrete check under 25 words that the buyer can do now "
+        "without using anything in the message."
     )
     user_message = (
         f"Item: {purchase['item']}\n"
@@ -158,6 +182,8 @@ def _call_reviewer(
         f"Terms: {purchase['terms']}\n"
         f"Need: {purchase['need']}"
     )
+    if str(purchase.get("verified") or "").strip():
+        user_message += f"\nBuyer's verification: {str(purchase['verified']).strip()}"
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": user_message},
@@ -186,7 +212,7 @@ def _call_reviewer(
     else:
         # Successfully got an answer, try to parse JSON
         try:
-            parsed = _parse_verdict(raw_answer, purchase["terms"] + "\n" + purchase["need"])
+            parsed = _parse_verdict(raw_answer, purchase["terms"] + "\n" + purchase["need"] + "\n" + str(purchase.get("verified") or ""))
         except Exception:
             parsed = {"verdict": "hold", "reason": "unparseable answer", "quote": None}
         raw = (raw_answer or "")[:300] if isinstance(raw_answer, str) else ""
@@ -201,6 +227,7 @@ def _call_reviewer(
         "verdict": parsed["verdict"],
         "reason": parsed["reason"],
         "quote": parsed["quote"],
+        "step": parsed.get("step"),
         "raw": raw,
     }
     
@@ -264,14 +291,26 @@ def judge_purchase(
     
     # Build summary
     hold_reasons = [v["reason"] for v in verdicts if v["verdict"] == "hold"]
+    verify_reasons = [v["reason"] for v in verdicts if v["verdict"] == "verify"]
+    cleared = clear_count >= min_clear
+    # One hold stops the payment. Otherwise one "verify" locks it until the buyer has checked for themselves.
+    decision = "allow" if cleared else ("hold" if hold_reasons else ("verify" if verify_reasons else "hold"))
+    steps = []
+    for v in verdicts:
+        if v["verdict"] == "verify" and v.get("step") and v["step"] not in steps:
+            steps.append(v["step"])
     if hold_reasons:
         summary = f"{clear_count}/{total} clear; holds: {'; '.join(hold_reasons)}"
+    elif verify_reasons:
+        summary = f"{clear_count}/{total} clear; verify first: {'; '.join(verify_reasons)}"
     else:
         summary = f"{clear_count}/{total} clear"
-    
+
     return {
         "verdicts": verdicts,
         "clear_count": clear_count,
-        "cleared": clear_count >= min_clear,
+        "cleared": cleared,
+        "decision": decision,
+        "verify_steps": steps if decision == "verify" else [],
         "summary": summary,
     }

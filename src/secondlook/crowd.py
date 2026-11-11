@@ -13,6 +13,15 @@ from typing import List, Dict, Any, Callable
 _REFUSAL = re.compile(r"disallowed|not allowed|cannot (process|assist|book|complete)|can.t (process|assist|book|complete)|(not able|unable) to (help|assist|process)", re.I)
 
 
+_ORIGINS = {
+    "self": "OWN initiative: the buyer went to the seller themselves.",
+    "contacted": "CONTACTED: the request came to the buyer.",
+    "known_person": "A person the buyer knows asked them to pay.",
+}
+_DEFAULT_STEP = ("Open the company's own website or app yourself, or call a number you already had, and look for this charge there. "
+                 "Do not use the link, number or reply address in the message.")
+
+
 class SecondLookError(RuntimeError):
     """Error raised during crowd evaluation."""
     pass
@@ -163,13 +172,17 @@ def _call_reviewer(
         "CLEAR an expected, regular bill for the usual amount paid the usual way. "
         "CLEAR a bill or invoice when the buyer says they logged in to their own account, called a number they already had, "
         "matched it to their own order, contract or usual amount, or otherwise checked it without using the message's own links or contacts. "
+        "A line 'How it reached the buyer' may be present. If it says the buyer was CONTACTED (the request came to them: an email, text, call, letter, "
+        "invoice, notice, advert or link sent to them) and there is no line 'Buyer's verification', answer \"verify\" however ordinary the request looks, "
+        "unless it is a hold; a real bill and a fake one read the same, so the buyer must look for themselves. "
+        "If it says the buyer went to the seller on their OWN initiative, an ordinary purchase is clear. "
         "Urgency or a family emergency alone is not a scam signal: a buyer paying a business directly for its own "
         "product or service (an airline, a clinic, a repair service, a contractor they hired under a contract) is ordinary. "
         "The signal is someone else telling the buyer to pay in an unusual way, money going to a person the buyer cannot verify, "
         "or a payment request the buyer has not checked for themselves. "
         "If a line 'Buyer's verification' is present, judge it: it counts only if it is independent of the message "
         "(their own account or app, a number or address from an old bill or the official site they typed in, a person they already know). "
-        "Seeing the goods, the person or the paperwork in person also counts. "
+        "Seeing the goods, the person or the paperwork in person also counts, and so does paying the bill inside the buyer's own account or app as they always do. "
         "The check must confirm THIS charge or THESE payment details with the real company or person. "
         "Replying to the message, clicking its link, calling the number in it, saying it looked official, or recognising a name, logo, "
         "account number or invoice number printed on the request does not count, because a fake carries those too: answer \"verify\" again. "
@@ -177,7 +190,7 @@ def _call_reviewer(
         "Example: {\"verdict\":\"verify\",\"reason\":\"...\",\"quote\":\"...\",\"step\":\"...\"}. "
         "Use verdict \"clear\", \"verify\" or \"hold\"; reason <=30 words and, on a hold, name the scam pattern; "
         "quote must be copied word for word from the Need or the Terms (the words that decided it), or null; "
-        "step is null unless the verdict is verify, then it is ONE concrete check under 25 words that the buyer can do now "
+        "step is null unless the verdict is verify, then it is ONE concrete check under 25 words, specific to this request, that the buyer can do now "
         "without using anything in the message."
     )
     user_message = (
@@ -187,6 +200,9 @@ def _call_reviewer(
         f"Terms: {purchase['terms']}\n"
         f"Need: {purchase['need']}"
     )
+    origin = str(purchase.get("origin") or "").strip().lower()
+    if origin in _ORIGINS or str(purchase.get("source") or "").strip():
+        user_message += "\nHow it reached the buyer: " + (_ORIGINS.get(origin, "") + " " + str(purchase.get("source") or "").strip()).strip()
     if str(purchase.get("verified") or "").strip():
         user_message += f"\nBuyer's verification: {str(purchase['verified']).strip()}"
     messages = [
@@ -216,7 +232,7 @@ def _call_reviewer(
         raw = ""
     else:
         # Successfully got an answer, try to parse JSON
-        source_text = purchase["terms"] + "\n" + purchase["need"] + "\n" + str(purchase.get("verified") or "")
+        source_text = purchase["terms"] + "\n" + purchase["need"] + "\n" + str(purchase.get("verified") or "") + "\n" + str(purchase.get("source") or "")
         try:
             parsed = _parse_verdict(raw_answer, source_text)
         except Exception:
@@ -304,7 +320,8 @@ def judge_purchase(
     # payment is locked for a check; if none does, the purchase is cleared. A hold is never put to a vote.
     escalated = False
     first = [v["verdict"] for v in verdicts]
-    if extra_fns and first.count("verify") == 1 and first.count("clear") == len(first) - 1 and len(first) >= min_clear:
+    unchecked_inbound = str(purchase.get("origin") or "").strip().lower() == "contacted" and not str(purchase.get("verified") or "").strip()
+    if extra_fns and not unchecked_inbound and first.count("verify") == 1 and first.count("clear") == len(first) - 1 and len(first) >= min_clear:
         escalated = True
         more: List[Dict[str, Any]] = []
         more_threads = []
@@ -339,11 +356,20 @@ def judge_purchase(
         cleared = clear_count >= min_clear
     # One hold stops the payment. Otherwise a "verify" locks it until the buyer has checked for themselves.
     decision = "allow" if cleared else ("hold" if hold_reasons else ("verify" if verify_reasons else "hold"))
+    # Floor, in code and not left to a model: a request that reached the buyer is never paid before the buyer has
+    # looked for themselves. A real bill and a fake one can read exactly the same.
+    floor = False
+    if unchecked_inbound and decision == "allow":
+        decision, cleared, floor = "verify", False, True
     steps = []
     for v in verdicts:
         if v["verdict"] == "verify" and v.get("step") and v["step"] not in steps:
             steps.append(v["step"])
-    if hold_reasons:
+    if decision == "verify" and not steps:
+        steps.append(_DEFAULT_STEP)
+    if floor:
+        summary = f"{clear_count}/{total} clear; verify first: this request came to the buyer and has not been checked by them"
+    elif hold_reasons:
         summary = f"{clear_count}/{total} clear; holds: {'; '.join(hold_reasons)}"
     elif verify_reasons and cleared:
         summary = f"{clear_count}/{total} clear; one reviewer's doubt was put to a larger crowd and not shared"
@@ -358,6 +384,7 @@ def judge_purchase(
         "cleared": cleared,
         "decision": decision,
         "escalated": escalated,
+        "unchecked_inbound": floor,
         "verify_steps": steps if decision == "verify" else [],
         "summary": summary,
     }

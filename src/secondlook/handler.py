@@ -35,6 +35,12 @@ def _validate_purchase(purchase: Dict[str, Any]) -> tuple[bool, str]:
             return False, f"field {key} must be a string"
         if len(value) > 4000:
             return False, f"field {key} exceeds length limit"
+    origin = purchase.get("origin")
+    if origin is not None and origin not in ("self", "contacted", "known_person"):
+        return False, "field origin must be one of: self, contacted, known_person"
+    src = purchase.get("source")
+    if src is not None and (not isinstance(src, str) or len(src) > 500):
+        return False, "field source must be a string of at most 500 characters"
     verified = purchase.get("verified")
     if verified is not None and (not isinstance(verified, str) or len(verified) > 1000):
         return False, "field verified must be a string of at most 1000 characters"
@@ -47,7 +53,7 @@ def _validate_purchase(purchase: Dict[str, Any]) -> tuple[bool, str]:
     return True, ""
 
 _PURCHASE_KEYS = ("item", "price", "currency", "terms", "need")
-_SIGNED_KEYS = _PURCHASE_KEYS + ("verified",)  # the buyer's own statement of how they checked is part of what was cleared
+_SIGNED_KEYS = _PURCHASE_KEYS + ("origin", "source", "verified")  # the buyer's own statement of how they checked is part of what was cleared
 _TOKEN_TTL = 300  # seconds a clearance stays valid
 
 
@@ -103,6 +109,8 @@ _OPENAPI = {
             "item": {"type": "string"}, "price": {"type": "string"}, "currency": {"type": "string"},
             "need": {"type": "string", "description": "Why the buyer is making this purchase, in their own words"},
             "terms": {"type": "string", "description": "The seller's terms, or the text of the payment request"},
+            "origin": {"type": "string", "enum": ["self", "contacted", "known_person"], "description": "How the request reached the buyer. self: the buyer (or the agent's user) went to the seller on their own initiative. contacted: it came to them (email, text, call, letter, invoice, notice, advert, link). known_person: someone they know asked. A 'contacted' request is never cleared before the buyer has checked it themselves"},
+            "source": {"type": "string", "description": "Optional. The buyer's own words on how the request reached them"},
             "verified": {"type": "string", "description": "Optional. After a 'verify' decision: how the buyer checked the request for themselves, in their own words"}}},
         "PurchaseRequest": {"type": "object", "required": ["purchase"], "properties": {"purchase": {"$ref": "#/components/schemas/Purchase"}}},
         "Decision": {"type": "object", "properties": {
@@ -389,6 +397,15 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 </div>
             </div>
             <div class="field">
+                <label for="origin">How did this payment request reach you?</label>
+                <select id="origin">
+                    <option value="">Choose one</option>
+                    <option value="self">I went to the seller myself (their site, app or shop)</option>
+                    <option value="contacted">They contacted me (email, text, call, letter, invoice or a link)</option>
+                    <option value="known_person">Someone I know asked me to pay</option>
+                </select>
+            </div>
+            <div class="field">
                 <label for="need">Why are you buying this? (in your own words)</label>
                 <textarea id="need" placeholder="Describe your need..."></textarea>
             </div>
@@ -414,7 +431,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
             <div id="banner" class="verdict-banner" style="display:none;"></div>
             <div id="verifyBox" class="verify-box">
                 <h3>Check it yourself first. This takes a minute.</h3>
-                <p class="hint">Nothing here proves a scam. But this payment was asked for by a message, and nobody has checked it. Do one of these without using any link, number or reply address from that message:</p>
+                <p class="hint">Nothing here proves a scam. But this request came to you, and a real bill and a fake one can read exactly the same. Do one of these without using any link, number or reply address from the message:</p>
                 <ul id="verifySteps"></ul>
                 <label for="verified">How did you check?</label>
                 <textarea id="verified" placeholder="For example: I logged in to my own account on their website and the invoice is there."></textarea>
@@ -490,6 +507,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 document.getElementById('item').value = 'Gift cards x6';
                 document.getElementById('price').value = '900.00';
                 document.getElementById('currency').value = 'USD';
+                document.getElementById('origin').value = 'contacted';
                 document.getElementById('need').value = 'My grandson is in jail and needs bail tonight. The officer on the phone said to read him the card numbers.';
                 document.getElementById('terms').value = 'Gift cards are non-refundable and cannot be exchanged for cash. Standard shipping 3-5 days.';
             });
@@ -498,6 +516,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 document.getElementById('item').value = 'Website hosting, yearly renewal';
                 document.getElementById('price').value = '240.00';
                 document.getElementById('currency').value = 'USD';
+                document.getElementById('origin').value = 'contacted';
                 document.getElementById('need').value = 'I got an email invoice for our yearly website hosting. It says their bank details changed, so I should pay the new account.';
                 document.getElementById('terms').value = 'Annual hosting renewal. Our banking details have been updated; please remit to the account on this invoice within 10 days to avoid interruption.';
                 document.getElementById('verified').value = '';
@@ -507,6 +526,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 document.getElementById('item').value = 'Premium Wireless Headphones';
                 document.getElementById('price').value = '129.99';
                 document.getElementById('currency').value = 'USD';
+                document.getElementById('origin').value = 'self';
                 document.getElementById('need').value = 'Need high-quality headphones for daily commute and work calls';
                 document.getElementById('terms').value = 'Limited Warranty: 1 year. Return Policy: 30-day money-back guarantee. Note: no returns on opened items. Shipping: free standard shipping.';
             });
@@ -519,6 +539,8 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                     terms: document.getElementById('terms').value,
                     need: document.getElementById('need').value
                 };
+                const o = document.getElementById('origin').value;
+                if (o) { p.origin = o; }
                 const v = document.getElementById('verified').value.trim();
                 if (withVerified && v) { p.verified = v; }
                 return p;

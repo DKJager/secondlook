@@ -40,7 +40,7 @@ class SecondLookGuard:
         with urllib.request.urlopen(req, timeout=90) as resp:
             return json.loads(resp.read())
 
-    def checked_create_order(self, item, price, need, terms, currency="USD", verified=None):
+    def checked_create_order(self, item, price, need, terms, currency="USD", verified=None, origin=None, source=None):
         """Create a PayPal order through the Agent Toolkit only if Second Look allows it.
 
         `verified` is the BUYER's own account of how they checked a payment request, passed on a second call
@@ -48,6 +48,12 @@ class SecondLookGuard:
         """
         purchase = {"item": str(item), "price": f"{float(price):.2f}", "currency": currency,
                     "need": str(need), "terms": str(terms)}
+        # origin: "self" when the user chose this seller and asked for the purchase; "contacted" when the purchase comes from
+        # an invoice, email, message or link that reached the user or the agent. A "contacted" request is never paid unchecked.
+        if origin:
+            purchase["origin"] = str(origin)
+        if source:
+            purchase["source"] = str(source)
         if verified:
             purchase["verified"] = str(verified)
         decision = self.check(purchase)

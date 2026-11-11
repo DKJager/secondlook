@@ -13,6 +13,8 @@ def one(r):
     t = time.time()
     p = {"item": str(r["item"]), "price": str(r["price"]), "currency": "USD", "need": str(r["need"]), "terms": str(r["terms"])}
     if r.get("verified"): p["verified"] = str(r["verified"])
+    if r.get("origin") in ("self", "contacted", "known_person"): p["origin"] = r["origin"]
+    if r.get("source"): p["source"] = str(r["source"])[:500]
     d = crowd.judge_purchase(p, fns, min_clear=3, extra_fns=xf)
     dec = d.get("decision") or ("allow" if d["cleared"] else "hold")
     return {**r, "decision": dec, "clears": d["clear_count"], "secs": round(time.time() - t, 1), "steps": d.get("verify_steps", []), "escalated": bool(d.get("escalated")),
@@ -22,7 +24,10 @@ with cf.ThreadPoolExecutor(3) as ex: res = list(ex.map(one, rows))
 def two(r):
     if r["decision"] != "verify" or not r.get("if_asked"):
         return {**r, "final": r["decision"]}
-    d = crowd.judge_purchase({"item": str(r["item"]), "price": str(r["price"]), "currency": "USD", "need": str(r["need"]), "terms": str(r["terms"]), "verified": str(r["if_asked"])}, fns, min_clear=3, extra_fns=xf)
+    p2 = {"item": str(r["item"]), "price": str(r["price"]), "currency": "USD", "need": str(r["need"]), "terms": str(r["terms"]), "verified": str(r["if_asked"])}
+    if r.get("origin") in ("self", "contacted", "known_person"): p2["origin"] = r["origin"]
+    if r.get("source"): p2["source"] = str(r["source"])[:500]
+    d = crowd.judge_purchase(p2, fns, min_clear=3, extra_fns=xf)
     return {**r, "final": d["decision"], "second": [{"v": v["verdict"], "reason": v["reason"]} for v in d["verdicts"]]}
 with cf.ThreadPoolExecutor(3) as ex: res = list(ex.map(two, res))
 def cnt(kind): 

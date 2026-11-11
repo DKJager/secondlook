@@ -700,3 +700,49 @@ def test_a_silent_added_reviewer_leaves_the_doubt_standing_not_a_hold():
     clr = _fn('{"verdict":"clear","reason":"ok","quote":null}')
     d = crowd.judge_purchase(dict(_QUIET), [clr, ver, clr], min_clear=3, extra_fns=[clr, _fn("")])
     assert d["decision"] == "verify" and d["verdicts"][4]["verdict"] == "verify" and "doubt stands" in d["verdicts"][4]["reason"]
+
+
+# ---- how the request reached the buyer ----
+def test_a_request_that_came_to_the_buyer_is_never_cleared_unchecked_even_if_all_reviewers_clear():
+    clr = _fn('{"verdict":"clear","reason":"looks like a normal renewal","quote":null}')
+    calls = []
+    extra = lambda m: (calls.append(1), '{"verdict":"clear","reason":"ok","quote":null}')[1]
+    p = {"item": "Domain renewal", "price": "199.00", "currency": "USD", "need": "I need to renew my domain to keep my website online.",
+         "terms": "Renew your domain now to avoid any downtime.", "origin": "contacted"}
+    d = crowd.judge_purchase(dict(p), [clr, clr, clr], min_clear=3, extra_fns=[extra, extra])
+    assert d["decision"] == "verify" and d["cleared"] is False and d["unchecked_inbound"] is True
+    assert d["verify_steps"] and "Do not use the link" in d["verify_steps"][0] and calls == []
+    # the buyer went there themselves: the same text is an ordinary purchase
+    assert crowd.judge_purchase(dict(p, origin="self"), [clr, clr, clr], min_clear=3)["decision"] == "allow"
+    # the buyer checked: now the reviewers decide
+    d = crowd.judge_purchase(dict(p, verified="I logged in at my registrar and the renewal is there."), [clr, clr, clr], min_clear=3)
+    assert d["decision"] == "allow" and d["unchecked_inbound"] is False
+    # a hold still wins
+    hold = _fn('{"verdict":"hold","reason":"fake renewal","quote":null}')
+    assert crowd.judge_purchase(dict(p), [clr, hold, clr], min_clear=3)["decision"] == "hold"
+
+
+def test_origin_reaches_the_reviewers_is_validated_and_is_part_of_the_clearance(monkeypatch):
+    seen = []
+    fn = lambda m: (seen.append(m[-1]["content"]), '{"verdict":"clear","reason":"ok","quote":null}')[1]
+    crowd.judge_purchase(dict(_QUIET, origin="contacted", source="They emailed me an invoice."), [fn], min_clear=1)
+    assert "How it reached the buyer: CONTACTED: the request came to the buyer. They emailed me an invoice." in seen[0]
+    seen.clear(); crowd.judge_purchase(dict(_QUIET), [fn], min_clear=1)
+    assert "How it reached the buyer" not in seen[0]
+    assert handler._validate_purchase(dict(_QUIET, origin="somewhere"))[0] is False
+    assert handler._validate_purchase(dict(_QUIET, origin="self", source="s" * 501))[0] is False
+    assert handler._validate_purchase(dict(_QUIET, origin="contacted", source="email"))[0] is True
+    monkeypatch.setenv("SECONDLOOK_TOKEN_SEED", "t")
+    tok = handler._sign_clearance(dict(_QUIET, origin="self"))
+    assert handler._verify_clearance(dict(_QUIET, origin="self"), tok)
+    assert handler._verify_clearance(dict(_QUIET, origin="contacted"), tok) is None and handler._verify_clearance(dict(_QUIET), tok) is None
+
+
+def test_page_asks_how_the_request_reached_the_buyer_and_the_agent_tool_requires_it():
+    r = handler.lambda_handler({"requestContext": {"http": {"method": "GET", "path": "/"}}, "rawPath": "/"}, None)
+    assert 'id="origin"' in r["body"] and "How did this payment request reach you?" in r["body"] and "p.origin = o" in r["body"]
+    from agent import shopping_agent
+    props = shopping_agent.TOOL["function"]["parameters"]
+    assert "origin" in props["required"] and props["properties"]["origin"]["enum"] == ["self", "contacted", "known_person"]
+    assert "never answer the check yourself" in shopping_agent.SYSTEM and len(shopping_agent.TASKS) == 3
+    assert handler._OPENAPI["components"]["schemas"]["Purchase"]["properties"]["origin"]["enum"] == ["self", "contacted", "known_person"]

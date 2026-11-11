@@ -89,9 +89,10 @@ def _verify_clearance(purchase: Dict[str, Any], token: Any, now: float = None):
 
 _OPENAPI = {
     "openapi": "3.0.3",
-    "info": {"title": "Second Look", "version": "1.1.0",
-             "description": "A pause before money moves. Three AI reviewers from three makers check a purchase for scam signals. "
-                            "PayPal orders are created only with a clearance token issued after a unanimous clear."},
+    "info": {"title": "Second Look", "version": "1.2.0",
+             "description": "A second look before money moves. Three AI reviewers from three makers check a purchase, and five when one stands alone. "
+                            "The answer is allow, verify (locked until the buyer has checked the request themselves) or hold. "
+                            "PayPal orders are created only with a clearance token issued for that exact purchase."},
     "paths": {
         "/agent/check": {"post": {"operationId": "checkPurchase", "summary": "Ask the crowd whether a purchase may proceed",
             "requestBody": {"required": True, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/PurchaseRequest"}}}},
@@ -442,7 +443,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
     <div class="card">
         <div class="header">
             <h1>Second Look</h1>
-            <p class="tagline">A pause before money moves. Three AI reviewers from three makers check the purchase for scam signals. One objection, quoted from what the buyer wrote, and PayPal never creates the order. <a href="/results" style="color:#1a7fdb">See every result from our blind test of 61 purchases</a>.</p>
+            <p class="tagline">A second look before money moves. Built on <a href="https://3dogs.ai" style="color:#1a7fdb">3Dogs</a> wisdom of crowds: three AI reviewers from three makers check every purchase, and five when one stands alone. A scam is held. A request that came to you stays locked until you have checked it yourself. PayPal creates the order only with their signed clearance. <a href="/results" style="color:#1a7fdb">See every result from our blind test of 120 purchases</a>.</p>
         </div>
 
         <div class="form-grid">
@@ -505,6 +506,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 <label for="verified">How did you check?</label>
                 <textarea id="verified" placeholder="For example: I logged in to my own account on their website and the invoice is there."></textarea>
                 <button type="button" id="recheck" class="btn-primary">I checked. Look again</button>
+                <p class="hint" id="verifyAgain" style="display:none;color:#c92a2a;font-weight:600;margin:12px 0 0;"></p>
             </div>
             <div class="reviewer-grid" id="verdictsContainer">
                 <div class="reviewer-card" id="verdict0" style="display:none;">
@@ -559,7 +561,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
     </div>
 
     <footer>
-        <p>Second Look &mdash; open-source, Apache-2.0. Three independent open models; PayPal Orders v2 sandbox.</p>
+        <p>Second Look &mdash; open-source, Apache-2.0. Built on 3Dogs wisdom of crowds: three reviewers for speed, five when one stands alone. PayPal Orders v2 sandbox.</p>
     </footer>
 
     <script>
@@ -702,9 +704,15 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                         banner.className = 'verdict-banner cleared';
                         confirmPayBtn.disabled = false;
                     } else if (result.decision === 'verify') {
-                        banner.textContent = 'VERIFY FIRST: PayPal stays locked until you have checked this yourself';
+                        banner.textContent = purchase.verified
+                            ? 'STILL LOCKED: that check does not count yet'
+                            : 'VERIFY FIRST: PayPal stays locked until you have checked this yourself';
                         banner.className = 'verdict-banner verify';
                         confirmPayBtn.disabled = true;
+                        const again = document.getElementById('verifyAgain');
+                        const doubt = verdicts.find(function(v) { return v.verdict !== 'clear' && v.reason; });
+                        if (purchase.verified && doubt) { again.textContent = 'Why it does not count: ' + doubt.reason; again.style.display = 'block'; }
+                        else { again.style.display = 'none'; }
                         const ul = document.getElementById('verifySteps'); ul.innerHTML = '';
                         (result.verify_steps || []).forEach(function(t) { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
                         document.getElementById('verifyHint').textContent = result.objection_not_confirmed

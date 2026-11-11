@@ -693,3 +693,10 @@ def test_a_garbled_answer_is_asked_again_once():
     assert n["k"] == 2 and d["decision"] == "allow"
     d = crowd.judge_purchase(dict(_QUIET), [_fn("still not json")], min_clear=1)
     assert d["decision"] == "hold" and d["verdicts"][0]["reason"] == "unparseable answer"
+
+
+def test_a_silent_added_reviewer_leaves_the_doubt_standing_not_a_hold():
+    ver = _fn('{"verdict":"verify","reason":"new payee","quote":null,"step":"Call them."}')
+    clr = _fn('{"verdict":"clear","reason":"ok","quote":null}')
+    d = crowd.judge_purchase(dict(_QUIET), [clr, ver, clr], min_clear=3, extra_fns=[clr, _fn("")])
+    assert d["decision"] == "verify" and d["verdicts"][4]["verdict"] == "verify" and "doubt stands" in d["verdicts"][4]["reason"]

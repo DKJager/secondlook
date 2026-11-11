@@ -317,6 +317,11 @@ def judge_purchase(
         for j in range(len(extra_fns)):
             if len(ask_fns) + j not in got:
                 more.append({"model_index": len(ask_fns) + j, "verdict": "hold", "reason": "no answer from reviewer", "quote": None, "raw": ""})
+        for v in more:
+            # An added reviewer that gives no usable answer has not removed the doubt: the check stands.
+            if v["verdict"] == "hold" and (v["reason"] in ("unparseable answer", "no answer from reviewer") or v["reason"].startswith("model error")):
+                v["verdict"] = "verify"
+                v["reason"] = "no usable answer from this reviewer, so the doubt stands"
         more.sort(key=lambda v: v["model_index"])
         verdicts.extend(more)
 

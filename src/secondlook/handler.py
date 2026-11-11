@@ -178,12 +178,12 @@ def _results_page() -> str:
         return _RESULTS_PAGE.replace("__ROWS__", fh.read())
 
 
-def _build_ask_fns(models: List[str]) -> List[Callable]:
+def _build_ask_fns(models: List[str], max_tokens: int = None) -> List[Callable]:
     base_url = os.getenv("SECONDLOOK_BASE_URL", "https://api.tokenfactory.nebius.com/v1")
     api_key = os.getenv("SECONDLOOK_API_KEY")
     if not api_key:
         raise CrowdError("SECONDLOOK_API_KEY is missing from environment")
-    max_tokens = int(os.getenv("SECONDLOOK_MAX_TOKENS", "600"))
+    max_tokens = max_tokens or int(os.getenv("SECONDLOOK_MAX_TOKENS", "600"))
     temperature = float(os.getenv("SECONDLOOK_TEMPERATURE", "0"))
     timeout = 40.0
 
@@ -742,7 +742,8 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
 
         ask_fns = _build_ask_fns(models)
         extra_models = [m.strip() for m in os.getenv("SECONDLOOK_EXTRA_MODELS", "moonshotai/Kimi-K3,meta-models/muse-spark-open").split(",") if m.strip()]
-        extra_fns = _build_ask_fns(extra_models) if extra_models else []
+        # the larger crowd uses reasoning models, which need room to think before they answer
+        extra_fns = _build_ask_fns(extra_models, max_tokens=int(os.getenv("SECONDLOOK_EXTRA_MAX_TOKENS", "2500"))) if extra_models else []
 
         try:
             result = judge_purchase(purchase, ask_fns, min_clear=int(os.getenv("SECONDLOOK_MIN_CLEAR", "3")), extra_fns=extra_fns)

@@ -734,7 +734,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
 
         models_env = os.getenv(
             "SECONDLOOK_MODELS",
-            "nvidia/nemotron-3-super-120b-a12b,Qwen/Qwen3-30B-A3B-Instruct-2507,google/gemma-3-27b-it",
+            "openai/gpt-oss-120b,Qwen/Qwen3-30B-A3B-Instruct-2507,google/gemma-3-27b-it",
         )
         models = [m.strip() for m in models_env.split(",") if m.strip()]
         if not models:

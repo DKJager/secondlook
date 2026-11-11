@@ -612,7 +612,7 @@ def test_agent_check_returns_verify_with_steps_and_no_token(monkeypatch):
     monkeypatch.setenv("SECONDLOOK_API_KEY", "k"); monkeypatch.setenv("SECONDLOOK_TOKEN_SEED", "t")
     monkeypatch.setenv("SECONDLOOK_MODELS", "a,b,c")
     ans = '{"verdict":"verify","reason":"bank details changed","quote":null,"step":"Call the number on an old invoice."}'
-    monkeypatch.setattr(handler, "_build_ask_fns", lambda models: [_fn(ans)] * 3)
+    monkeypatch.setattr(handler, "_build_ask_fns", lambda models, **kw: [_fn(ans)] * len(models))
     ev = {"requestContext": {"http": {"method": "POST", "path": "/agent/check"}}, "rawPath": "/agent/check", "body": json.dumps({"purchase": _QUIET})}
     r = handler.lambda_handler(ev, None); b = json.loads(r["body"])
     assert r["statusCode"] == 200 and b["decision"] == "verify" and b["clearance_token"] is None

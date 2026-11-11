@@ -4,6 +4,8 @@
 
 Built on **[3Dogs Nexus](https://3dogs.ai) wisdom of crowds**: independent models from different makers answer separately, and a lone dissent is a signal, never noise to average away. Second Look is that method set up for checkout speed: **three reviewers for speed, five when one stands alone.**
 
+![Three for speed, five when one stands alone](docs/crowd.jpg)
+
 ## Try it in one minute
 
 Open the live demo: https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/
@@ -55,6 +57,8 @@ Every row is on the live [results page](https://aq6ru66fbvzlo3usums757vbxy0qlaav
 ![A scam held](docs/screenshot.png)
 
 ![A quiet invoice locked until the buyer checks it](docs/screenshot_verify.png)
+
+![A check that does not count stays locked, with the reason](docs/screenshot_still_locked.png)
 
 ![A normal purchase cleared and a PayPal sandbox order created](docs/screenshot_order.png)
 

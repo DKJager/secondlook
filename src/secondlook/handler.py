@@ -162,7 +162,7 @@ const long = (field, headerName, minWidth) => ({ field, headerName, flex: 2, min
 const cols = wrap => [
     { colId: 'result', headerName: 'Result', width: 105, valueGetter: p => p.data.correct ? 'Correct' : 'MISS',
       cellStyle: p => ({ color: p.value === 'Correct' ? '#1e8e3e' : '#d93025', fontWeight: 600 }) },
-    { field: 'label', headerName: 'Truth', width: 110, valueFormatter: p => p.value === 'control' ? 'normal, not checked' : p.value },
+    { field: 'label', headerName: 'Truth', width: 165, valueFormatter: p => p.value === 'control' ? 'normal, not checked' : p.value },
     { field: 'first', headerName: 'First answer', width: 135, valueFormatter: p => word(p.value), cellStyle: p => colour(p.value) },
     { field: 'final', headerName: 'After the buyer checked', width: 150, valueFormatter: p => word(p.value), cellStyle: p => colour(p.value) },
     { field: 'origin', headerName: 'How it reached the buyer', width: 150, valueFormatter: p => ({ self: 'went to seller', contacted: 'came to buyer', known_person: 'someone they know' })[p.value] || 'not asked' },

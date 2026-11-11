@@ -145,7 +145,8 @@ body{font-family:Inter,system-ui,sans-serif;background:#f7f8fa;color:#111;margin
 <p id="about"></p>
 <div class="tiles" id="tiles"></div>
 <div class="bar"><button data-f="all" class="on">All</button><button data-f="miss">Misses only</button><button data-f="scam">Scams</button><button data-f="normal">Normal purchases</button><button data-f="control">Not checked (control)</button><button data-f="check">Asked to check first</button>
-<input id="q" placeholder="Search..." style="flex:1;min-width:180px;border:1px solid #cfd4da;border-radius:8px;padding:8px 12px"></div>
+<input id="q" placeholder="Search..." style="flex:1;min-width:180px;border:1px solid #cfd4da;border-radius:8px;padding:8px 12px">
+<button id="wrap" data-on="0" title="Show every cell in full">Full text</button></div>
 <div id="grid" class="ag-theme-quartz"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/dist/ag-grid-community.min.js"></script>
@@ -157,23 +158,26 @@ const tile = (n, t) => '<div class="tile"><b>' + n + '</b><span>' + t + '</span>
 const rowsOf = () => ALL.filter(r => r.set === cur);
 const colour = v => ({ color: v === 'hold' ? '#d93025' : (v === 'verify' ? '#a56a00' : '#1e8e3e'), fontWeight: 600 });
 const word = v => v === 'verify' ? 'check first' : v;
-const api = agGrid.createGrid(document.getElementById('grid'), {
-  rowData: rowsOf(),
-  defaultColDef: { sortable: true, filter: true, resizable: true, wrapText: true, autoHeight: true },
-  columnDefs: [
+const long = (field, headerName, minWidth) => ({ field, headerName, flex: 2, minWidth, tooltipField: field });
+const cols = wrap => [
     { colId: 'result', headerName: 'Result', width: 105, valueGetter: p => p.data.correct ? 'Correct' : 'MISS',
       cellStyle: p => ({ color: p.value === 'Correct' ? '#1e8e3e' : '#d93025', fontWeight: 600 }) },
     { field: 'label', headerName: 'Truth', width: 110, valueFormatter: p => p.value === 'control' ? 'normal, not checked' : p.value },
     { field: 'first', headerName: 'First answer', width: 135, valueFormatter: p => word(p.value), cellStyle: p => colour(p.value) },
     { field: 'final', headerName: 'After the buyer checked', width: 150, valueFormatter: p => word(p.value), cellStyle: p => colour(p.value) },
     { field: 'origin', headerName: 'How it reached the buyer', width: 150, valueFormatter: p => ({ self: 'went to seller', contacted: 'came to buyer', known_person: 'someone they know' })[p.value] || 'not asked' },
-    { field: 'item', width: 200 },
+    { field: 'item', width: 210, tooltipField: 'item' },
     { field: 'price', width: 100, valueFormatter: p => '$' + Number(p.value).toLocaleString() },
-    { field: 'need', headerName: 'Buyer said', flex: 2, minWidth: 260 },
-    { field: 'asked', headerName: 'Answer to "how did you check?"', flex: 2, minWidth: 240 },
-    { field: 'reasons', headerName: 'Reviewers said', flex: 2, minWidth: 260 },
+    long('need', 'Buyer said', 280),
+    long('asked', 'Answer to "how did you check?"', 260),
+    long('reasons', 'Reviewers said', 280),
     { field: 'writer', headerName: 'Written by', width: 140 }
-  ],
+  ].map(c => Object.assign(c, { wrapText: wrap, autoHeight: wrap }));
+const api = agGrid.createGrid(document.getElementById('grid'), {
+  rowData: rowsOf(),
+  defaultColDef: { sortable: true, filter: true, resizable: true },
+  tooltipShowDelay: 150,
+  columnDefs: cols(false),
   isExternalFilterPresent: () => mode !== 'all',
   doesExternalFilterPass: n => mode === 'miss' ? !n.data.correct : (mode === 'check' ? n.data.first === 'verify' : n.data.label === mode)
 });
@@ -200,9 +204,13 @@ document.getElementById('sets').innerHTML = SETS.map(s => '<button data-s="' + s
 document.querySelectorAll('.sets button').forEach(b => b.addEventListener('click', () => {
   cur = b.dataset.s; document.querySelectorAll('.sets button').forEach(x => x.classList.toggle('on', x === b)); draw();
 }));
-document.querySelectorAll('.bar button').forEach(b => b.addEventListener('click', () => {
-  mode = b.dataset.f; document.querySelectorAll('.bar button').forEach(x => x.classList.toggle('on', x === b)); api.onFilterChanged();
+document.querySelectorAll('.bar button[data-f]').forEach(b => b.addEventListener('click', () => {
+  mode = b.dataset.f; document.querySelectorAll('.bar button[data-f]').forEach(x => x.classList.toggle('on', x === b)); api.onFilterChanged();
 }));
+document.getElementById('wrap').addEventListener('click', e => {
+  const on = e.target.dataset.on !== '1'; e.target.dataset.on = on ? '1' : '0'; e.target.classList.toggle('on', on);
+  api.setGridOption('columnDefs', cols(on)); api.resetRowHeights();
+});
 document.getElementById('q').addEventListener('input', e => api.setGridOption('quickFilterText', e.target.value));
 draw();
 </script></body></html>"""

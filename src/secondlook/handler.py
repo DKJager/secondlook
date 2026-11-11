@@ -184,7 +184,7 @@ def _build_ask_fns(models: List[str]) -> List[Callable]:
     if not api_key:
         raise CrowdError("SECONDLOOK_API_KEY is missing from environment")
     max_tokens = int(os.getenv("SECONDLOOK_MAX_TOKENS", "600"))
-    temperature = 0.1
+    temperature = float(os.getenv("SECONDLOOK_TEMPERATURE", "0"))
     timeout = 40.0
 
     def _make_fn(model_id: str) -> Callable:
@@ -315,7 +315,8 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
         .verify-box h3 { margin: 0 0 6px; font-size: 1rem; color: #7a5200; }
         .verify-box ul { margin: 6px 0 12px 18px; padding: 0; color: #333; }
         .verify-box li { margin: 3px 0; }
-        .verify-box textarea { min-height: 54px; margin-bottom: 10px; }
+        .verify-box label { display: block; font-weight: 600; margin: 4px 0 6px; color: #333; }
+        .verify-box textarea { display: block; width: 100%; box-sizing: border-box; min-height: 64px; margin-bottom: 12px; padding: 10px 12px; border: 1px solid #ced4da; border-radius: 8px; font: inherit; background: #fff; }
         .verify-box .hint { font-size: .85rem; color: #666; margin: 0 0 8px; }
 
         .reviewer-grid {
@@ -338,6 +339,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
         .badge-clear { background: #d3f9d8; color: #2b8a3e; }
         .badge-hold { background: #ffe3e3; color: #c92a2a; }
         .badge-verify { background: #fff3bf; color: #7a5200; }
+        .crowd-note { font-size: .88rem; color: #495057; margin: 10px 2px 0; }
         .reviewer-card .reason { font-size: 0.9rem; color: #495057; }
         .reviewer-card .quote {
             font-style: italic; font-size: 0.85rem; color: #6c757d;
@@ -440,7 +442,22 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                     <div class="reason"></div>
                     <div class="quote"></div>
                 </div>
+                <div class="reviewer-card" id="verdict3" style="display:none;">
+                    <div class="reviewer-header">Reviewer 4 (larger crowd)</div>
+                    <div class="model-id"></div>
+                    <div class="badge"></div>
+                    <div class="reason"></div>
+                    <div class="quote"></div>
+                </div>
+                <div class="reviewer-card" id="verdict4" style="display:none;">
+                    <div class="reviewer-header">Reviewer 5 (larger crowd)</div>
+                    <div class="model-id"></div>
+                    <div class="badge"></div>
+                    <div class="reason"></div>
+                    <div class="quote"></div>
+                </div>
             </div>
+            <p id="crowdNote" class="crowd-note" style="display:none;"></p>
         </div>
 
         <div class="pay-section">
@@ -524,7 +541,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
 
                 // hide previous results and payment info while loading
                 document.getElementById('banner').style.display = 'none';
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 5; i++) {
                     document.getElementById('verdict' + i).style.display = 'none';
                 }
                 document.getElementById('orderInfo').classList.remove('active');
@@ -579,6 +596,12 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
 
                         card.style.display = 'flex';
                     }
+
+                    const note = document.getElementById('crowdNote');
+                    if (result.escalated) {
+                        note.textContent = 'One of the first three reviewers had a doubt, so the question went to two more makers. ' + (result.cleared ? 'Neither shared it.' : 'The doubt was shared.');
+                        note.style.display = 'block';
+                    } else { note.style.display = 'none'; }
 
                     // Display banner
                     const banner = document.getElementById('banner');
@@ -718,15 +741,18 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
             return _json_response(503, {"error": "no models configured"})
 
         ask_fns = _build_ask_fns(models)
+        extra_models = [m.strip() for m in os.getenv("SECONDLOOK_EXTRA_MODELS", "moonshotai/Kimi-K3,meta-models/muse-spark-open").split(",") if m.strip()]
+        extra_fns = _build_ask_fns(extra_models) if extra_models else []
 
         try:
-            result = judge_purchase(purchase, ask_fns, min_clear=int(os.getenv("SECONDLOOK_MIN_CLEAR", "3")))
+            result = judge_purchase(purchase, ask_fns, min_clear=int(os.getenv("SECONDLOOK_MIN_CLEAR", "3")), extra_fns=extra_fns)
         except CrowdError as e:
             return _json_response(500, {"error": str(e)})
 
         # Ensure models are present in the response for the UI to display
         if "models" not in result:
-            result["models"] = models
+            result["models"] = models + (extra_models if result.get("escalated") else [])
+        models = result["models"]
         result["token"] = _sign_clearance(purchase) if result.get("cleared") else None
 
         if path == "/agent/check":
@@ -734,6 +760,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 "decision": result.get("decision") or ("allow" if result.get("cleared") else "hold"),
                 "clear_count": result.get("clear_count"),
                 "verify_steps": result.get("verify_steps", []),
+                "escalated": bool(result.get("escalated")),
                 "reviews": [{"model": models[v["model_index"]] if v["model_index"] < len(models) else "",
                              "verdict": v["verdict"], "reason": v["reason"], "quote": v["quote"],
                              "quote_from": v.get("quote_from"), "step": v.get("step")} for v in result.get("verdicts", [])],
@@ -769,14 +796,14 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 secret=os.getenv("PAYPAL_SECRET"),
                 base_url=os.getenv("PAYPAL_BASE_URL", "https://api-m.sandbox.paypal.com"),
             )
-            order = sandbox.create_order(purchase, "Second Look: cleared by 3 of 3 reviewers", request_id="secondlook-" + nonce)
+            order = sandbox.create_order(purchase, "Second Look: cleared by the reviewer crowd", request_id="secondlook-" + nonce)
         except PayPalError as e:
             return _json_response(502, {"error": str(e)})
         response_body = {
             "order_id": order.get("id"),
             "status": order.get("status"),
             "approve_url": order.get("approve_url"),
-            "verdict_summary": "Second Look: cleared by 3 of 3 reviewers",
+            "verdict_summary": "Second Look: cleared by the reviewer crowd",
         }
         return _json_response(200, response_body)
 

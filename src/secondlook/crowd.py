@@ -216,10 +216,18 @@ def _call_reviewer(
         raw = ""
     else:
         # Successfully got an answer, try to parse JSON
+        source_text = purchase["terms"] + "\n" + purchase["need"] + "\n" + str(purchase.get("verified") or "")
         try:
-            parsed = _parse_verdict(raw_answer, purchase["terms"] + "\n" + purchase["need"] + "\n" + str(purchase.get("verified") or ""))
+            parsed = _parse_verdict(raw_answer, source_text)
         except Exception:
             parsed = {"verdict": "hold", "reason": "unparseable answer", "quote": None}
+        if parsed.get("reason") == "unparseable answer":
+            # A garbled answer is a fault, not an objection: ask once more before counting it as a hold.
+            try:
+                raw_answer = ask_fn(messages)
+                parsed = _parse_verdict(raw_answer, source_text)
+            except Exception:
+                parsed = {"verdict": "hold", "reason": "unparseable answer", "quote": None}
         raw = (raw_answer or "")[:300] if isinstance(raw_answer, str) else ""
     
     q = parsed.get("quote")
@@ -244,6 +252,7 @@ def judge_purchase(
     purchase: Dict[str, str],
     ask_fns: List[Callable[[List[Dict[str, str]]], str]],
     min_clear: int = int(os.getenv("SECONDLOOK_MIN_CLEAR", "3")),
+    extra_fns: List[Callable[[List[Dict[str, str]]], str]] = None,
 ) -> Dict[str, Any]:
     """Judge a purchase using multiple reviewer functions.
 
@@ -290,6 +299,27 @@ def judge_purchase(
     # Sort by model_index to maintain order
     verdicts.sort(key=lambda v: v["model_index"])
     
+    # A lone "verify" among clears is one reviewer's doubt, not a finding. It is never ignored and never
+    # decides alone: the question goes to a larger crowd (more makers). If any of them shares the doubt the
+    # payment is locked for a check; if none does, the purchase is cleared. A hold is never put to a vote.
+    escalated = False
+    first = [v["verdict"] for v in verdicts]
+    if extra_fns and first.count("verify") == 1 and first.count("clear") == len(first) - 1 and len(first) >= min_clear:
+        escalated = True
+        more: List[Dict[str, Any]] = []
+        more_threads = []
+        for j, ask_fn in enumerate(extra_fns):
+            t = threading.Thread(target=_call_reviewer, args=(ask_fn, purchase, len(ask_fns) + j, more, verdicts_lock))
+            t.start(); more_threads.append(t)
+        for t in more_threads:
+            t.join()
+        got = {v["model_index"] for v in more}
+        for j in range(len(extra_fns)):
+            if len(ask_fns) + j not in got:
+                more.append({"model_index": len(ask_fns) + j, "verdict": "hold", "reason": "no answer from reviewer", "quote": None, "raw": ""})
+        more.sort(key=lambda v: v["model_index"])
+        verdicts.extend(more)
+
     # Count clear verdicts
     clear_count = sum(1 for v in verdicts if v["verdict"] == "clear")
     total = len(verdicts)
@@ -297,8 +327,12 @@ def judge_purchase(
     # Build summary
     hold_reasons = [v["reason"] for v in verdicts if v["verdict"] == "hold"]
     verify_reasons = [v["reason"] for v in verdicts if v["verdict"] == "verify"]
-    cleared = clear_count >= min_clear
-    # One hold stops the payment. Otherwise one "verify" locks it until the buyer has checked for themselves.
+    if escalated:
+        # cleared only if every added reviewer cleared; then exactly one reviewer of the whole crowd had a doubt
+        cleared = not hold_reasons and len(verify_reasons) == 1 and all(v["verdict"] == "clear" for v in verdicts[len(ask_fns):])
+    else:
+        cleared = clear_count >= min_clear
+    # One hold stops the payment. Otherwise a "verify" locks it until the buyer has checked for themselves.
     decision = "allow" if cleared else ("hold" if hold_reasons else ("verify" if verify_reasons else "hold"))
     steps = []
     for v in verdicts:
@@ -306,6 +340,8 @@ def judge_purchase(
             steps.append(v["step"])
     if hold_reasons:
         summary = f"{clear_count}/{total} clear; holds: {'; '.join(hold_reasons)}"
+    elif verify_reasons and cleared:
+        summary = f"{clear_count}/{total} clear; one reviewer's doubt was put to a larger crowd and not shared"
     elif verify_reasons:
         summary = f"{clear_count}/{total} clear; verify first: {'; '.join(verify_reasons)}"
     else:
@@ -316,6 +352,7 @@ def judge_purchase(
         "clear_count": clear_count,
         "cleared": cleared,
         "decision": decision,
+        "escalated": escalated,
         "verify_steps": steps if decision == "verify" else [],
         "summary": summary,
     }

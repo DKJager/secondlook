@@ -651,3 +651,45 @@ def test_page_has_the_quiet_invoice_example_and_the_verify_box():
     r = handler.lambda_handler({"requestContext": {"http": {"method": "GET", "path": "/"}}, "rawPath": "/"}, None)
     for needle in ("Load quiet invoice example", 'id="verifyBox"', "VERIFY FIRST", 'id="recheck"', "badge-verify"):
         assert needle in r["body"], needle
+
+
+def test_a_lone_doubt_goes_to_a_larger_crowd_and_a_hold_never_does():
+    ver = _fn('{"verdict":"verify","reason":"new payee","quote":null,"step":"Call them."}')
+    clr = _fn('{"verdict":"clear","reason":"ok","quote":null}')
+    hold = _fn('{"verdict":"hold","reason":"scam","quote":null}')
+    calls = []
+
+    def extra(answer):
+        def fn(messages):
+            calls.append(answer); return answer
+        return fn
+    c = '{"verdict":"clear","reason":"ordinary","quote":null}'
+    v = '{"verdict":"verify","reason":"unchecked request","quote":null,"step":"Log in to your own account."}'
+    # one doubt, larger crowd does not share it -> allowed, and it says so
+    d = crowd.judge_purchase(dict(_QUIET), [clr, ver, clr], min_clear=3, extra_fns=[extra(c), extra(c)])
+    assert d["escalated"] and d["decision"] == "allow" and d["cleared"] and len(d["verdicts"]) == 5 and d["clear_count"] == 4
+    assert "larger crowd" in d["summary"] and d["verify_steps"] == []
+    # one doubt, shared by one of the two added reviewers -> locked, both steps offered
+    d = crowd.judge_purchase(dict(_QUIET), [clr, ver, clr], min_clear=3, extra_fns=[extra(c), extra(v)])
+    assert d["escalated"] and d["decision"] == "verify" and not d["cleared"] and d["verify_steps"] == ["Call them.", "Log in to your own account."]
+    # an added reviewer that holds stops the payment
+    d = crowd.judge_purchase(dict(_QUIET), [clr, ver, clr], min_clear=3, extra_fns=[extra(c), hold])
+    assert d["decision"] == "hold" and not d["cleared"]
+    # two doubts, or any hold, are never put to a vote
+    calls.clear()
+    assert crowd.judge_purchase(dict(_QUIET), [ver, ver, clr], min_clear=3, extra_fns=[extra(c), extra(c)])["decision"] == "verify"
+    assert crowd.judge_purchase(dict(_QUIET), [hold, clr, clr], min_clear=3, extra_fns=[extra(c), extra(c)])["decision"] == "hold"
+    assert crowd.judge_purchase(dict(_QUIET), [clr, clr, clr], min_clear=3, extra_fns=[extra(c), extra(c)])["escalated"] is False
+    assert calls == []
+
+
+def test_a_garbled_answer_is_asked_again_once():
+    n = {"k": 0}
+
+    def flaky(messages):
+        n["k"] += 1
+        return "sorry, here is my thinking..." if n["k"] == 1 else '{"verdict":"clear","reason":"ok","quote":null}'
+    d = crowd.judge_purchase(dict(_QUIET), [flaky], min_clear=1)
+    assert n["k"] == 2 and d["decision"] == "allow"
+    d = crowd.judge_purchase(dict(_QUIET), [_fn("still not json")], min_clear=1)
+    assert d["decision"] == "hold" and d["verdicts"][0]["reason"] == "unparseable answer"

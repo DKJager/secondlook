@@ -67,7 +67,7 @@ class SecondLookGuard:
             "currency_code": currency,
             "items": [{"name": purchase["item"][:120], "quantity": 1,
                        "item_cost": float(purchase["price"]), "item_total": float(purchase["price"]),
-                       "description": "Second Look: cleared by 3 of 3 reviewers"}],
+                       "description": "Second Look: cleared by the reviewer crowd"}],
         })
         order = json.loads(raw) if isinstance(raw, str) else raw
         approve = next((l.get("href") for l in order.get("links", []) if l.get("rel") in ("approve", "payer-action")), None)

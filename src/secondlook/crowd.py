@@ -315,13 +315,18 @@ def judge_purchase(
     # Sort by model_index to maintain order
     verdicts.sort(key=lambda v: v["model_index"])
     
-    # A lone "verify" among clears is one reviewer's doubt, not a finding. It is never ignored and never
-    # decides alone: the question goes to a larger crowd (more makers). If any of them shares the doubt the
-    # payment is locked for a check; if none does, the purchase is cleared. A hold is never put to a vote.
+    # One reviewer alone against two clears is never ignored and never decides alone: the question goes to a
+    # larger crowd (more makers).
+    #   lone "verify": locked for a check if any added reviewer shares the doubt; cleared if none does.
+    #   lone "hold":   stays a hold if any added reviewer also holds; otherwise it becomes "verify first".
+    #                  A purchase that any reviewer held is never paid before the buyer has checked.
     escalated = False
     first = [v["verdict"] for v in verdicts]
     unchecked_inbound = str(purchase.get("origin") or "").strip().lower() == "contacted" and not str(purchase.get("verified") or "").strip()
-    if extra_fns and not unchecked_inbound and first.count("verify") == 1 and first.count("clear") == len(first) - 1 and len(first) >= min_clear:
+    lone = [x for x in first if x != "clear"]
+    lone_hold = False
+    if extra_fns and not unchecked_inbound and len(lone) == 1 and len(first) >= min_clear:
+        lone_hold = lone[0] == "hold"
         escalated = True
         more: List[Dict[str, Any]] = []
         more_threads = []
@@ -349,13 +354,18 @@ def judge_purchase(
     # Build summary
     hold_reasons = [v["reason"] for v in verdicts if v["verdict"] == "hold"]
     verify_reasons = [v["reason"] for v in verdicts if v["verdict"] == "verify"]
-    if escalated:
+    added = verdicts[len(ask_fns):] if escalated else []
+    downgraded = False
+    if escalated and lone_hold:
+        cleared = False
+        downgraded = not any(v["verdict"] == "hold" for v in added)   # nobody in the larger crowd confirmed a scam
+    elif escalated:
         # cleared only if every added reviewer cleared; then exactly one reviewer of the whole crowd had a doubt
-        cleared = not hold_reasons and len(verify_reasons) == 1 and all(v["verdict"] == "clear" for v in verdicts[len(ask_fns):])
+        cleared = not hold_reasons and len(verify_reasons) == 1 and all(v["verdict"] == "clear" for v in added)
     else:
         cleared = clear_count >= min_clear
-    # One hold stops the payment. Otherwise a "verify" locks it until the buyer has checked for themselves.
-    decision = "allow" if cleared else ("hold" if hold_reasons else ("verify" if verify_reasons else "hold"))
+    # A confirmed hold stops the payment. Otherwise a doubt locks it until the buyer has checked for themselves.
+    decision = "allow" if cleared else ("verify" if downgraded else ("hold" if hold_reasons else ("verify" if verify_reasons else "hold")))
     # Floor, in code and not left to a model: a request that reached the buyer is never paid before the buyer has
     # looked for themselves. A real bill and a fake one can read exactly the same.
     floor = False
@@ -366,8 +376,11 @@ def judge_purchase(
         if v["verdict"] == "verify" and v.get("step") and v["step"] not in steps:
             steps.append(v["step"])
     if decision == "verify" and not steps:
-        steps.append(_DEFAULT_STEP)
-    if floor:
+        steps.append("Before paying, check this with the company or person through a channel you already trust, or ask someone you trust to look at it with you."
+                     if downgraded else _DEFAULT_STEP)
+    if downgraded:
+        summary = f"{clear_count}/{total} clear; one reviewer objected and the larger crowd did not confirm a scam, so check first: {'; '.join(hold_reasons)}"
+    elif floor:
         summary = f"{clear_count}/{total} clear; verify first: this request came to the buyer and has not been checked by them"
     elif hold_reasons:
         summary = f"{clear_count}/{total} clear; holds: {'; '.join(hold_reasons)}"
@@ -385,6 +398,7 @@ def judge_purchase(
         "decision": decision,
         "escalated": escalated,
         "unchecked_inbound": floor,
+        "objection_not_confirmed": downgraded,
         "verify_steps": steps if decision == "verify" else [],
         "summary": summary,
     }

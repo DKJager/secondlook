@@ -431,7 +431,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
             <div id="banner" class="verdict-banner" style="display:none;"></div>
             <div id="verifyBox" class="verify-box">
                 <h3>Check it yourself first. This takes a minute.</h3>
-                <p class="hint">Nothing here proves a scam. But this request came to you, and a real bill and a fake one can read exactly the same. Do one of these without using any link, number or reply address from the message:</p>
+                <p class="hint" id="verifyHint">Nothing here proves a scam. But this request came to you, and a real bill and a fake one can read exactly the same. Do one of these without using any link, number or reply address from the message:</p>
                 <ul id="verifySteps"></ul>
                 <label for="verified">How did you check?</label>
                 <textarea id="verified" placeholder="For example: I logged in to my own account on their website and the invoice is there."></textarea>
@@ -621,7 +621,8 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
 
                     const note = document.getElementById('crowdNote');
                     if (result.escalated) {
-                        note.textContent = 'One of the first three reviewers had a doubt, so the question went to two more makers. ' + (result.cleared ? 'Neither shared it.' : 'The doubt was shared.');
+                        note.textContent = 'One of the first three reviewers stood alone, so the question went to two more makers. ' +
+                            (result.cleared ? 'Neither shared the doubt.' : (result.objection_not_confirmed ? 'They did not confirm a scam, so this is a check, not a block.' : (result.decision === 'hold' ? 'The objection was confirmed.' : 'The doubt was shared.')));
                         note.style.display = 'block';
                     } else { note.style.display = 'none'; }
 
@@ -637,6 +638,11 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                         confirmPayBtn.disabled = true;
                         const ul = document.getElementById('verifySteps'); ul.innerHTML = '';
                         (result.verify_steps || []).forEach(function(t) { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
+                        document.getElementById('verifyHint').textContent = result.objection_not_confirmed
+                            ? 'One reviewer objected and the others did not see a scam. So this is a check, not a block. Do this first, then say how you checked:'
+                            : (purchase.origin === 'contacted'
+                                ? 'Nothing here proves a scam. But this request came to you, and a real bill and a fake one can read exactly the same. Do one of these without using any link, number or reply address from the message:'
+                                : 'Nothing here proves a scam, but something should be checked before money moves. Do one of these first:');
                         document.getElementById('verifyBox').classList.add('active');
                     } else {
                         banner.textContent = 'HELD: PayPal will not create this order';

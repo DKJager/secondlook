@@ -675,12 +675,30 @@ def test_a_lone_doubt_goes_to_a_larger_crowd_and_a_hold_never_does():
     # an added reviewer that holds stops the payment
     d = crowd.judge_purchase(dict(_QUIET), [clr, ver, clr], min_clear=3, extra_fns=[extra(c), hold])
     assert d["decision"] == "hold" and not d["cleared"]
-    # two doubts, or any hold, are never put to a vote
+    # two doubts, two holds or a unanimous clear need no larger crowd
     calls.clear()
     assert crowd.judge_purchase(dict(_QUIET), [ver, ver, clr], min_clear=3, extra_fns=[extra(c), extra(c)])["decision"] == "verify"
-    assert crowd.judge_purchase(dict(_QUIET), [hold, clr, clr], min_clear=3, extra_fns=[extra(c), extra(c)])["decision"] == "hold"
+    assert crowd.judge_purchase(dict(_QUIET), [hold, hold, clr], min_clear=3, extra_fns=[extra(c), extra(c)])["decision"] == "hold"
+    assert crowd.judge_purchase(dict(_QUIET), [hold, ver, clr], min_clear=3, extra_fns=[extra(c), extra(c)])["decision"] == "hold"
     assert crowd.judge_purchase(dict(_QUIET), [clr, clr, clr], min_clear=3, extra_fns=[extra(c), extra(c)])["escalated"] is False
     assert calls == []
+
+
+def test_a_lone_hold_is_confirmed_by_the_larger_crowd_or_becomes_verify_first_never_allow():
+    clr = _fn('{"verdict":"clear","reason":"ok","quote":null}')
+    hold = _fn('{"verdict":"hold","reason":"looks like an advance fee","quote":null}')
+    ver = _fn('{"verdict":"verify","reason":"unchecked","quote":null,"step":"Call the venue on its listed number."}')
+    # nobody else sees a scam: the payment is still locked, as a check, with the objection shown
+    d = crowd.judge_purchase(dict(_QUIET), [hold, clr, clr], min_clear=3, extra_fns=[clr, clr])
+    assert d["escalated"] and d["decision"] == "verify" and d["cleared"] is False and d["objection_not_confirmed"] is True
+    assert "did not confirm" in d["summary"] and "advance fee" in d["summary"] and d["verify_steps"]
+    d = crowd.judge_purchase(dict(_QUIET), [clr, clr, hold], min_clear=3, extra_fns=[clr, ver])
+    assert d["decision"] == "verify" and d["verify_steps"] == ["Call the venue on its listed number."]
+    # a second reviewer in the larger crowd also holds: it is a hold
+    d = crowd.judge_purchase(dict(_QUIET), [hold, clr, clr], min_clear=3, extra_fns=[clr, hold])
+    assert d["decision"] == "hold" and d["objection_not_confirmed"] is False
+    # without a larger crowd configured, one hold stops the payment as before
+    assert crowd.judge_purchase(dict(_QUIET), [hold, clr, clr], min_clear=3)["decision"] == "hold"
 
 
 def test_a_garbled_answer_is_asked_again_once():

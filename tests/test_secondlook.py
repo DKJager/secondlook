@@ -761,8 +761,10 @@ def test_page_asks_how_the_request_reached_the_buyer_and_the_agent_tool_requires
     assert 'id="origin"' in r["body"] and "How did this payment request reach you?" in r["body"] and "p.origin = o" in r["body"]
     from agent import shopping_agent
     props = shopping_agent.TOOL["function"]["parameters"]
-    assert "origin" in props["required"] and props["properties"]["origin"]["enum"] == ["self", "contacted", "known_person"]
+    assert "how_it_reached_the_user" in props["required"]
+    assert [shopping_agent.REACHED[v] for v in props["properties"]["how_it_reached_the_user"]["enum"]] == ["self", "contacted", "known_person"]
     assert "never answer the check yourself" in shopping_agent.SYSTEM and len(shopping_agent.TASKS) == 3
+    assert "Never write this yourself" in props["properties"]["verified"]["description"]
     assert handler._OPENAPI["components"]["schemas"]["Purchase"]["properties"]["origin"]["enum"] == ["self", "contacted", "known_person"]
 
 
@@ -805,3 +807,23 @@ def test_paypal_rate_limit_is_waited_out_with_the_same_request_id_and_gives_up_a
     except paypal.SecondLookError as e:
         assert "429" in str(e)
     assert waits == [0.5, 1.0, 2.0]
+
+
+def test_agent_that_does_not_say_how_the_request_arrived_is_treated_as_inbound_and_the_users_check_is_passed_on(monkeypatch):
+    from agent import shopping_agent
+    seen = []
+
+    class G:
+        def checked_create_order(self, item, price, need, terms, origin=None, verified=None):
+            seen.append((origin, verified))
+            return {"status": "VERIFY_FIRST", "paypal_called": False} if not verified else {"status": "ORDER_CREATED", "paypal_called": True}
+
+    def call(args):
+        return {"tool_calls": [{"id": "c1", "function": {"arguments": json.dumps(args)}}]}
+
+    base = {"item": "Hosting", "price": 240, "need": "n", "terms": "t"}
+    replies = [call(dict(base, self="self")), {"content": "please check"},
+               call(dict(base, how_it_reached_the_user="request_came_to_the_user", verified="I logged in myself")), {"content": "paid"}]
+    monkeypatch.setattr(shopping_agent, "chat", lambda messages, tools=None: replies.pop(0))
+    out = shopping_agent.run_task(G(), "t", "pay this invoice", "I logged in myself")
+    assert seen == [("contacted", None), ("contacted", "I logged in myself")] and out["status"] == "ORDER_CREATED"

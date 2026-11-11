@@ -175,7 +175,7 @@ Environment variables:
 
 ## Tests
 
-Run the 31 automated tests with a fake model and fake PayPal calls, no network or keys needed:
+Run the 32 automated tests with a fake model and fake PayPal calls, no network or keys needed:
 
 ```bash
 python -m pytest tests -q

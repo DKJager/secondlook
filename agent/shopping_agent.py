@@ -37,21 +37,26 @@ TASKS = [
      None),
 ]
 
-REACHED = {"user_chose_the_seller": "self", "request_came_to_the_user": "contacted", "someone_they_know_asked": "known_person"}
-
 TOOL = {"type": "function", "function": {
     "name": "pay_with_paypal",
     "description": "Pay for a purchase with PayPal. The payment is reviewed first; a held or locked payment is not made.",
-    "parameters": {"type": "object", "required": ["item", "price", "need", "terms", "how_it_reached_the_user"], "properties": {
-        "how_it_reached_the_user": {"type": "string", "enum": list(REACHED),
-                                    "description": "user_chose_the_seller: the user picked this seller and asked you to buy. "
-                                                   "request_came_to_the_user: an invoice, bill, email, text, call, letter or link reached the user. "
-                                                   "someone_they_know_asked: a person the user knows asked them to pay."},
+    "parameters": {"type": "object", "required": ["item", "price", "need", "terms", "request_came_to_user"], "properties": {
         "item": {"type": "string"}, "price": {"type": "number", "description": "Total in USD"},
         "need": {"type": "string", "description": "The buyer's reason, in the buyer's own words, copied exactly"},
         "terms": {"type": "string", "description": "The seller's terms, copied exactly"},
+        "request_came_to_user": {"type": "boolean", "description": "true if an invoice, bill, email, text, call, letter or link reached the user "
+                                                                   "and asked for this payment. false if the user picked the seller and asked you to buy."},
+        "asked_by_someone_they_know": {"type": "boolean", "description": "true only if a person the user knows asked them to pay"},
         "verified": {"type": "string", "description": "Only after a VERIFY_FIRST result: what the USER told you they did to check, "
                                                       "copied exactly. Never write this yourself."}}}}}
+
+
+def origin_of(args):
+    """How the request reached the user, for Second Look. An agent that does not say is treated as inbound: locked until checked."""
+    if args.get("asked_by_someone_they_know") is True:
+        return "known_person"
+    return "self" if args.get("request_came_to_user") is False else "contacted"
+
 
 SYSTEM = ("You are a shopping agent. Complete the user's purchase by calling pay_with_paypal, "
           "copying the buyer's reason and the store terms word for word. Then tell the user in two sentences what happened. "
@@ -79,9 +84,8 @@ def pay(guard, messages, msg):
     call = msg["tool_calls"][0]
     args = json.loads(call["function"]["arguments"])
     print("AGENT calls pay_with_paypal:", json.dumps(args))
-    origin = REACHED.get(args.get("how_it_reached_the_user"), "contacted")
     result = guard.checked_create_order(args["item"], args["price"], args["need"], args["terms"],
-                                        origin=origin, verified=args.get("verified") or None)
+                                        origin=origin_of(args), verified=args.get("verified") or None)
     print("SECOND LOOK + PAYPAL AGENT TOOLKIT:", json.dumps(result, indent=1))
     messages += [msg, {"role": "tool", "tool_call_id": call["id"], "content": json.dumps(result)}]
     reply = chat(messages, [TOOL])

@@ -761,8 +761,9 @@ def test_page_asks_how_the_request_reached_the_buyer_and_the_agent_tool_requires
     assert 'id="origin"' in r["body"] and "How did this payment request reach you?" in r["body"] and "p.origin = o" in r["body"]
     from agent import shopping_agent
     props = shopping_agent.TOOL["function"]["parameters"]
-    assert "how_it_reached_the_user" in props["required"]
-    assert [shopping_agent.REACHED[v] for v in props["properties"]["how_it_reached_the_user"]["enum"]] == ["self", "contacted", "known_person"]
+    assert "request_came_to_user" in props["required"] and props["properties"]["request_came_to_user"]["type"] == "boolean"
+    assert shopping_agent.origin_of({"request_came_to_user": False}) == "self" and shopping_agent.origin_of({"request_came_to_user": True}) == "contacted"
+    assert shopping_agent.origin_of({}) == "contacted" and shopping_agent.origin_of({"asked_by_someone_they_know": True}) == "known_person"
     assert "never answer the check yourself" in shopping_agent.SYSTEM and len(shopping_agent.TASKS) == 3
     assert "Never write this yourself" in props["properties"]["verified"]["description"]
     assert handler._OPENAPI["components"]["schemas"]["Purchase"]["properties"]["origin"]["enum"] == ["self", "contacted", "known_person"]
@@ -823,7 +824,7 @@ def test_agent_that_does_not_say_how_the_request_arrived_is_treated_as_inbound_a
 
     base = {"item": "Hosting", "price": 240, "need": "n", "terms": "t"}
     replies = [call(dict(base, self="self")), {"content": "please check"},
-               call(dict(base, how_it_reached_the_user="request_came_to_the_user", verified="I logged in myself")), {"content": "paid"}]
+               call(dict(base, request_came_to_user=True, verified="I logged in myself")), {"content": "paid"}]
     monkeypatch.setattr(shopping_agent, "chat", lambda messages, tools=None: replies.pop(0))
     out = shopping_agent.run_task(G(), "t", "pay this invoice", "I logged in myself")
     assert seen == [("contacted", None), ("contacted", "I logged in myself")] and out["status"] == "ORDER_CREATED"

@@ -129,61 +129,84 @@ _RESULTS_PAGE = """<!doctype html>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/styles/ag-theme-quartz.css">
 <style>
 body{font-family:Inter,system-ui,sans-serif;background:#f7f8fa;color:#111;margin:0;padding:24px}
-.wrap{max-width:1200px;margin:0 auto}h1{font-size:26px;margin:0 0 6px}p{color:#555;margin:0 0 14px;line-height:1.5}
-.tiles{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}.tile{background:#fff;border:1px solid #e3e6ea;border-radius:10px;padding:14px 18px;min-width:170px}
+.wrap{max-width:1280px;margin:0 auto}h1{font-size:26px;margin:0 0 6px}p{color:#555;margin:0 0 12px;line-height:1.5}
+.sets{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 4px}.sets button{border:1px solid #c8ced6;background:#fff;color:#333;border-radius:8px;padding:9px 14px;font-weight:600;cursor:pointer;text-align:left}
+.sets button small{display:block;font-weight:400;color:#777;font-size:12px}.sets button.on{border-color:#111;background:#111;color:#fff}.sets button.on small{color:#ccc}
+.tiles{display:flex;gap:12px;flex-wrap:wrap;margin:12px 0}.tile{background:#fff;border:1px solid #e3e6ea;border-radius:10px;padding:14px 18px;min-width:170px}
 .tile b{display:block;font-size:26px}.tile span{color:#666;font-size:13px}
-.bar{display:flex;gap:8px;margin:10px 0}.bar button{border:1px solid #1a7fdb;background:#fff;color:#1a7fdb;border-radius:8px;padding:8px 14px;font-weight:600;cursor:pointer}
-.bar button.on{background:#1a7fdb;color:#fff}#grid{height:620px;width:100%}a{color:#1a7fdb}
+.bar{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}.bar button{border:1px solid #1a7fdb;background:#fff;color:#1a7fdb;border-radius:8px;padding:8px 14px;font-weight:600;cursor:pointer}
+.bar button.on{background:#1a7fdb;color:#fff}#grid{height:640px;width:100%}a{color:#1a7fdb}#about{min-height:48px}
 </style></head><body><div class="wrap">
-<h1>Blind test: 61 purchases Second Look had never seen</h1>
-<p>A different AI model wrote these purchases: 33 scams with ordinary-looking seller terms and 28 normal purchases, half of them chosen to look risky.
-Every row is one run of the three reviewers. Sort, filter or search any column. <a href="/">Back to the demo</a> &middot;
-<a href="https://github.com/DKJager/secondlook/tree/main/bench">Data and re-run scripts</a></p>
+<h1>Blind test results: every purchase, every answer</h1>
+<p>Each test set was written by AI models from other makers, from a category list only. Each was run once, after the code was frozen. Sort, filter or search any column.
+<a href="/">Back to the demo</a> &middot; <a href="https://github.com/DKJager/secondlook/tree/main/bench">Data and re-run scripts</a></p>
+<div class="sets" id="sets"></div>
+<p id="about"></p>
 <div class="tiles" id="tiles"></div>
-<div class="bar"><button data-f="all" class="on">All 61</button><button data-f="miss">Misses only</button><button data-f="scam">Scams</button><button data-f="normal">Normal purchases</button>
-<input id="q" placeholder="Search..." style="flex:1;border:1px solid #cfd4da;border-radius:8px;padding:8px 12px"></div>
+<div class="bar"><button data-f="all" class="on">All</button><button data-f="miss">Misses only</button><button data-f="scam">Scams</button><button data-f="normal">Normal purchases</button><button data-f="check">Asked to check first</button>
+<input id="q" placeholder="Search..." style="flex:1;min-width:180px;border:1px solid #cfd4da;border-radius:8px;padding:8px 12px"></div>
 <div id="grid" class="ag-theme-quartz"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/dist/ag-grid-community.min.js"></script>
 <script>
-const rows = __ROWS__;
-const scams = rows.filter(r => r.label === 'scam'), normal = rows.filter(r => r.label === 'normal');
+const ALL = __ROWS__;
+const SETS = [
+  { id: 'blind2', name: 'Current version', sub: '120 purchases, 4 makers, 10 Nov', about: 'The current version. Written by Microsoft MAI, Zhipu GLM-5, Amazon Nova Pro and xAI Grok. Second Look asks how the request reached the buyer; anything that came to the buyer is locked until they have checked it themselves. A scam counts as stopped only if it was not allowed at first AND still not allowed after the buyer said how they checked.' },
+  { id: 'blind1', name: 'Earlier version', sub: '80 purchases, 2 makers, 10 Nov', about: 'The version before Second Look asked how the request reached the buyer. It missed 9 of 36 scams, because a fake renewal and a real one read exactly the same. That result is why the question was added. These rows were then used for tuning.' },
+  { id: 'first61', name: 'First version', sub: '61 purchases, 1 maker, 9 Nov', about: 'The first version: clear or hold only. It missed 5 quiet fake invoices. These rows were later used for tuning, so they are no longer a blind test.' }
+];
+let cur = 'blind2', mode = 'all';
 const tile = (n, t) => '<div class="tile"><b>' + n + '</b><span>' + t + '</span></div>';
-document.getElementById('tiles').innerHTML =
-  tile(scams.filter(r => r.decision === 'hold').length + ' of ' + scams.length, 'scams stopped') +
-  tile(normal.filter(r => r.decision === 'allow').length + ' of ' + normal.length, 'normal purchases approved') +
-  tile(rows.filter(r => !r.correct).length, 'misses, all listed below');
-let mode = 'all';
+const rowsOf = () => ALL.filter(r => r.set === cur);
+const colour = v => ({ color: v === 'hold' ? '#d93025' : (v === 'verify' ? '#a56a00' : '#1e8e3e'), fontWeight: 600 });
+const word = v => v === 'verify' ? 'check first' : v;
 const api = agGrid.createGrid(document.getElementById('grid'), {
-  rowData: rows,
+  rowData: rowsOf(),
   defaultColDef: { sortable: true, filter: true, resizable: true, wrapText: true, autoHeight: true },
   columnDefs: [
-    { colId: 'result', headerName: 'Result', width: 110, valueGetter: p => p.data.correct ? 'Correct' : 'MISS',
+    { colId: 'result', headerName: 'Result', width: 105, valueGetter: p => p.data.correct ? 'Correct' : 'MISS',
       cellStyle: p => ({ color: p.value === 'Correct' ? '#1e8e3e' : '#d93025', fontWeight: 600 }) },
-    { field: 'label', headerName: 'Truth', width: 100 },
-    { field: 'decision', headerName: 'Second Look', width: 130,
-      cellStyle: p => ({ color: p.value === 'hold' ? '#d93025' : '#1e8e3e', fontWeight: 600 }) },
-    { field: 'clears', headerName: 'Clear votes', width: 120, valueFormatter: p => p.value + ' of 3' },
-    { field: 'category', width: 170 },
-    { field: 'item', width: 220 },
-    { field: 'price', width: 110, valueFormatter: p => '$' + Number(p.value).toLocaleString() },
-    { field: 'need', headerName: 'Buyer said', flex: 2, minWidth: 280 },
-    { field: 'reasons', headerName: 'Hold reasons', flex: 2, minWidth: 280 }
+    { field: 'label', headerName: 'Truth', width: 95 },
+    { field: 'first', headerName: 'First answer', width: 135, valueFormatter: p => word(p.value), cellStyle: p => colour(p.value) },
+    { field: 'final', headerName: 'After the buyer checked', width: 150, valueFormatter: p => word(p.value), cellStyle: p => colour(p.value) },
+    { field: 'origin', headerName: 'How it reached the buyer', width: 150, valueFormatter: p => ({ self: 'went to seller', contacted: 'came to buyer', known_person: 'someone they know' })[p.value] || 'not asked' },
+    { field: 'item', width: 200 },
+    { field: 'price', width: 100, valueFormatter: p => '$' + Number(p.value).toLocaleString() },
+    { field: 'need', headerName: 'Buyer said', flex: 2, minWidth: 260 },
+    { field: 'asked', headerName: 'Asked "how did you check?"', flex: 2, minWidth: 240 },
+    { field: 'reasons', headerName: 'Reviewers said', flex: 2, minWidth: 260 },
+    { field: 'writer', headerName: 'Written by', width: 140 }
   ],
   isExternalFilterPresent: () => mode !== 'all',
-  doesExternalFilterPass: n => mode === 'miss' ? !n.data.correct : n.data.label === mode
+  doesExternalFilterPass: n => mode === 'miss' ? !n.data.correct : (mode === 'check' ? n.data.first === 'verify' : n.data.label === mode)
 });
+function draw() {
+  const rows = rowsOf(), scams = rows.filter(r => r.label === 'scam'), normal = rows.filter(r => r.label === 'normal');
+  document.getElementById('about').textContent = SETS.find(s => s.id === cur).about;
+  document.getElementById('tiles').innerHTML =
+    tile(scams.filter(r => r.correct).length + ' of ' + scams.length, 'scams stopped') +
+    tile(normal.filter(r => r.first === 'hold').length + ' of ' + normal.length, 'normal purchases flagged as a scam') +
+    tile(normal.filter(r => r.first === 'allow').length + ' of ' + normal.length, 'normal purchases cleared at once') +
+    tile(normal.filter(r => r.final === 'allow').length + ' of ' + normal.length, 'cleared after at most one check') +
+    tile(rows.filter(r => !r.correct).length, 'misses, all listed below');
+  api.setGridOption('rowData', rows); api.onFilterChanged();
+}
+document.getElementById('sets').innerHTML = SETS.map(s => '<button data-s="' + s.id + '"' + (s.id === cur ? ' class="on"' : '') + '>' + s.name + '<small>' + s.sub + '</small></button>').join('');
+document.querySelectorAll('.sets button').forEach(b => b.addEventListener('click', () => {
+  cur = b.dataset.s; document.querySelectorAll('.sets button').forEach(x => x.classList.toggle('on', x === b)); draw();
+}));
 document.querySelectorAll('.bar button').forEach(b => b.addEventListener('click', () => {
   mode = b.dataset.f; document.querySelectorAll('.bar button').forEach(x => x.classList.toggle('on', x === b)); api.onFilterChanged();
 }));
 document.getElementById('q').addEventListener('input', e => api.setGridOption('quickFilterText', e.target.value));
+draw();
 </script></body></html>"""
 
 
 def _results_page() -> str:
-    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "blind_results.json")
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "test_results.json")
     with open(path, encoding="utf-8") as fh:
-        return _RESULTS_PAGE.replace("__ROWS__", fh.read())
+        return _RESULTS_PAGE.replace("__ROWS__", fh.read().replace("</", "<\\/"))
 
 
 def _build_ask_fns(models: List[str], max_tokens: int = None) -> List[Callable]:

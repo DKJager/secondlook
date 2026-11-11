@@ -183,6 +183,8 @@ def _call_reviewer(
         "If a line 'Buyer's verification' is present, judge it: it counts only if it is independent of the message "
         "(their own account or app, a number or address from an old bill or the official site they typed in, a person they already know). "
         "Seeing the goods, the person or the paperwork in person also counts, and so does paying the bill inside the buyer's own account or app as they always do. "
+        "For a regular bill the buyer expected, it is also enough that they say it is the usual amount, paid the usual way to the same payee as always, "
+        "as long as nothing about the payment details has changed. "
         "The check must confirm THIS charge or THESE payment details with the real company or person. "
         "Replying to the message, clicking its link, calling the number in it, saying it looked official, or recognising a name, logo, "
         "account number or invoice number printed on the request does not count, because a fake carries those too: answer \"verify\" again. "

@@ -191,7 +191,7 @@ def _build_ask_fns(models: List[str], max_tokens: int = None) -> List[Callable]:
     api_key = os.getenv("SECONDLOOK_API_KEY")
     if not api_key:
         raise CrowdError("SECONDLOOK_API_KEY is missing from environment")
-    max_tokens = max_tokens or int(os.getenv("SECONDLOOK_MAX_TOKENS", "600"))
+    max_tokens = max_tokens or int(os.getenv("SECONDLOOK_MAX_TOKENS", "1500"))
     temperature = float(os.getenv("SECONDLOOK_TEMPERATURE", "0"))
     timeout = 40.0
 

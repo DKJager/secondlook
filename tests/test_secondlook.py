@@ -547,3 +547,107 @@ def test_agent_guard_never_calls_paypal_on_hold_and_binds_request_id_on_allow(mo
     assert ok["status"] == "ORDER_CREATED" and ok["order_id"] == "ORDER1"
     assert made[0][0] == "secondlook-NONCE123" and made[0][1] == "create_order"
     assert made[0][2]["items"][0]["item_total"] == 149.99
+
+
+# ---- verify first: a payment request the buyer has not checked for themselves ----
+_QUIET = {"item": "Hosting renewal", "price": "240.00", "currency": "USD",
+          "need": "I got an email invoice. It says their bank details changed.",
+          "terms": "Our banking details have been updated; please remit to the account on this invoice."}
+
+
+def _fn(answer):
+    return lambda messages: answer
+
+
+def test_one_verify_locks_the_payment_and_gives_the_buyer_a_step():
+    fns = [_fn('{"verdict":"clear","reason":"ordinary","quote":null,"step":null}'),
+           _fn('{"verdict":"verify","reason":"bank details changed","quote":"Our banking details have been updated","step":"Call the number on last year\'s invoice."}'),
+           _fn('{"verdict":"clear","reason":"ordinary","quote":null}')]
+    d = crowd.judge_purchase(dict(_QUIET), fns, min_clear=3)
+    assert d["decision"] == "verify" and d["cleared"] is False
+    assert d["verify_steps"] == ["Call the number on last year's invoice."]
+    assert d["verdicts"][1]["verdict"] == "verify" and d["verdicts"][1]["quote"] == "Our banking details have been updated"
+    assert "verify first" in d["summary"]
+
+
+def test_a_hold_beats_a_verify_and_only_a_unanimous_clear_allows():
+    hold = _fn('{"verdict":"hold","reason":"fake invoice","quote":null}')
+    ver = _fn('{"verdict":"verify","reason":"unchecked","quote":null,"step":"Log in to your own account."}')
+    clr = _fn('{"verdict":"clear","reason":"ok","quote":null}')
+    assert crowd.judge_purchase(dict(_QUIET), [hold, ver, clr], min_clear=3)["decision"] == "hold"
+    assert crowd.judge_purchase(dict(_QUIET), [hold, ver, clr], min_clear=3)["verify_steps"] == []
+    d = crowd.judge_purchase(dict(_QUIET), [clr, clr, clr], min_clear=3)
+    assert d["decision"] == "allow" and d["cleared"] is True and d["verify_steps"] == []
+
+
+def test_the_buyers_verification_reaches_the_reviewers_and_may_be_quoted():
+    seen = []
+
+    def fn(messages):
+        seen.append(messages[-1]["content"])
+        return '{"verdict":"clear","reason":"checked in own account","quote":"I logged in to my own account","step":"ignored on clear"}'
+    p = dict(_QUIET, verified="I logged in to my own account and the invoice is there.")
+    d = crowd.judge_purchase(p, [fn, fn, fn], min_clear=3)
+    assert "Buyer's verification: I logged in to my own account" in seen[0]
+    assert d["decision"] == "allow" and d["verdicts"][0]["quote"] == "I logged in to my own account"
+    assert d["verdicts"][0]["step"] is None
+    seen.clear(); crowd.judge_purchase(dict(_QUIET), [fn], min_clear=1)
+    assert "Buyer's verification" not in seen[0]
+
+
+def test_clearance_is_bound_to_the_verification_statement(monkeypatch):
+    monkeypatch.setenv("SECONDLOOK_TOKEN_SEED", "t")
+    p = dict(_QUIET, verified="I called the number on my old bill.")
+    tok = handler._sign_clearance(p)
+    assert handler._verify_clearance(p, tok)
+    assert handler._verify_clearance(dict(_QUIET), tok) is None                      # statement removed
+    assert handler._verify_clearance(dict(p, verified="it looked fine"), tok) is None   # statement changed
+    plain = handler._sign_clearance(dict(_QUIET))
+    assert handler._verify_clearance(dict(_QUIET), plain) and handler._verify_clearance(p, plain) is None
+    assert handler._validate_purchase(dict(_QUIET, verified="x" * 1001))[0] is False
+    assert handler._validate_purchase(dict(_QUIET, verified=5))[0] is False
+
+
+def test_agent_check_returns_verify_with_steps_and_no_token(monkeypatch):
+    monkeypatch.setenv("SECONDLOOK_API_KEY", "k"); monkeypatch.setenv("SECONDLOOK_TOKEN_SEED", "t")
+    monkeypatch.setenv("SECONDLOOK_MODELS", "a,b,c")
+    ans = '{"verdict":"verify","reason":"bank details changed","quote":null,"step":"Call the number on an old invoice."}'
+    monkeypatch.setattr(handler, "_build_ask_fns", lambda models: [_fn(ans)] * 3)
+    ev = {"requestContext": {"http": {"method": "POST", "path": "/agent/check"}}, "rawPath": "/agent/check", "body": json.dumps({"purchase": _QUIET})}
+    r = handler.lambda_handler(ev, None); b = json.loads(r["body"])
+    assert r["statusCode"] == 200 and b["decision"] == "verify" and b["clearance_token"] is None
+    assert b["verify_steps"] == ["Call the number on an old invoice."] and "must not answer this for the buyer" in b["next"]
+    assert b["reviews"][0]["step"] == "Call the number on an old invoice."
+    spec = handler._OPENAPI["components"]["schemas"]
+    assert spec["Decision"]["properties"]["decision"]["enum"] == ["allow", "verify", "hold"] and "verified" in spec["Purchase"]["properties"]
+
+
+def test_agent_guard_does_not_call_paypal_on_verify_and_passes_the_buyers_check(monkeypatch):
+    from agent.guard import SecondLookGuard
+    made, sent = [], []
+
+    class FakeAPI:
+        def __init__(self, request_id): self.request_id = request_id
+        def run(self, method, params):
+            made.append(self.request_id); return json.dumps({"id": "O2", "status": "CREATED", "links": []})
+
+    guard = SecondLookGuard("id", "secret", paypal_api_factory=FakeAPI)
+
+    def check(p):
+        sent.append(p)
+        if "verified" not in p:
+            return {"decision": "verify", "clearance_token": None, "verify_steps": ["Log in to your own account."],
+                    "reviews": [{"model": "m", "verdict": "verify", "reason": "bank details changed", "quote": None}]}
+        return {"decision": "allow", "clearance_token": "1999999999.N2.sig", "reviews": []}
+    monkeypatch.setattr(guard, "check", check)
+    first = guard.checked_create_order("Hosting renewal", 240, _QUIET["need"], _QUIET["terms"])
+    assert first["status"] == "VERIFY_FIRST" and first["paypal_called"] is False and made == []
+    assert first["steps"] == ["Log in to your own account."] and first["reasons"][0]["reason"] == "bank details changed"
+    second = guard.checked_create_order("Hosting renewal", 240, _QUIET["need"], _QUIET["terms"], verified="I logged in to my own account.")
+    assert second["status"] == "ORDER_CREATED" and made == ["secondlook-N2"] and sent[1]["verified"] == "I logged in to my own account."
+
+
+def test_page_has_the_quiet_invoice_example_and_the_verify_box():
+    r = handler.lambda_handler({"requestContext": {"http": {"method": "GET", "path": "/"}}, "rawPath": "/"}, None)
+    for needle in ("Load quiet invoice example", 'id="verifyBox"', "VERIFY FIRST", 'id="recheck"', "badge-verify"):
+        assert needle in r["body"], needle

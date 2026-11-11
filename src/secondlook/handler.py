@@ -35,6 +35,9 @@ def _validate_purchase(purchase: Dict[str, Any]) -> tuple[bool, str]:
             return False, f"field {key} must be a string"
         if len(value) > 4000:
             return False, f"field {key} exceeds length limit"
+    verified = purchase.get("verified")
+    if verified is not None and (not isinstance(verified, str) or len(verified) > 1000):
+        return False, "field verified must be a string of at most 1000 characters"
     try:
         price = decimal.Decimal(purchase["price"])
         if price <= 0:
@@ -44,6 +47,7 @@ def _validate_purchase(purchase: Dict[str, Any]) -> tuple[bool, str]:
     return True, ""
 
 _PURCHASE_KEYS = ("item", "price", "currency", "terms", "need")
+_SIGNED_KEYS = _PURCHASE_KEYS + ("verified",)  # the buyer's own statement of how they checked is part of what was cleared
 _TOKEN_TTL = 300  # seconds a clearance stays valid
 
 
@@ -53,7 +57,7 @@ def _token_key() -> bytes:
 
 
 def _canonical(purchase: Dict[str, Any]) -> str:
-    return json.dumps({k: str(purchase.get(k, "")) for k in _PURCHASE_KEYS}, sort_keys=True, separators=(",", ":"))
+    return json.dumps({k: str(purchase.get(k) or "") for k in _SIGNED_KEYS}, sort_keys=True, separators=(",", ":"))
 
 
 def _sign_clearance(purchase: Dict[str, Any], now: float = None) -> str:
@@ -98,10 +102,12 @@ _OPENAPI = {
         "Purchase": {"type": "object", "required": list(_PURCHASE_KEYS), "properties": {
             "item": {"type": "string"}, "price": {"type": "string"}, "currency": {"type": "string"},
             "need": {"type": "string", "description": "Why the buyer is making this purchase, in their own words"},
-            "terms": {"type": "string", "description": "The seller's terms"}}},
+            "terms": {"type": "string", "description": "The seller's terms, or the text of the payment request"},
+            "verified": {"type": "string", "description": "Optional. After a 'verify' decision: how the buyer checked the request for themselves, in their own words"}}},
         "PurchaseRequest": {"type": "object", "required": ["purchase"], "properties": {"purchase": {"$ref": "#/components/schemas/Purchase"}}},
         "Decision": {"type": "object", "properties": {
-            "decision": {"type": "string", "enum": ["allow", "hold"]}, "clear_count": {"type": "integer"},
+            "decision": {"type": "string", "enum": ["allow", "verify", "hold"], "description": "allow: all reviewers cleared. hold: a scam signal. verify: a payment request the buyer has not checked for themselves; PayPal stays locked until they have"},
+            "clear_count": {"type": "integer"}, "verify_steps": {"type": "array", "items": {"type": "string"}, "description": "On verify: checks the buyer can do without using anything in the message"},
             "reviews": {"type": "array", "items": {"type": "object"}},
             "clearance_token": {"type": "string", "nullable": True, "description": "Present only on allow; valid 5 minutes for this exact purchase; one token maps to one PayPal order"}}},
     }},
@@ -303,6 +309,14 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
         }
         .verdict-banner.cleared { background: #d3f9d8; color: #2b8a3e; }
         .verdict-banner.held { background: #ffe3e3; color: #c92a2a; }
+        .verdict-banner.verify { background: #fff3bf; color: #7a5200; }
+        .verify-box { display: none; background: #fff9db; border: 1px solid #ffe066; border-radius: 10px; padding: 16px 18px; margin: 0 0 16px; }
+        .verify-box.active { display: block; }
+        .verify-box h3 { margin: 0 0 6px; font-size: 1rem; color: #7a5200; }
+        .verify-box ul { margin: 6px 0 12px 18px; padding: 0; color: #333; }
+        .verify-box li { margin: 3px 0; }
+        .verify-box textarea { min-height: 54px; margin-bottom: 10px; }
+        .verify-box .hint { font-size: .85rem; color: #666; margin: 0 0 8px; }
 
         .reviewer-grid {
             display: grid;
@@ -323,6 +337,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
         }
         .badge-clear { background: #d3f9d8; color: #2b8a3e; }
         .badge-hold { background: #ffe3e3; color: #c92a2a; }
+        .badge-verify { background: #fff3bf; color: #7a5200; }
         .reviewer-card .reason { font-size: 0.9rem; color: #495057; }
         .reviewer-card .quote {
             font-style: italic; font-size: 0.85rem; color: #6c757d;
@@ -383,6 +398,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
 
         <div class="button-row">
             <button type="button" id="loadScam" class="btn-outline">Load scam example</button>
+            <button type="button" id="loadQuiet" class="btn-outline">Load quiet invoice example</button>
             <button type="button" id="loadExample" class="btn-outline">Load normal example</button>
             <button id="askCrowd" class="btn-primary">Ask the crowd</button>
         </div>
@@ -394,6 +410,14 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
 
         <div id="resultsSection" class="results-section">
             <div id="banner" class="verdict-banner" style="display:none;"></div>
+            <div id="verifyBox" class="verify-box">
+                <h3>Check it yourself first. This takes a minute.</h3>
+                <p class="hint">Nothing here proves a scam. But this payment was asked for by a message, and nobody has checked it. Do one of these without using any link, number or reply address from that message:</p>
+                <ul id="verifySteps"></ul>
+                <label for="verified">How did you check?</label>
+                <textarea id="verified" placeholder="For example: I logged in to my own account on their website and the invoice is there."></textarea>
+                <button type="button" id="recheck" class="btn-primary">I checked. Look again</button>
+            </div>
             <div class="reviewer-grid" id="verdictsContainer">
                 <div class="reviewer-card" id="verdict0" style="display:none;">
                     <div class="reviewer-header">Reviewer 1</div>
@@ -453,6 +477,15 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 document.getElementById('terms').value = 'Gift cards are non-refundable and cannot be exchanged for cash. Standard shipping 3-5 days.';
             });
 
+            document.getElementById('loadQuiet').addEventListener('click', function() {
+                document.getElementById('item').value = 'Website hosting, yearly renewal';
+                document.getElementById('price').value = '240.00';
+                document.getElementById('currency').value = 'USD';
+                document.getElementById('need').value = 'I got an email invoice for our yearly website hosting. It says their bank details changed, so I should pay the new account.';
+                document.getElementById('terms').value = 'Annual hosting renewal. Our banking details have been updated; please remit to the account on this invoice within 10 days to avoid interruption.';
+                document.getElementById('verified').value = '';
+            });
+
             loadExampleBtn.addEventListener('click', function() {
                 document.getElementById('item').value = 'Premium Wireless Headphones';
                 document.getElementById('price').value = '129.99';
@@ -461,14 +494,28 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 document.getElementById('terms').value = 'Limited Warranty: 1 year. Return Policy: 30-day money-back guarantee. Note: no returns on opened items. Shipping: free standard shipping.';
             });
 
-            askCrowdBtn.addEventListener('click', async function() {
-                const purchase = {
+            function readPurchase(withVerified) {
+                const p = {
                     item: document.getElementById('item').value,
                     price: document.getElementById('price').value,
                     currency: document.getElementById('currency').value,
                     terms: document.getElementById('terms').value,
                     need: document.getElementById('need').value
                 };
+                const v = document.getElementById('verified').value.trim();
+                if (withVerified && v) { p.verified = v; }
+                return p;
+            }
+            window.lastPurchase = null;
+            document.getElementById('recheck').addEventListener('click', function() {
+                if (!document.getElementById('verified').value.trim()) { document.getElementById('verified').focus(); return; }
+                runCheck(true);
+            });
+            askCrowdBtn.addEventListener('click', function() { document.getElementById('verified').value = ''; runCheck(false); });
+            async function runCheck(withVerified) {
+                const purchase = readPurchase(withVerified);
+                window.lastPurchase = purchase;
+                document.getElementById('verifyBox').classList.remove('active');
 
                 errorNote.classList.remove('active');
                 errorNote.textContent = '';
@@ -514,6 +561,9 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                         if (verdict.verdict === 'clear') {
                             badge.textContent = 'CLEAR';
                             badge.className = 'badge badge-clear';
+                        } else if (verdict.verdict === 'verify') {
+                            badge.textContent = 'VERIFY FIRST';
+                            badge.className = 'badge badge-verify';
                         } else {
                             badge.textContent = 'HOLD';
                             badge.className = 'badge badge-hold';
@@ -533,9 +583,16 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                     // Display banner
                     const banner = document.getElementById('banner');
                     if (result.cleared) {
-                        banner.textContent = 'CLEARED by ' + result.clear_count + '/' + verdicts.length + ' reviewers';
+                        banner.textContent = 'CLEARED by ' + result.clear_count + '/' + verdicts.length + ' reviewers' + (purchase.verified ? ' after your check' : '');
                         banner.className = 'verdict-banner cleared';
                         confirmPayBtn.disabled = false;
+                    } else if (result.decision === 'verify') {
+                        banner.textContent = 'VERIFY FIRST: PayPal stays locked until you have checked this yourself';
+                        banner.className = 'verdict-banner verify';
+                        confirmPayBtn.disabled = true;
+                        const ul = document.getElementById('verifySteps'); ul.innerHTML = '';
+                        (result.verify_steps || []).forEach(function(t) { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
+                        document.getElementById('verifyBox').classList.add('active');
                     } else {
                         banner.textContent = 'HELD: PayPal will not create this order';
                         if (result.summary) {
@@ -554,16 +611,10 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 } finally {
                     loadingState.classList.remove('active');
                 }
-            });
+            }
 
             confirmPayBtn.addEventListener('click', async function() {
-                const purchase = {
-                    item: document.getElementById('item').value,
-                    price: document.getElementById('price').value,
-                    currency: document.getElementById('currency').value,
-                    terms: document.getElementById('terms').value,
-                    need: document.getElementById('need').value
-                };
+                const purchase = window.lastPurchase || readPurchase(true);
 
                 errorNote.classList.remove('active');
                 errorNote.textContent = '';
@@ -680,13 +731,16 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
 
         if path == "/agent/check":
             return _json_response(200, {
-                "decision": "allow" if result.get("cleared") else "hold",
+                "decision": result.get("decision") or ("allow" if result.get("cleared") else "hold"),
                 "clear_count": result.get("clear_count"),
+                "verify_steps": result.get("verify_steps", []),
                 "reviews": [{"model": models[v["model_index"]] if v["model_index"] < len(models) else "",
                              "verdict": v["verdict"], "reason": v["reason"], "quote": v["quote"],
-                             "quote_from": v.get("quote_from")} for v in result.get("verdicts", [])],
+                             "quote_from": v.get("quote_from"), "step": v.get("step")} for v in result.get("verdicts", [])],
                 "clearance_token": result["token"],
-                "next": "POST /order with {purchase, clearance_token}" if result.get("cleared") else "Do not pay. Show the reasons to the buyer.",
+                "next": ("POST /order with {purchase, clearance_token}" if result.get("cleared")
+                         else "Do not pay yet. Ask the buyer to do one of verify_steps themselves, then call again with purchase.verified set to how they checked. An agent must not answer this for the buyer."
+                         if result.get("decision") == "verify" else "Do not pay. Show the reasons to the buyer."),
             })
         return _json_response(200, result)
 

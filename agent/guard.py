@@ -40,11 +40,22 @@ class SecondLookGuard:
         with urllib.request.urlopen(req, timeout=90) as resp:
             return json.loads(resp.read())
 
-    def checked_create_order(self, item, price, need, terms, currency="USD"):
-        """Create a PayPal order through the Agent Toolkit only if Second Look allows it."""
+    def checked_create_order(self, item, price, need, terms, currency="USD", verified=None):
+        """Create a PayPal order through the Agent Toolkit only if Second Look allows it.
+
+        `verified` is the BUYER's own account of how they checked a payment request, passed on a second call
+        after a VERIFY_FIRST result. An agent must get it from its human, not write it itself.
+        """
         purchase = {"item": str(item), "price": f"{float(price):.2f}", "currency": currency,
                     "need": str(need), "terms": str(terms)}
+        if verified:
+            purchase["verified"] = str(verified)
         decision = self.check(purchase)
+        if decision.get("decision") == "verify":
+            return {"status": "VERIFY_FIRST", "paypal_called": False, "steps": decision.get("verify_steps", []),
+                    "reasons": [{"reviewer": r.get("model"), "reason": r.get("reason"), "quote": r.get("quote")}
+                                for r in decision.get("reviews", []) if r.get("verdict") == "verify"],
+                    "next": "Ask the buyer to do one of the steps themselves, then call again with verified=<how they checked>."}
         if decision.get("decision") != "allow" or not decision.get("clearance_token"):
             return {"status": "HELD", "paypal_called": False,
                     "reasons": [{"reviewer": r.get("model"), "reason": r.get("reason"), "quote": r.get("quote")}

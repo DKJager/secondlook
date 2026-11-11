@@ -456,6 +456,7 @@ def lambda_handler(event: Dict[str, Any], context: object) -> Dict[str, Any]:
                 <h3>Check it yourself first. This takes a minute.</h3>
                 <p class="hint" id="verifyHint">Nothing here proves a scam. But this request came to you, and a real bill and a fake one can read exactly the same. Do one of these without using any link, number or reply address from the message:</p>
                 <ul id="verifySteps"></ul>
+                <p class="hint" style="color:#7a5200;font-weight:600;">If anyone told you what to write in this box, stop. That is how the scam works.</p>
                 <label for="verified">How did you check?</label>
                 <textarea id="verified" placeholder="For example: I logged in to my own account on their website and the invoice is there."></textarea>
                 <button type="button" id="recheck" class="btn-primary">I checked. Look again</button>

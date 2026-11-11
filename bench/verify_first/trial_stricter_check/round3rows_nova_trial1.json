@@ -1,0 +1,1515 @@
+{
+ "summary": {
+  "control_not_checked": {
+   "n": 3,
+   "allow": 0,
+   "verify": 3,
+   "hold": 0
+  },
+  "legit_bill": {
+   "n": 6,
+   "allow": 0,
+   "verify": 5,
+   "hold": 1
+  },
+  "legit_self": {
+   "n": 7,
+   "allow": 7,
+   "verify": 0,
+   "hold": 0
+  },
+  "scam_loud": {
+   "n": 4,
+   "allow": 0,
+   "verify": 0,
+   "hold": 4
+  },
+  "scam_quiet": {
+   "n": 10,
+   "allow": 0,
+   "verify": 7,
+   "hold": 3
+  },
+  "CONTROL_NOT_CHECKED_STAYED_LOCKED": "3/3",
+  "SCAMS_STOPPED": "14/14",
+  "SCAMS_STILL_STOPPED_AFTER_BUYER_ANSWER": "14/14",
+  "NORMAL_ALLOWED_AT_ONCE": "7/13",
+  "NORMAL_ALLOWED_AFTER_ONE_CHECK": "9/13",
+  "NORMAL_ASKED_TO_CHECK": 5,
+  "NORMAL_WRONGLY_HELD": 1,
+  "rows_with_a_reviewer_fault": 0,
+  "went_to_larger_crowd": 1,
+  "secs_p90": 3.0,
+  "median_secs": 2.0
+ },
+ "rows": [
+  {
+   "kind": "scam_quiet",
+   "category": "fake_invoice",
+   "item": "Office Supplies",
+   "price": 123.45,
+   "need": "I need these supplies for my home office.",
+   "terms": "Please pay within 10 days to avoid late fees.",
+   "origin": "contacted",
+   "source": "Received an email from a vendor I've never heard of.",
+   "if_asked": "I just paid it because it looked like a normal invoice.",
+   "id": "p01",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.7,
+   "steps": [
+    "Call the vendor using a phone number from their official website to confirm the invoice",
+    "Call the vendor using a number from their official website to confirm the invoice.",
+    "Check the vendor's website independently and verify its contact details."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unknown vendor emailed buyer; need to confirm legitimacy",
+     "quote": null,
+     "step": "Call the vendor using a phone number from their official website to confirm the invoice"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer from unknown vendor; payment details not confirmed.",
+     "quote": "Please pay within 10 days to avoid late fees.",
+     "step": "Call the vendor using a number from their official website to confirm the invoice."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, new vendor. Need to confirm legitimacy.",
+     "quote": null,
+     "step": "Check the vendor's website independently and verify its contact details."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted by unknown vendor and didn't independently verify the invoice"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via unsolicited email from unknown vendor"
+    },
+    {
+     "v": "verify",
+     "reason": "The request came to the buyer unsolicited."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "fake_renewal",
+   "item": "Software License",
+   "price": 99.99,
+   "need": "I need to renew my software license to keep using the program.",
+   "terms": "Renew now to continue using your software without interruption.",
+   "origin": "contacted",
+   "source": "Received an email notification about the renewal.",
+   "if_asked": "I assumed it was a legitimate renewal notice.",
+   "id": "p02",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.1,
+   "steps": [
+    "Log into your account on the official website and confirm the renewal details.",
+    "Check renewal details in your official software account or contact support using a verified company number.",
+    "Log in to your account on the software's official website and check the renewal status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted renewal request; verify legitimacy before paying.",
+     "quote": "Renew now to continue using your software without interruption.",
+     "step": "Log into your account on the official website and confirm the renewal details."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; payment details not confirmed independently",
+     "quote": "Renew now to continue using your software without interruption.",
+     "step": "Check renewal details in your official software account or contact support using a verified company number."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to the buyer. Need is ordinary, but details must be checked.",
+     "quote": "Renew now to continue using your software without interruption.",
+     "step": "Log in to your account on the software's official website and check the renewal status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted with renewal notice and hasn't independently confirmed it"
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and details may have changed"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to the buyer. Need to check independently."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "fake_utility_fee",
+   "item": "Electric Bill",
+   "price": 75.0,
+   "need": "I need to pay my electric bill to keep the lights on.",
+   "terms": "Please pay your overdue electric bill immediately.",
+   "origin": "contacted",
+   "source": "Received an email from an unknown sender.",
+   "if_asked": "I thought it was a legitimate bill and paid it.",
+   "id": "p03",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 3.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Unsolicited urgent payment request from unknown sender (overdue bill scam)",
+     "quote": "Please pay your overdue electric bill immediately.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via email from unknown sender; payment details not confirmed independently",
+     "quote": "Please pay your overdue electric bill immediately.",
+     "step": "Check your account on the official utility website using a direct link typed in, not from the email."
+    },
+    {
+     "v": "verify",
+     "reason": "The request came to the buyer, and the sender is unknown.",
+     "quote": "Please pay your overdue electric bill immediately.",
+     "step": "Log in to your account on the electric company's official website and pay there."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "fake_parcel_fee",
+   "item": "Parcel Delivery Fee",
+   "price": 25.0,
+   "need": "I need to pay the delivery fee to receive my package.",
+   "terms": "Please pay the delivery fee to receive your package.",
+   "origin": "contacted",
+   "source": "Received a text message about a pending delivery.",
+   "if_asked": "I paid it because I was expecting a package.",
+   "id": "p04",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.8,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Delivery fee demanded to release package after unsolicited contact",
+     "quote": "Please pay the delivery fee to receive your package.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via contact, payment details not confirmed independently",
+     "quote": "Please pay the delivery fee to receive your package.",
+     "step": "Call the delivery company using the number from their official website to confirm the fee and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Unexpected request for a fee to receive a package.",
+     "quote": "Please pay the delivery fee to receive your package.",
+     "step": "Check with the delivery company using their official website or a known phone number."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "fake_rental_fee",
+   "item": "Rental Application Fee",
+   "price": 50.0,
+   "need": "I need to pay the application fee to secure the rental property.",
+   "terms": "Please pay the application fee to proceed with the rental process.",
+   "origin": "known_person",
+   "source": "A friend recommended this rental property.",
+   "if_asked": "My friend assured me it was a legitimate rental.",
+   "id": "p05",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 2,
+   "secs": 15.1,
+   "steps": [
+    "Call the landlord or property manager using a known phone number to confirm the fee and payment details.",
+    "View the property in person and confirm the landlord or agent through the building's management office or county property records before paying.",
+    "Call rental office via official website number to confirm fee amount and payee before paying."
+   ],
+   "escalated": true,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contact from known person; need to confirm fee legitimacy",
+     "quote": "Please pay the application fee to proceed with the rental process.",
+     "step": "Call the landlord or property manager using a known phone number to confirm the fee and payment details."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary rental application fee paid to a known contact.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, for a stated need.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Rental fee request reached the buyer through a friend; no sign the buyer has seen the property or confirmed the landlord. Fake listings commonly collect application fees.",
+     "quote": "I need to pay the application fee to secure the rental property.",
+     "step": "View the property in person and confirm the landlord or agent through the building's management office or county property records before paying."
+    },
+    {
+     "v": "verify",
+     "reason": "Rental application fee via friend referral with no independent check of property or payee.",
+     "quote": "Please pay the application fee to proceed with the rental process.",
+     "step": "Call rental office via official website number to confirm fee amount and payee before paying."
+    }
+   ],
+   "final": "hold",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Ordinary rental application fee, no scam signals"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment requested by a contact the buyer knows but not verified independently"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, for a reason they give."
+    },
+    {
+     "v": "hold",
+     "reason": "Upfront application fee for a rental the buyer has not seen: classic rental scam pattern. A friend's assurance is not independent verification of the property or landlord."
+    },
+    {
+     "v": "verify",
+     "reason": "Rental fee requested via third-party recommendation with no independent confirmation of landlord or property."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "fake_directory_fee",
+   "item": "Business Listing Fee",
+   "price": 150.0,
+   "need": "I need to pay the fee to list my business in a directory.",
+   "terms": "Please pay the listing fee to appear in our business directory.",
+   "origin": "contacted",
+   "source": "Received an email from a business directory service.",
+   "if_asked": "I thought it was a legitimate business opportunity.",
+   "id": "p06",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.5,
+   "steps": [
+    "Log into the directory\u2019s official website and verify the listing fee and payment details there.",
+    "Check the directory's official website directly to confirm the payment details and fee.",
+    "Check the directory's official website (typed in yourself) for listing fees."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited fee request received via email; buyer should confirm legitimacy before paying.",
+     "quote": "Please pay the listing fee to appear in our business directory.",
+     "step": "Log into the directory\u2019s official website and verify the listing fee and payment details there."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; payment details not confirmed independently",
+     "quote": "Please pay the listing fee to appear in our business directory.",
+     "step": "Check the directory's official website directly to confirm the payment details and fee."
+    },
+    {
+     "v": "verify",
+     "reason": "Unsolicited contact, fee to list a business.",
+     "quote": "Please pay the listing fee to appear in our business directory.",
+     "step": "Check the directory's official website (typed in yourself) for listing fees."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited fee request; buyer has not independently confirmed legitimacy"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via email; buyer not sure of sender; payment details not confirmed independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Unsolicited contact, fee for listing."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "fake_award_fee",
+   "item": "Award Entry Fee",
+   "price": 30.0,
+   "need": "I need to pay the entry fee to be considered for the award.",
+   "terms": "Please pay the entry fee to be eligible for the award.",
+   "origin": "contacted",
+   "source": "Received an email about an award I apparently won.",
+   "if_asked": "I paid it because I thought I had won an award.",
+   "id": "p07",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.6,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Prize award fee scam",
+     "quote": "Please pay the entry fee to be eligible for the award.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam signal: payment to claim a prize or award",
+     "quote": "Please pay the entry fee to be eligible for the award.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Fee to receive a prize.",
+     "quote": "Please pay the entry fee to be eligible for the award.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "fake_subscription_renewal",
+   "item": "Magazine Subscription",
+   "price": 49.99,
+   "need": "I need to renew my magazine subscription to continue receiving issues.",
+   "terms": "Renew your subscription now to avoid missing out on future issues.",
+   "origin": "contacted",
+   "source": "Received an email about my subscription renewal.",
+   "if_asked": "I assumed it was a legitimate renewal notice.",
+   "id": "p08",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.9,
+   "steps": [
+    "Log into the magazine's official website (typed URL) and verify renewal status and payment details.",
+    "Check the renewal email's sender and compare with your account's official contact info.",
+    "Log into your account on the magazine's official website and check your subscription status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted renewal request; buyer must confirm details independently",
+     "quote": "Renew your subscription now to avoid missing out on future issues.",
+     "step": "Log into the magazine's official website (typed URL) and verify renewal status and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Request contacted the buyer; payment details may have changed",
+     "quote": "Renew your subscription now to avoid missing out on future issues.",
+     "step": "Check the renewal email's sender and compare with your account's official contact info."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted about a renewal; check independently.",
+     "quote": "Renew your subscription now to avoid missing out on future issues.",
+     "step": "Log into your account on the magazine's official website and check your subscription status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Contacted renewal email; buyer hasn't independently confirmed request"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; no independent verification of sender or payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted with a renewal notice."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "fake_trademark_renewal",
+   "item": "Trademark Renewal Fee",
+   "price": 200.0,
+   "need": "I need to pay the renewal fee to maintain my trademark.",
+   "terms": "Please pay the renewal fee to keep your trademark active.",
+   "origin": "contacted",
+   "source": "Received an email about my trademark renewal.",
+   "if_asked": "I thought it was a legitimate trademark renewal notice.",
+   "id": "p09",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.1,
+   "steps": [
+    "Log into the official trademark office account and confirm the renewal fee amount and payment details there.",
+    "Call the official trademark office using a number from their official website to confirm the renewal fee and payment details.",
+    "Log into the USPTO website and check your trademark status and renewal fees."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted email request for trademark renewal fee without buyer verification",
+     "quote": "Please pay the renewal fee to keep your trademark active.",
+     "step": "Log into the official trademark office account and confirm the renewal fee amount and payment details there."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; payment details not confirmed independently",
+     "quote": "Please pay the renewal fee to keep your trademark active.",
+     "step": "Call the official trademark office using a number from their official website to confirm the renewal fee and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted about a fee; need to check independently.",
+     "quote": null,
+     "step": "Log into the USPTO website and check your trademark status and renewal fees."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited renewal fee request; buyer hasn't independently confirmed legitimacy"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer; payment details not confirmed independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, request for payment."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "fake_domain_renewal",
+   "item": "Domain Name Renewal",
+   "price": 15.0,
+   "need": "I need to renew my domain name to keep my website online.",
+   "terms": "Please renew your domain name to avoid losing it.",
+   "origin": "contacted",
+   "source": "Received an email about my domain renewal.",
+   "if_asked": "I assumed it was a legitimate domain renewal notice.",
+   "id": "p10",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.0,
+   "steps": [
+    "Log into the registrar\u2019s official website directly and check the domain\u2019s renewal status and payment details.",
+    "Check renewal details in your domain registrar's official account directly.",
+    "Log in to your domain registrar account to check the renewal status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited renewal email; buyer must confirm legitimacy before paying",
+     "quote": "Please renew your domain name to avoid losing it.",
+     "step": "Log into the registrar\u2019s official website directly and check the domain\u2019s renewal status and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; payment details not confirmed independently",
+     "quote": "Please renew your domain name to avoid losing it.",
+     "step": "Check renewal details in your domain registrar's official account directly."
+    },
+    {
+     "v": "verify",
+     "reason": "Message reached buyer, asking for payment.",
+     "quote": "Please renew your domain name to avoid losing it.",
+     "step": "Log in to your domain registrar account to check the renewal status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited renewal email; buyer hasn't independently confirmed details"
+    },
+    {
+     "v": "verify",
+     "reason": "Request contacted the buyer; verification not independent"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received unsolicited message."
+    }
+   ]
+  },
+  {
+   "kind": "scam_loud",
+   "category": "classic_fraud",
+   "item": "Prize Winning",
+   "price": 500.0,
+   "need": "I need to pay a processing fee to claim my prize.",
+   "terms": "Congratulations! You've won a prize. Pay the processing fee to claim it.",
+   "origin": "contacted",
+   "source": "Received a call about winning a prize.",
+   "if_asked": "I paid it because I thought I had won a prize.",
+   "id": "p11",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.7,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Prize scam: fee required to claim prize",
+     "quote": "Pay the processing fee to claim it.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam signal: paying a fee to claim a prize",
+     "quote": "Pay the processing fee to claim it.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Prize won with a fee to claim. Classic prize scam.",
+     "quote": "Pay the processing fee to claim it.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "classic_fraud",
+   "item": "Tech Support",
+   "price": 200.0,
+   "need": "I need to pay for tech support to fix my computer.",
+   "terms": "Your computer is infected. Pay for our tech support to fix it.",
+   "origin": "contacted",
+   "source": "Received a pop-up message on my computer.",
+   "if_asked": "I paid it because I thought my computer was infected.",
+   "id": "p12",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.6,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "tech support scam",
+     "quote": "Your computer is infected. Pay for our tech support to fix it.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam signal: fake tech support pop-up demanding payment",
+     "quote": "Your computer is infected. Pay for our tech support to fix it.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Unsolicited tech support and demand for payment are a scam pattern.",
+     "quote": "Your computer is infected. Pay for our tech support to fix it.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "classic_fraud",
+   "item": "Lottery Winning",
+   "price": 300.0,
+   "need": "I need to pay a processing fee to claim my lottery winnings.",
+   "terms": "Congratulations! You've won the lottery. Pay the processing fee to claim it.",
+   "origin": "contacted",
+   "source": "Received an email about winning the lottery.",
+   "if_asked": "I paid it because I thought I had won the lottery.",
+   "id": "p13",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.6,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Lottery prize fee scam",
+     "quote": "Pay the processing fee to claim it.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam signal: paying a fee to claim a prize",
+     "quote": "Pay the processing fee to claim it.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Prize/lottery scam: fee to claim winnings.",
+     "quote": "Pay the processing fee to claim it.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "classic_fraud",
+   "item": "Inheritance Claim",
+   "price": 1000.0,
+   "need": "I need to pay a processing fee to claim my inheritance.",
+   "terms": "You are entitled to an inheritance. Pay the processing fee to claim it.",
+   "origin": "contacted",
+   "source": "Received a letter about an inheritance.",
+   "if_asked": "I paid it because I thought I was entitled to an inheritance.",
+   "id": "p14",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.4,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Inheritance claim fee request (scam)",
+     "quote": "Pay the processing fee to claim it.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: fee to claim inheritance",
+     "quote": "Pay the processing fee to claim it.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Fee to receive inheritance is a classic scam pattern.",
+     "quote": "Pay the processing fee to claim it.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "legit_self",
+   "category": "online_purchase",
+   "item": "New Laptop",
+   "price": 1200.0,
+   "need": "I need a new laptop for work.",
+   "terms": "Standard return and refund policy applies.",
+   "origin": "self",
+   "source": "I visited the website and placed the order myself.",
+   "if_asked": "I checked the website's reviews and security certificate.",
+   "id": "p15",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Buyer initiated purchase on seller's website, ordinary transaction",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated contact, standard terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "online_purchase",
+   "item": "Smartphone",
+   "price": 800.0,
+   "need": "I need a new smartphone for personal use.",
+   "terms": "Standard return and refund policy applies.",
+   "origin": "self",
+   "source": "I visited the website and placed the order myself.",
+   "if_asked": "I checked the website's reviews and security certificate.",
+   "id": "p16",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, no scam signals",
+     "quote": "I need a new smartphone for personal use.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer for a stated need.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "online_purchase",
+   "item": "Fitness Tracker",
+   "price": 150.0,
+   "need": "I need a fitness tracker to monitor my health.",
+   "terms": "Standard return and refund policy applies.",
+   "origin": "self",
+   "source": "I visited the website and placed the order myself.",
+   "if_asked": "I checked the website's reviews and security certificate.",
+   "id": "p17",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, no scam signals",
+     "quote": "I need a fitness tracker to monitor my health.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "online_purchase",
+   "item": "Books",
+   "price": 50.0,
+   "need": "I need some books for my studies.",
+   "terms": "Standard return and refund policy applies.",
+   "origin": "self",
+   "source": "I visited the website and placed the order myself.",
+   "if_asked": "I checked the website's reviews and security certificate.",
+   "id": "p18",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with a standard policy.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "online_purchase",
+   "item": "Office Chair",
+   "price": 200.0,
+   "need": "I need a new office chair for my home office.",
+   "terms": "Standard return and refund policy applies.",
+   "origin": "self",
+   "source": "I visited the website and placed the order myself.",
+   "if_asked": "I checked the website's reviews and security certificate.",
+   "id": "p19",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer with standard terms, no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with a standard return policy.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "online_purchase",
+   "item": "Wireless Headphones",
+   "price": 100.0,
+   "need": "I need wireless headphones for commuting.",
+   "terms": "Standard return and refund policy applies.",
+   "origin": "self",
+   "source": "I visited the website and placed the order myself.",
+   "if_asked": "I checked the website's reviews and security certificate.",
+   "id": "p20",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Buyer initiated purchase directly from seller's website, ordinary item",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated, standard terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "online_purchase",
+   "item": "Gaming Console",
+   "price": 500.0,
+   "need": "I need a gaming console for entertainment.",
+   "terms": "Standard return and refund policy applies.",
+   "origin": "self",
+   "source": "I visited the website and placed the order myself.",
+   "if_asked": "I checked the website's reviews and security certificate.",
+   "id": "p21",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 2.3,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": "I need a gaming console for entertainment.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated contact, standard terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_bill",
+   "category": "utility_bill",
+   "item": "Electric Bill",
+   "price": 100.0,
+   "need": "I need to pay my electric bill to keep the lights on.",
+   "terms": "Pay your electric bill by the due date to avoid late fees.",
+   "origin": "contacted",
+   "source": "Received a paper bill in the mail.",
+   "if_asked": "I checked my account online to verify the amount and due date.",
+   "id": "p22",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.9,
+   "steps": [
+    "Call the utility's official phone number from a previous bill to confirm amount and payment method.",
+    "Check the payment details on the paper bill against your usual payment method.",
+    "Log in to your account on the electric company's website and pay there."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted bill; need to confirm payment details are correct",
+     "quote": "Pay your electric bill by the due date to avoid late fees.",
+     "step": "Call the utility's official phone number from a previous bill to confirm amount and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Received a paper bill in the mail, but payment details may have changed",
+     "quote": "Pay your electric bill by the due date to avoid late fees.",
+     "step": "Check the payment details on the paper bill against your usual payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Message reached buyer; bill payment.",
+     "quote": null,
+     "step": "Log in to your account on the electric company's website and pay there."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular electric bill, buyer verified amount and due date via online account, no scam signals present."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid as usual, no scam signals."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill, usual amount, verified by logging into their own account."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "insurance_bill",
+   "item": "Car Insurance",
+   "price": 150.0,
+   "need": "I need to pay my car insurance to keep my coverage active.",
+   "terms": "Pay your car insurance bill by the due date to avoid cancellation.",
+   "origin": "contacted",
+   "source": "Received an email from my insurance provider.",
+   "if_asked": "I checked my policy documents to verify the amount and due date.",
+   "id": "p23",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.8,
+   "steps": [
+    "Log into your insurer's official website and verify the amount and payment link there.",
+    "Check the email sender's address and verify it matches your insurer's official domain.",
+    "Log in to your insurance account and pay the bill there."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted via email; payment details need confirmation",
+     "quote": "Pay your car insurance bill by the due date to avoid cancellation.",
+     "step": "Log into your insurer's official website and verify the amount and payment link there."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details or payee changed or new, request came via email",
+     "quote": "Pay your car insurance bill by the due date to avoid cancellation.",
+     "step": "Check the email sender's address and verify it matches your insurer's official domain."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request reached the buyer via email.",
+     "quote": null,
+     "step": "Log in to your insurance account and pay the bill there."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; need to confirm payment details independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed or new; buyer was contacted"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted with a bill. Policy documents are not a check of new details."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "subscription_renewal",
+   "item": "Streaming Service",
+   "price": 10.0,
+   "need": "I need to renew my streaming service subscription to continue using it.",
+   "terms": "Renew your subscription now to avoid interruption of service.",
+   "origin": "contacted",
+   "source": "Received an email about my subscription renewal.",
+   "if_asked": "I checked my account on the streaming service's website.",
+   "id": "p24",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.1,
+   "steps": [
+    "Log into the streaming service via its official website and confirm the renewal details there.",
+    "Check the renewal email's sender and compare with your account's official contact info.",
+    "Log in to your streaming service account directly and check your subscription status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request with renewal email; no buyer verification provided",
+     "quote": "Renew your subscription now to avoid interruption of service.",
+     "step": "Log into the streaming service via its official website and confirm the renewal details there."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; payment details may have changed",
+     "quote": "Renew your subscription now to avoid interruption of service.",
+     "step": "Check the renewal email's sender and compare with your account's official contact info."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request reached the buyer via email.",
+     "quote": "Renew your subscription now to avoid interruption of service.",
+     "step": "Log in to your streaming service account directly and check your subscription status."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Ordinary subscription renewal; buyer verified via own account"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected renewal paid the usual way"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to the buyer. Buyer checked their account."
+    },
+    {
+     "v": "clear",
+     "reason": "Renewal notice arrived by email, but buyer independently checked their own account on the service's website, confirming the charge."
+    },
+    {
+     "v": "clear",
+     "reason": "Buyer independently verified renewal in own account; ordinary subscription renewal with no scam signals."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "software_license",
+   "item": "Office Software",
+   "price": 100.0,
+   "need": "I need to renew my office software license to continue using the program.",
+   "terms": "Renew your software license now to avoid losing access.",
+   "origin": "contacted",
+   "source": "Received an email about my software license renewal.",
+   "if_asked": "I checked my purchase history and subscription status.",
+   "id": "p25",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.3,
+   "steps": [
+    "Log into the official software vendor website and verify your license status and renewal details.",
+    "Check the renewal link in your official software account or contact support using a known number.",
+    "Log in to your account on the official software website and check the renewal status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited renewal email with urgency; buyer should confirm through official account.",
+     "quote": "Renew your software license now to avoid losing access.",
+     "step": "Log into the official software vendor website and verify your license status and renewal details."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details may have changed",
+     "quote": "Renew your software license now to avoid losing access.",
+     "step": "Check the renewal link in your official software account or contact support using a known number."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted about a renewal; check independently.",
+     "quote": "Renew your software license now to avoid losing access.",
+     "step": "Log in to your account on the official software website and check the renewal status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Contacted renewal request; buyer must confirm legitimacy of payment request"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer; payment details may have changed"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, renewal request. Check independently."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "domain_renewal",
+   "item": "Website Domain",
+   "price": 15.0,
+   "need": "I need to renew my website domain to keep my website online.",
+   "terms": "Renew your domain now to avoid losing it.",
+   "origin": "contacted",
+   "source": "Received an email about my domain renewal.",
+   "if_asked": "I checked my domain registrar account.",
+   "id": "p26",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.3,
+   "steps": [
+    "Log into your registrar\u2019s official website and check the domain\u2019s renewal status.",
+    "Check the renewal in your domain registrar's official website using your account credentials.",
+    "Log into your domain registrar account (e.g., GoDaddy, Namecheap) to check the renewal status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Buyer received unsolicited renewal email; must confirm through official registrar account",
+     "quote": "Renew your domain now to avoid losing it.",
+     "step": "Log into your registrar\u2019s official website and check the domain\u2019s renewal status."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; payment details may have changed",
+     "quote": "Renew your domain now to avoid losing it.",
+     "step": "Check the renewal in your domain registrar's official website using your account credentials."
+    },
+    {
+     "v": "verify",
+     "reason": "The request came to the buyer via email. Need to check independently.",
+     "quote": "Renew your domain now to avoid losing it.",
+     "step": "Log into your domain registrar account (e.g., GoDaddy, Namecheap) to check the renewal status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Buyer verified renewal need through their own registrar account"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via email, payment details may have changed"
+    },
+    {
+     "v": "verify",
+     "reason": "Contacted for renewal; buyer checked account."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "trademark_renewal",
+   "item": "Trademark",
+   "price": 200.0,
+   "need": "I need to renew my trademark to maintain its validity.",
+   "terms": "Renew your trademark now to keep it active.",
+   "origin": "contacted",
+   "source": "Received an email about my trademark renewal.",
+   "if_asked": "I checked my trademark registration documents.",
+   "id": "p27",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.7,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Unsolicited trademark renewal email, classic renewal scam",
+     "quote": "Renew your trademark now to keep it active.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; payment details may be new or changed",
+     "quote": "Renew your trademark now to keep it active.",
+     "step": "Check the renewal details in your official trademark account directly, not through the email link."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received unsolicited message about renewal.",
+     "quote": "Renew your trademark now to keep it active.",
+     "step": "Log into USPTO account and check renewal status."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "control_not_checked",
+   "category": "utility_bill",
+   "item": "Water Bill",
+   "price": 50.0,
+   "need": "I need to pay my water bill to keep my service active.",
+   "terms": "Pay your water bill by the due date to avoid service interruption.",
+   "origin": "contacted",
+   "source": "Received a paper bill in the mail.",
+   "if_asked": "I just want to pay it without checking.",
+   "id": "p28",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.1,
+   "steps": [
+    "Call the water utility using the phone number from a previous bill to confirm amount and account",
+    "Call the utility company using the number on the back of the bill to confirm the payment details.",
+    "Log in to your water provider's website and pay from there."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request with no buyer verification",
+     "quote": null,
+     "step": "Call the water utility using the phone number from a previous bill to confirm amount and account"
+    },
+    {
+     "v": "verify",
+     "reason": "Received a paper bill in the mail, but payment details may have changed; verify independently.",
+     "quote": "Pay your water bill by the due date to avoid service interruption.",
+     "step": "Call the utility company using the number on the back of the bill to confirm the payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Message reached buyer; need to check details independently.",
+     "quote": "Pay your water bill by the due date to avoid service interruption.",
+     "step": "Log in to your water provider's website and pay from there."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; buyer hasn't confirmed details through known channel"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted and wants to pay without verification"
+    },
+    {
+     "v": "verify",
+     "reason": "Message reached buyer, request for payment."
+    }
+   ]
+  },
+  {
+   "kind": "control_not_checked",
+   "category": "insurance_bill",
+   "item": "Home Insurance",
+   "price": 200.0,
+   "need": "I need to pay my home insurance to keep my coverage active.",
+   "terms": "Pay your home insurance bill by the due date to avoid cancellation.",
+   "origin": "contacted",
+   "source": "Received an email from my insurance provider.",
+   "if_asked": "I just want to pay it without checking.",
+   "id": "p29",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.9,
+   "steps": [
+    "Log into your insurance account via the official website you normally use and confirm the amount and payment details there.",
+    "Log in to your insurance account directly via the official website to confirm the payment details and due amount.",
+    "Log in to your insurance account and pay the bill there."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request without buyer verification",
+     "quote": "Pay your home insurance bill by the due date to avoid cancellation.",
+     "step": "Log into your insurance account via the official website you normally use and confirm the amount and payment details there."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; payment details may have changed",
+     "quote": "Pay your home insurance bill by the due date to avoid cancellation.",
+     "step": "Log in to your insurance account directly via the official website to confirm the payment details and due amount."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message asking for payment.",
+     "quote": null,
+     "step": "Log in to your insurance account and pay the bill there."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted via email and did not independently verify the payment request"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted and wants to pay without verifying details"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message and is paying a bill."
+    }
+   ]
+  },
+  {
+   "kind": "control_not_checked",
+   "category": "subscription_renewal",
+   "item": "Music Streaming",
+   "price": 10.0,
+   "need": "I need to renew my music streaming subscription to continue using it.",
+   "terms": "Renew your subscription now to avoid interruption of service.",
+   "origin": "contacted",
+   "source": "Received an email about my subscription renewal.",
+   "if_asked": "I just want to pay it without checking.",
+   "id": "p30",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.1,
+   "steps": [
+    "Log into your account on the official website and confirm the subscription renewal details.",
+    "Check renewal details in your account dashboard, not the email link.",
+    "Log in to your music streaming account and check your subscription status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted renewal email with urgency to avoid interruption",
+     "quote": "Renew your subscription now to avoid interruption of service.",
+     "step": "Log into your account on the official website and confirm the subscription renewal details."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; check payment details independently",
+     "quote": "Renew your subscription now to avoid interruption of service.",
+     "step": "Check renewal details in your account dashboard, not the email link."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to the buyer. Need to check renewal details.",
+     "quote": "Renew your subscription now to avoid interruption of service.",
+     "step": "Log in to your music streaming account and check your subscription status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted and wants to pay without checking"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer; payment details not confirmed independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request reached the buyer via email."
+    }
+   ]
+  }
+ ]
+}

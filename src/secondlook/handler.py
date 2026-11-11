@@ -138,24 +138,20 @@ body{font-family:Inter,system-ui,sans-serif;background:#f7f8fa;color:#111;margin
 .bar button.on{background:#1a7fdb;color:#fff}#grid{height:640px;width:100%}a{color:#1a7fdb}#about{min-height:48px}
 </style></head><body><div class="wrap">
 <h1>Blind test results: every purchase, every answer</h1>
-<p>Each test set was written by AI models from other makers, from a category list only. Each was run once, after the code was frozen. Sort, filter or search any column.
+<p>Each test set was written by AI models from other makers, from a category list only. Each was run once, after the code was frozen, against pass marks written down beforehand. Sort, filter or search any column.
 <a href="/">Back to the demo</a> &middot; <a href="https://github.com/DKJager/secondlook/tree/main/bench">Data and re-run scripts</a></p>
 <div class="sets" id="sets"></div>
 <p id="about"></p>
 <div class="tiles" id="tiles"></div>
-<div class="bar"><button data-f="all" class="on">All</button><button data-f="miss">Misses only</button><button data-f="scam">Scams</button><button data-f="normal">Normal purchases</button><button data-f="check">Asked to check first</button>
+<div class="bar"><button data-f="all" class="on">All</button><button data-f="miss">Misses only</button><button data-f="scam">Scams</button><button data-f="normal">Normal purchases</button><button data-f="control">Not checked (control)</button><button data-f="check">Asked to check first</button>
 <input id="q" placeholder="Search..." style="flex:1;min-width:180px;border:1px solid #cfd4da;border-radius:8px;padding:8px 12px"></div>
 <div id="grid" class="ag-theme-quartz"></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/ag-grid-community@32.3.3/dist/ag-grid-community.min.js"></script>
 <script>
 const ALL = __ROWS__;
-const SETS = [
-  { id: 'blind2', name: 'Current version', sub: '120 purchases, 4 makers, 10 Nov', about: 'The current version. Written by Microsoft MAI, Zhipu GLM-5, Amazon Nova Pro and xAI Grok. Second Look asks how the request reached the buyer; anything that came to the buyer is locked until they have checked it themselves. A scam counts as stopped only if it was not allowed at first AND still not allowed after the buyer said how they checked.' },
-  { id: 'blind1', name: 'Earlier version', sub: '80 purchases, 2 makers, 10 Nov', about: 'The version before Second Look asked how the request reached the buyer. It missed 9 of 36 scams, because a fake renewal and a real one read exactly the same. That result is why the question was added. These rows were then used for tuning.' },
-  { id: 'first61', name: 'First version', sub: '61 purchases, 1 maker, 9 Nov', about: 'The first version: clear or hold only. It missed 5 quiet fake invoices. These rows were later used for tuning, so they are no longer a blind test.' }
-];
-let cur = 'blind2', mode = 'all';
+const SETS = __SETS__;
+let cur = SETS[0].id, mode = 'all';
 const tile = (n, t) => '<div class="tile"><b>' + n + '</b><span>' + t + '</span></div>';
 const rowsOf = () => ALL.filter(r => r.set === cur);
 const colour = v => ({ color: v === 'hold' ? '#d93025' : (v === 'verify' ? '#a56a00' : '#1e8e3e'), fontWeight: 600 });
@@ -166,14 +162,14 @@ const api = agGrid.createGrid(document.getElementById('grid'), {
   columnDefs: [
     { colId: 'result', headerName: 'Result', width: 105, valueGetter: p => p.data.correct ? 'Correct' : 'MISS',
       cellStyle: p => ({ color: p.value === 'Correct' ? '#1e8e3e' : '#d93025', fontWeight: 600 }) },
-    { field: 'label', headerName: 'Truth', width: 95 },
+    { field: 'label', headerName: 'Truth', width: 110, valueFormatter: p => p.value === 'control' ? 'normal, not checked' : p.value },
     { field: 'first', headerName: 'First answer', width: 135, valueFormatter: p => word(p.value), cellStyle: p => colour(p.value) },
     { field: 'final', headerName: 'After the buyer checked', width: 150, valueFormatter: p => word(p.value), cellStyle: p => colour(p.value) },
     { field: 'origin', headerName: 'How it reached the buyer', width: 150, valueFormatter: p => ({ self: 'went to seller', contacted: 'came to buyer', known_person: 'someone they know' })[p.value] || 'not asked' },
     { field: 'item', width: 200 },
     { field: 'price', width: 100, valueFormatter: p => '$' + Number(p.value).toLocaleString() },
     { field: 'need', headerName: 'Buyer said', flex: 2, minWidth: 260 },
-    { field: 'asked', headerName: 'Asked "how did you check?"', flex: 2, minWidth: 240 },
+    { field: 'asked', headerName: 'Answer to "how did you check?"', flex: 2, minWidth: 240 },
     { field: 'reasons', headerName: 'Reviewers said', flex: 2, minWidth: 260 },
     { field: 'writer', headerName: 'Written by', width: 140 }
   ],
@@ -181,14 +177,22 @@ const api = agGrid.createGrid(document.getElementById('grid'), {
   doesExternalFilterPass: n => mode === 'miss' ? !n.data.correct : (mode === 'check' ? n.data.first === 'verify' : n.data.label === mode)
 });
 function draw() {
-  const rows = rowsOf(), scams = rows.filter(r => r.label === 'scam'), normal = rows.filter(r => r.label === 'normal');
-  document.getElementById('about').textContent = SETS.find(s => s.id === cur).about;
-  document.getElementById('tiles').innerHTML =
-    tile(scams.filter(r => r.correct).length + ' of ' + scams.length, 'scams stopped') +
-    tile(normal.filter(r => r.first === 'hold').length + ' of ' + normal.length, 'normal purchases flagged as a scam') +
-    tile(normal.filter(r => r.first === 'allow').length + ' of ' + normal.length, 'normal purchases cleared at once') +
-    tile(normal.filter(r => r.final === 'allow').length + ' of ' + normal.length, 'cleared after at most one check') +
-    tile(rows.filter(r => !r.correct).length, 'misses, all listed below');
+  const rows = rowsOf(), scams = rows.filter(r => r.label === 'scam'), normal = rows.filter(r => r.label === 'normal'), ctl = rows.filter(r => r.label === 'control');
+  const set = SETS.find(s => s.id === cur);
+  document.getElementById('about').textContent = set.about;
+  let t = '';
+  if (set.lie) {
+    t = tile(scams.filter(r => r.correct).length + ' of ' + scams.length, 'false claims stopped') +
+        tile(scams.filter(r => !r.correct).length + ' of ' + scams.length, 'cleared on a false claim');
+  } else {
+    t = tile(scams.filter(r => r.correct).length + ' of ' + scams.length, 'scams stopped') +
+        tile(normal.filter(r => r.final !== 'allow').length + ' of ' + normal.length, 'normal purchases wrongly blocked') +
+        tile(normal.filter(r => r.first === 'hold' || r.final === 'hold').length + ' of ' + normal.length, 'normal purchases called a scam') +
+        tile(normal.filter(r => r.first === 'allow').length + ' of ' + normal.length, 'normal purchases cleared at once') +
+        tile(normal.filter(r => r.final === 'allow').length + ' of ' + normal.length, 'cleared after at most one check') +
+        (ctl.length ? tile(ctl.filter(r => r.correct).length + ' of ' + ctl.length, 'unchecked requests kept locked') : '');
+  }
+  document.getElementById('tiles').innerHTML = t + tile(rows.filter(r => !r.correct).length, 'misses, all listed below');
   api.setGridOption('rowData', rows); api.onFilterChanged();
 }
 document.getElementById('sets').innerHTML = SETS.map(s => '<button data-s="' + s.id + '"' + (s.id === cur ? ' class="on"' : '') + '>' + s.name + '<small>' + s.sub + '</small></button>').join('');
@@ -206,7 +210,9 @@ draw();
 def _results_page() -> str:
     path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "test_results.json")
     with open(path, encoding="utf-8") as fh:
-        return _RESULTS_PAGE.replace("__ROWS__", fh.read().replace("</", "<\\/"))
+        data = json.load(fh)
+    safe = lambda obj: json.dumps(obj, ensure_ascii=False).replace("</", "<\\/")
+    return _RESULTS_PAGE.replace("__SETS__", safe(data["sets"])).replace("__ROWS__", safe(data["rows"]))
 
 
 def _build_ask_fns(models: List[str], max_tokens: int = None) -> List[Callable]:

@@ -1,7 +1,8 @@
-"""Run a test set through the reviewers. usage: bench_vf.py <codedir> <set.json> <out.json>"""
-import sys, os, json, time, subprocess, concurrent.futures as cf
-env = json.loads(subprocess.run(["aws","lambda","get-function-configuration","--region","us-east-2","--function-name","secondlook-demo","--query","Environment.Variables","--output","json"],capture_output=True,text=True).stdout)
-for k in ("SECONDLOOK_API_KEY","SECONDLOOK_BASE_URL","SECONDLOOK_MODELS"): os.environ[k] = env[k]
+"""Run a test set through the reviewers, two passes. usage: run_set.py <path to src> <set.json> <out.json> [--quiet]
+
+Pass 1: the purchase as written. Pass 2: if the answer was "verify", the row's own if_asked is sent as the buyer's check."""
+import sys, os, json, time, concurrent.futures as cf
+# needs SECONDLOOK_API_KEY and SECONDLOOK_MODELS in the environment (our runs read the live demo's own settings at run time)
 sys.path.insert(0, sys.argv[1])
 from secondlook import handler, crowd
 models = [m.strip() for m in os.environ["SECONDLOOK_MODELS"].split(",") if m.strip()]
@@ -37,6 +38,8 @@ kinds = sorted(set(r["kind"] for r in res))
 summ = {k: cnt(k) for k in kinds}
 sc = [r for r in res if r["kind"].startswith("scam")]; ok = [r for r in res if r["kind"] in ("legit_self", "legit_verified")]
 allok = [r for r in res if r["kind"].startswith("legit")]
+ctl = [r for r in res if r["kind"] == "control_not_checked"]
+summ["CONTROL_NOT_CHECKED_STAYED_LOCKED"] = f"{sum(r['final'] != 'allow' for r in ctl)}/{len(ctl)}"
 summ["SCAMS_STOPPED"] = f"{sum(r['decision'] != 'allow' for r in sc)}/{len(sc)}"
 summ["SCAMS_STILL_STOPPED_AFTER_BUYER_ANSWER"] = f"{sum(r['final'] != 'allow' for r in sc)}/{len(sc)}"
 summ["NORMAL_ALLOWED_AT_ONCE"] = f"{sum(r['decision'] == 'allow' for r in allok)}/{len(allok)}"

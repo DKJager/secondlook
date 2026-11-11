@@ -1,0 +1,1522 @@
+{
+ "summary": {
+  "legit_self": {
+   "n": 7,
+   "allow": 7,
+   "verify": 0,
+   "hold": 0
+  },
+  "legit_unverified": {
+   "n": 3,
+   "allow": 0,
+   "verify": 3,
+   "hold": 0
+  },
+  "legit_verified": {
+   "n": 6,
+   "allow": 0,
+   "verify": 6,
+   "hold": 0
+  },
+  "scam_loud": {
+   "n": 4,
+   "allow": 0,
+   "verify": 1,
+   "hold": 3
+  },
+  "scam_quiet": {
+   "n": 10,
+   "allow": 0,
+   "verify": 7,
+   "hold": 3
+  },
+  "SCAMS_STOPPED": "14/14",
+  "SCAMS_STILL_STOPPED_AFTER_BUYER_ANSWER": "14/14",
+  "NORMAL_ALLOWED_AT_ONCE": "7/16",
+  "NORMAL_ALLOWED_AFTER_ONE_CHECK": "13/16",
+  "NORMAL_ASKED_TO_CHECK": 9,
+  "NORMAL_WRONGLY_HELD": 0,
+  "rows_with_a_reviewer_fault": 0,
+  "went_to_larger_crowd": 0,
+  "secs_p90": 3.8,
+  "median_secs": 3.1
+ },
+ "rows": [
+  {
+   "kind": "scam_quiet",
+   "category": "invoice",
+   "item": "Office Supplies",
+   "price": 125,
+   "need": "I need these supplies for my office.",
+   "terms": "Please pay within 30 days to avoid late fees.",
+   "origin": "contacted",
+   "source": "Received an email from what seemed to be our usual supplier.",
+   "if_asked": "I used the email address and details provided in the email to make the payment.",
+   "id": "p01",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.8,
+   "steps": [
+    "Compare the payment details with the supplier\u2019s known account or invoice.",
+    "Check the email sender's address and compare it to your records of the supplier's official domain.",
+    "Log in to your usual supplier's website and check for this invoice."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted with a payment request; need to confirm details",
+     "quote": "Please pay within 30 days to avoid late fees.",
+     "step": "Compare the payment details with the supplier\u2019s known account or invoice."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email from supplier; payment details may have changed",
+     "quote": "Please pay within 30 days to avoid late fees.",
+     "step": "Check the email sender's address and compare it to your records of the supplier's official domain."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, invoice received. Need to confirm details independently.",
+     "quote": null,
+     "step": "Log in to your usual supplier's website and check for this invoice."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; payment details not independently verified"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details in contact message not independently confirmed"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details came in a message; buyer used those details."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "renewal",
+   "item": "Software License",
+   "price": 299,
+   "need": "I need to renew my software license to keep using the program.",
+   "terms": "Renewal is required to maintain access to the software.",
+   "origin": "contacted",
+   "source": "Got a notification in my email about the renewal.",
+   "if_asked": "I followed the link in the email to renew the license.",
+   "id": "p02",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.1,
+   "steps": [
+    "Log into the official software account via known URL and confirm renewal details before paying.",
+    "Check the renewal link by logging into your account directly through the official website, not the email link.",
+    "Log into your account on the software's official website to check the renewal status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted renewal notice with new payment request",
+     "quote": "I need to renew my software license to keep using the program.",
+     "step": "Log into the official software account via known URL and confirm renewal details before paying."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email, payment details may have changed",
+     "quote": "Renewal is required to maintain access to the software.",
+     "step": "Check the renewal link by logging into your account directly through the official website, not the email link."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment initiated from a message received by the buyer.",
+     "quote": "Renewal is required to maintain access to the software.",
+     "step": "Log into your account on the software's official website to check the renewal status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer used email link; needs independent confirmation of renewal request"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via email with a link, so verify independently."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment initiated from a link in a received message."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "utility",
+   "item": "Electricity Bill",
+   "price": 85,
+   "need": "I need to pay my electricity bill to keep the power on.",
+   "terms": "Payment is due by the end of the month.",
+   "origin": "contacted",
+   "source": "Received an email that looked like it was from my utility company.",
+   "if_asked": "I used the payment link provided in the email.",
+   "id": "p03",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.8,
+   "steps": [
+    "Log into the utility\u2019s official website or app and verify the $85 amount due.",
+    "Log in to your utility account directly via the official website to verify the bill and payment details.",
+    "Log in to your utility account directly and check for this bill."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted via email; must confirm bill details independently",
+     "quote": "Received an email that looked like it was from my utility company.",
+     "step": "Log into the utility\u2019s official website or app and verify the $85 amount due."
+    },
+    {
+     "v": "verify",
+     "reason": "Received email from utility company, payment details may be fraudulent",
+     "quote": "Payment is due by the end of the month.",
+     "step": "Log in to your utility account directly via the official website to verify the bill and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a bill via email. Must verify independently.",
+     "quote": null,
+     "step": "Log in to your utility account directly and check for this bill."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; buyer used email link without independent verification"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment link in email from utility is suspicious; verify independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer used a link in the message. A real bill should be checked independently."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "parcel",
+   "item": "Delivery Fee",
+   "price": 15,
+   "need": "I need to pay this fee to receive my package.",
+   "terms": "Payment is required to release your parcel.",
+   "origin": "contacted",
+   "source": "Got a text message about a delivery fee.",
+   "if_asked": "I paid using the number provided in the text message.",
+   "id": "p04",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.3,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "delivery fee scam",
+     "quote": "Payment is required to release your parcel.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via text, payment needed to release parcel",
+     "quote": "Payment is required to release your parcel.",
+     "step": "Call the delivery company using the number from their official website to confirm the fee."
+    },
+    {
+     "v": "hold",
+     "reason": "Payment to release a parcel is a delivery scam.",
+     "quote": "Payment is required to release your parcel.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "application",
+   "item": "Job Application Fee",
+   "price": 50,
+   "need": "I need to pay this fee to submit my job application.",
+   "terms": "Payment is required to process your application.",
+   "origin": "contacted",
+   "source": "Received an email about a job opportunity.",
+   "if_asked": "I followed the payment instructions in the email.",
+   "id": "p05",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.6,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Job application fee scam",
+     "quote": "Payment is required to process your application.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted, payment required for application",
+     "quote": "Payment is required to process your application.",
+     "step": "Check the email sender and verify the company's official website and contact details independently."
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee up front to receive a job is a common scam pattern.",
+     "quote": "Payment is required to process your application.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "award",
+   "item": "Award Fee",
+   "price": 300,
+   "need": "I need to pay this fee to receive my award.",
+   "terms": "Payment is required to claim your award.",
+   "origin": "contacted",
+   "source": "Got a letter in the mail about winning an award.",
+   "if_asked": "I used the payment details provided in the letter.",
+   "id": "p06",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.4,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Award fee scam: payment required to claim a prize",
+     "quote": "Payment is required to claim your award.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Unexpected award with payment required; verify through official channels",
+     "quote": "Payment is required to claim your award.",
+     "step": "Call the organization using a number from their official website to confirm the award and payment details."
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee to receive a prize is a classic scam pattern.",
+     "quote": "Payment is required to claim your award.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "rental",
+   "item": "Apartment Rental",
+   "price": 1200,
+   "need": "I need to pay the rent for my apartment.",
+   "terms": "Payment is due at the beginning of each month.",
+   "origin": "contacted",
+   "source": "Received an email from what seemed to be my landlord.",
+   "if_asked": "I used the payment information provided in the email.",
+   "id": "p07",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.6,
+   "steps": [
+    "Log into your landlord\u2019s official portal or call the phone number on your lease to confirm payment details.",
+    "Call landlord using number from past lease or official website to confirm payment instructions",
+    "Log in to your landlord's portal or call the number you already have to confirm the payment details."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted via email with no independent verification of payment details",
+     "quote": "Payment is due at the beginning of each month.",
+     "step": "Log into your landlord\u2019s official portal or call the phone number on your lease to confirm payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via email from landlord; payment details may be compromised",
+     "quote": "Payment is due at the beginning of each month.",
+     "step": "Call landlord using number from past lease or official website to confirm payment instructions"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to buyer via email. Need to confirm details independently.",
+     "quote": null,
+     "step": "Log in to your landlord's portal or call the number you already have to confirm the payment details."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer used email payment details without independent confirmation"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed or new, received via email"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details came in a message; buyer used them without independent check."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "booking",
+   "item": "Hotel Booking",
+   "price": 150,
+   "need": "I need to pay for my hotel booking.",
+   "terms": "Payment is required to confirm your reservation.",
+   "origin": "contacted",
+   "source": "Got an email about a hotel booking confirmation.",
+   "if_asked": "I followed the payment link in the email.",
+   "id": "p08",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.1,
+   "steps": [
+    "Log into the hotel's official website or app directly and confirm the reservation details",
+    "Check the booking in the hotel's official website using your account or contact them directly with a number from their official site.",
+    "Log into your hotel account and check the booking details."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Email request for payment without independent verification",
+     "quote": "Payment is required to confirm your reservation.",
+     "step": "Log into the hotel's official website or app directly and confirm the reservation details"
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details may have changed",
+     "quote": "Payment is required to confirm your reservation.",
+     "step": "Check the booking in the hotel's official website using your account or contact them directly with a number from their official site."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to the buyer via email.",
+     "quote": "Payment is required to confirm your reservation.",
+     "step": "Log into your hotel account and check the booking details."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer used email link without independent confirmation"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment link in email from contacted request"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment link in email, uninitiated contact."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "subscription",
+   "item": "Magazine Subscription",
+   "price": 35,
+   "need": "I need to renew my magazine subscription.",
+   "terms": "Payment is required to continue your subscription.",
+   "origin": "contacted",
+   "source": "Received an email about renewing my subscription.",
+   "if_asked": "I used the payment link provided in the email.",
+   "id": "p09",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.3,
+   "steps": [
+    "Log into the publisher's official website and check your subscription status there.",
+    "Check the renewal email for a link to your account and verify the payment details there.",
+    "Log in to your account on the magazine's official website and check your subscription status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted via email and has not independently verified the request",
+     "quote": "Payment is required to continue your subscription.",
+     "step": "Log into the publisher's official website and check your subscription status there."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details may have changed",
+     "quote": "Payment is required to continue your subscription.",
+     "step": "Check the renewal email for a link to your account and verify the payment details there."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message requesting payment.",
+     "quote": "Payment is required to continue your subscription.",
+     "step": "Log in to your account on the magazine's official website and check your subscription status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer used email link without independent verification"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment link in email must be independently verified"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment initiated from a contacted link. Need independent check."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "merchant",
+   "item": "Online Purchase",
+   "price": 75,
+   "need": "I need to buy this item from the online store.",
+   "terms": "Payment is required to complete your purchase.",
+   "origin": "contacted",
+   "source": "Got an email about a special offer from a store I frequent.",
+   "if_asked": "I followed the payment link in the email.",
+   "id": "p10",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.4,
+   "steps": [
+    "Log into the store\u2019s official website directly and confirm the order details.",
+    "Log in to your account on the store's official website to check the offer and payment details.",
+    "Log into your account on the store's official website and find the offer."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted via email about an offer; no independent verification of request",
+     "quote": "Payment is required to complete your purchase.",
+     "step": "Log into the store\u2019s official website directly and confirm the order details."
+    },
+    {
+     "v": "verify",
+     "reason": "Contacted via email with a special offer; verify independently",
+     "quote": "Got an email about a special offer from a store I frequent.",
+     "step": "Log in to your account on the store's official website to check the offer and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted about an offer; payment details need checking.",
+     "quote": "Payment is required to complete your purchase.",
+     "step": "Log into your account on the store's official website and find the offer."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer used email link, not independent verification"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment link in email from contacted request"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment initiated from a link in an unsolicited email."
+    }
+   ]
+  },
+  {
+   "kind": "scam_loud",
+   "category": "prize",
+   "item": "Lottery Win",
+   "price": 250,
+   "need": "I need to pay a processing fee to claim my lottery win.",
+   "terms": "Payment is required to release your winnings.",
+   "origin": "contacted",
+   "source": "Received a call informing me about my lottery win.",
+   "if_asked": "I used the payment details provided by the caller.",
+   "id": "p11",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.7,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Lottery win fee scam",
+     "quote": "I need to pay a processing fee to claim my lottery win.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam signal: fake lottery win requiring payment",
+     "quote": "Payment is required to release your winnings.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: Prize requires upfront fee.",
+     "quote": "Payment is required to release your winnings.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "tech_support",
+   "item": "Computer Repair",
+   "price": 199,
+   "need": "I need to pay for computer repair services.",
+   "terms": "Payment is required to schedule a repair appointment.",
+   "origin": "contacted",
+   "source": "Got a call from someone claiming to be from my computer's support team.",
+   "if_asked": "I followed the payment instructions given by the caller.",
+   "id": "p12",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 3.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Tech support scam (unsolicited call requesting payment)",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Caller claimed to be from support team, unusual for repair scheduling.",
+     "quote": "Payment is required to schedule a repair appointment.",
+     "step": "Call the official support number from the manufacturer's website to confirm the appointment and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, repair request unsolicited.",
+     "quote": "Got a call from someone claiming to be from my computer's support team.",
+     "step": "Call your computer manufacturer's official support line to confirm."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "investment",
+   "item": "Investment Opportunity",
+   "price": 5000,
+   "need": "I need to invest in this opportunity for potential returns.",
+   "terms": "Payment is required to secure your investment.",
+   "origin": "contacted",
+   "source": "Received an email about a lucrative investment opportunity.",
+   "if_asked": "I used the payment details provided in the email.",
+   "id": "p13",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 4.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Guaranteed investment returns scam",
+     "quote": "Payment is required to secure your investment.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Unsolicited investment offer with no buyer verification",
+     "quote": "Payment is required to secure your investment.",
+     "step": "Check the sender's email address and contact the company directly using a verified phone number or website, not the one in the email."
+    },
+    {
+     "v": "verify",
+     "reason": "Unsolicited investment offer; buyer contacted.",
+     "quote": "Payment is required to secure your investment.",
+     "step": "Check the investment firm's registration with your state's securities regulator."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "charity",
+   "item": "Donation",
+   "price": 200,
+   "need": "I need to make a donation to support a cause.",
+   "terms": "Payment is required to process your donation.",
+   "origin": "contacted",
+   "source": "Got a text message requesting a donation for a charity.",
+   "if_asked": "I followed the payment link in the text message.",
+   "id": "p14",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 4.0,
+   "steps": [
+    "Call the charity using a phone number from its official website to confirm the request",
+    "Call the charity using a number from their official website to confirm the donation request.",
+    "Check the charity's official website for donation options."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited donation request received via text; payment details not independently confirmed",
+     "quote": "Payment is required to process your donation.",
+     "step": "Call the charity using a phone number from its official website to confirm the request"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via text, unexpected, no prior contact with charity.",
+     "quote": "Payment is required to process your donation.",
+     "step": "Call the charity using a number from their official website to confirm the donation request."
+    },
+    {
+     "v": "verify",
+     "reason": "Unsolicited request for a donation; payment required to process.",
+     "quote": "Payment is required to process your donation.",
+     "step": "Check the charity's official website for donation options."
+    }
+   ],
+   "final": "hold",
+   "second": [
+    {
+     "v": "hold",
+     "reason": "Unsolicited donation request via text with payment link; classic charity scam"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment link in a text message from an unknown sender"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted via text and used a link in the message."
+    }
+   ]
+  },
+  {
+   "kind": "legit_self",
+   "category": "purchase",
+   "item": "New Laptop",
+   "price": 899,
+   "need": "I need a new laptop for work.",
+   "terms": "Standard purchase terms apply.",
+   "origin": "self",
+   "source": "I went to the store and bought it myself.",
+   "if_asked": "I checked the store's reputation and read reviews before purchasing.",
+   "id": "p15",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 3.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary self-initiated purchase with standard terms",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated, standard terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "purchase",
+   "item": "Concert Tickets",
+   "price": 150,
+   "need": "I need tickets for the upcoming concert.",
+   "terms": "Standard ticket purchase terms apply.",
+   "origin": "self",
+   "source": "I bought the tickets from the official website.",
+   "if_asked": "I verified the website's authenticity before making the purchase.",
+   "id": "p16",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.7,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase from official website",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer on official site",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated, standard terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "purchase",
+   "item": "Online Course",
+   "price": 299,
+   "need": "I need to enroll in this online course for skill development.",
+   "terms": "Standard course enrollment terms apply.",
+   "origin": "self",
+   "source": "I enrolled through the course provider's official website.",
+   "if_asked": "I checked the course provider's reputation and read reviews before enrolling.",
+   "id": "p17",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 2.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Buyer initiated purchase on official site, no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, for a stated need, through official channels.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "purchase",
+   "item": "Groceries",
+   "price": 50,
+   "need": "I need to buy groceries for the week.",
+   "terms": "Standard grocery purchase terms apply.",
+   "origin": "self",
+   "source": "I went to the supermarket and bought them myself.",
+   "if_asked": "I shopped at a well-known and trusted supermarket.",
+   "id": "p18",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary grocery purchase initiated by buyer themselves",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated, standard terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "purchase",
+   "item": "Fitness Membership",
+   "price": 60,
+   "need": "I need a fitness membership to stay active.",
+   "terms": "Standard membership terms apply.",
+   "origin": "self",
+   "source": "I signed up at the gym in person.",
+   "if_asked": "I visited the gym and spoke with a representative before signing up.",
+   "id": "p19",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 2.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "In\u2011person gym membership purchase, no scam signals",
+     "quote": "I need a fitness membership to stay active.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated, standard terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "purchase",
+   "item": "Book",
+   "price": 20,
+   "need": "I need to buy this book for reading.",
+   "terms": "Standard book purchase terms apply.",
+   "origin": "self",
+   "source": "I bought the book from a reputable online bookstore.",
+   "if_asked": "I checked the bookstore's reputation and read reviews before purchasing.",
+   "id": "p20",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase from reputable seller, buyer initiated",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "purchase",
+   "item": "Software",
+   "price": 99,
+   "need": "I need to buy this software for work.",
+   "terms": "Standard software purchase terms apply.",
+   "origin": "self",
+   "source": "I bought the software from the official website.",
+   "if_asked": "I verified the website's authenticity before making the purchase.",
+   "id": "p21",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.7,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer on official site",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer on official website.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated, standard terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_verified",
+   "category": "bill",
+   "item": "Internet Service",
+   "price": 50,
+   "need": "I need to pay my internet service bill.",
+   "terms": "Payment is due by the end of the month.",
+   "origin": "contacted",
+   "source": "Received an email from my internet service provider.",
+   "if_asked": "I checked my account on the provider's official website before paying.",
+   "id": "p22",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.6,
+   "steps": [
+    "Log into your ISP account on the official website and confirm the amount and due date.",
+    "Check the email sender's address and compare it to your usual provider's official domain.",
+    "Log in to your account on the ISP's official website and check the bill."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request without independent verification",
+     "quote": "I need to pay my internet service bill.",
+     "step": "Log into your ISP account on the official website and confirm the amount and due date."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details or payee changed or new",
+     "quote": "Payment is due by the end of the month.",
+     "step": "Check the email sender's address and compare it to your usual provider's official domain."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, payment request received. Need to check independently.",
+     "quote": null,
+     "step": "Log in to your account on the ISP's official website and check the bill."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular bill verified on official website"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid via official website"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary bill payment, buyer verified through their own account."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "bill",
+   "item": "Phone Service",
+   "price": 40,
+   "need": "I need to pay my phone service bill.",
+   "terms": "Payment is due by the end of the month.",
+   "origin": "contacted",
+   "source": "Received a text message from my phone service provider.",
+   "if_asked": "I checked my account on the provider's official website before paying.",
+   "id": "p23",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.3,
+   "steps": [
+    "Log into your provider\u2019s official website or app and verify the amount and due date of the bill.",
+    "Call the number on the provider's official website to confirm the payment details.",
+    "Log in to your phone service account and check the bill amount."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted via text; must confirm bill details independently",
+     "quote": "Payment is due by the end of the month.",
+     "step": "Log into your provider\u2019s official website or app and verify the amount and due date of the bill."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details may have changed",
+     "quote": "Payment is due by the end of the month.",
+     "step": "Call the number on the provider's official website to confirm the payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message and is paying a bill.",
+     "quote": null,
+     "step": "Log in to your phone service account and check the bill amount."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Buyer confirmed the $40 bill on the provider's official website, matching the usual amount and service."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid the usual way with verified account access."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill, paid the usual way, buyer verified independently."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "bill",
+   "item": "Insurance Premium",
+   "price": 120,
+   "need": "I need to pay my insurance premium.",
+   "terms": "Payment is due by the specified date to avoid policy lapse.",
+   "origin": "contacted",
+   "source": "Received a letter from my insurance company.",
+   "if_asked": "I checked my policy details on the company's official website before paying.",
+   "id": "p24",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.8,
+   "steps": [
+    "Log into your insurance account via the official website and verify the amount and payment method.",
+    "Call the insurance company using the number on your past bills to confirm the payment details.",
+    "Log in to your insurance account and check the premium amount due."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request without buyer verification; need to confirm details independently",
+     "quote": "Payment is due by the specified date to avoid policy lapse.",
+     "step": "Log into your insurance account via the official website and verify the amount and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details may have changed",
+     "quote": "Payment is due by the specified date to avoid policy lapse.",
+     "step": "Call the insurance company using the number on your past bills to confirm the payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to the buyer; need to check independently.",
+     "quote": "Payment is due by the specified date to avoid policy lapse.",
+     "step": "Log in to your insurance account and check the premium amount due."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Buyer verified policy on official website before paying"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected payment for a regular bill, verified via official website."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill, buyer verified on official website."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "bill",
+   "item": "Gym Membership",
+   "price": 30,
+   "need": "I need to pay my gym membership fee.",
+   "terms": "Payment is due at the beginning of each month.",
+   "origin": "contacted",
+   "source": "Received an email from my gym.",
+   "if_asked": "I checked my membership details on the gym's official website before paying.",
+   "id": "p25",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.4,
+   "steps": [
+    "Log into the gym\u2019s official website or app to confirm the amount and due date.",
+    "Check the gym's official website or app to confirm the current payment details and due date.",
+    "Log in to your gym account and check your membership details and payment history."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted via email without independent verification of payment details",
+     "quote": "I need to pay my gym membership fee.",
+     "step": "Log into the gym\u2019s official website or app to confirm the amount and due date."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer, payment details may have changed",
+     "quote": "Payment is due at the beginning of each month.",
+     "step": "Check the gym's official website or app to confirm the current payment details and due date."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to buyer via email. Need to check independently.",
+     "quote": null,
+     "step": "Log in to your gym account and check your membership details and payment history."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular monthly gym fee, buyer verified details on official website"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected monthly payment via official channel"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated payment after checking details independently."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "bill",
+   "item": "Electricity Bill",
+   "price": 75,
+   "need": "I need to pay my electricity bill.",
+   "terms": "Payment is due by the end of the month.",
+   "origin": "contacted",
+   "source": "Received an email from my utility company.",
+   "if_asked": "I checked my account on the utility company's official website before paying.",
+   "id": "p26",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.1,
+   "steps": [
+    "Log into the utility's official website or app and verify the $75 amount due",
+    "Check the email sender's address and compare it to your official utility account portal.",
+    "Log in to your utility account and pay the bill there."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; buyer must confirm payment details independently",
+     "quote": null,
+     "step": "Log into the utility's official website or app and verify the $75 amount due"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; payment details may have changed",
+     "quote": "Payment is due by the end of the month.",
+     "step": "Check the email sender's address and compare it to your official utility account portal."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message and is paying a bill.",
+     "quote": null,
+     "step": "Log in to your utility account and pay the bill there."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Buyer verified bill on official utility website, matching usual amount and payment method."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid via verified account"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill, paid the usual way, buyer verified through their own account."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "bill",
+   "item": "Credit Card Payment",
+   "price": 200,
+   "need": "I need to make a payment on my credit card.",
+   "terms": "Payment is due by the specified date to avoid late fees.",
+   "origin": "contacted",
+   "source": "Received an email from my credit card company.",
+   "if_asked": "I checked my account on the credit card company's official website before paying.",
+   "id": "p27",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.4,
+   "steps": [
+    "Log into your credit card account on the official website and confirm the amount and due date.",
+    "Check the payment amount and due date in your online credit card account.",
+    "Log in to your credit card account directly and check for this charge."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted via email; need independent confirmation of payment details",
+     "quote": "Payment is due by the specified date to avoid late fees.",
+     "step": "Log into your credit card account on the official website and confirm the amount and due date."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; payment details may have changed",
+     "quote": "Payment is due by the specified date to avoid late fees.",
+     "step": "Check the payment amount and due date in your online credit card account."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to buyer via email. Need to check independently.",
+     "quote": null,
+     "step": "Log in to your credit card account directly and check for this charge."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Buyer verified payment details on official website, independent of the email request"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected payment via official channel, verified independently."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary credit card payment initiated by the buyer, verified independently."
+    }
+   ]
+  },
+  {
+   "kind": "legit_unverified",
+   "category": "bill",
+   "item": "Water Bill",
+   "price": 30,
+   "need": "I need to pay my water bill.",
+   "terms": "Payment is due by the end of the month.",
+   "origin": "contacted",
+   "source": "Received a bill in the mail from my water company.",
+   "if_asked": "I paid the bill without checking further.",
+   "id": "p28",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.8,
+   "steps": [
+    "Call the water company's official phone number from a previous bill to confirm amount and due date.",
+    "Check the payee name and account number on the bill against your past bills or the company's official website.",
+    "Log in to your water company account online and compare this bill to your recent history."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted bill, buyer hasn't independently confirmed details",
+     "quote": "I need to pay my water bill.",
+     "step": "Call the water company's official phone number from a previous bill to confirm amount and due date."
+    },
+    {
+     "v": "verify",
+     "reason": "Received bill in mail, but payment details or payee may have changed",
+     "quote": "Payment is due by the end of the month.",
+     "step": "Check the payee name and account number on the bill against your past bills or the company's official website."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a bill and needs to verify it independently.",
+     "quote": null,
+     "step": "Log in to your water company account online and compare this bill to your recent history."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer didn't independently confirm bill details"
+    },
+    {
+     "v": "verify",
+     "reason": "Paid without verifying the bill's authenticity"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer paid without independent verification of the bill details."
+    }
+   ]
+  },
+  {
+   "kind": "legit_unverified",
+   "category": "bill",
+   "item": "Cable TV Bill",
+   "price": 60,
+   "need": "I need to pay my cable TV bill.",
+   "terms": "Payment is due by the end of the month.",
+   "origin": "contacted",
+   "source": "Received a bill in the mail from my cable TV provider.",
+   "if_asked": "I paid the bill without checking further.",
+   "id": "p29",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.7,
+   "steps": [
+    "Check the amount and due date on the provider's official website or known phone line.",
+    "Check the bill against your account online using the provider's official website, not the link on the bill.",
+    "Log in to your cable account and compare this bill to your recent statements."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted bill; confirm details independently",
+     "quote": "I need to pay my cable TV bill.",
+     "step": "Check the amount and due date on the provider's official website or known phone line."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details may have changed",
+     "quote": "Payment is due by the end of the month.",
+     "step": "Check the bill against your account online using the provider's official website, not the link on the bill."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a bill; check details independently.",
+     "quote": null,
+     "step": "Log in to your cable account and compare this bill to your recent statements."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer paid without independent verification of the bill"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment was made without verifying the bill's authenticity."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a bill and paid it without independent verification."
+    }
+   ]
+  },
+  {
+   "kind": "legit_unverified",
+   "category": "bill",
+   "item": "Rent",
+   "price": 1000,
+   "need": "I need to pay my rent.",
+   "terms": "Payment is due at the beginning of each month.",
+   "origin": "contacted",
+   "source": "Received a rent invoice from my landlord.",
+   "if_asked": "I paid the rent without checking further.",
+   "id": "p30",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.1,
+   "steps": [
+    "Call the landlord using a known phone number to confirm the invoice",
+    "Check the invoice against your lease or past payments to confirm the amount and payee.",
+    "Log in to your landlord's portal and confirm this invoice."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Invoice was unsolicited; confirm landlord and payment details before paying",
+     "quote": "I need to pay my rent.",
+     "step": "Call the landlord using a known phone number to confirm the invoice"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer, payment details may have changed",
+     "quote": "Payment is due at the beginning of each month.",
+     "step": "Check the invoice against your lease or past payments to confirm the amount and payee."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request received via message; need independent check.",
+     "quote": null,
+     "step": "Log in to your landlord's portal and confirm this invoice."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer paid without confirming invoice details"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer paid without verifying the invoice's authenticity."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request received via message, no independent verification."
+    }
+   ]
+  }
+ ]
+}

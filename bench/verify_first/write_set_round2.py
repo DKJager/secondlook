@@ -1,6 +1,6 @@
-"""Have one model write a test set. usage: gen_set.py <seat> <out.json> <tag>"""
+"""Round 2: have one model write a test set from a category list only. usage: write_set_round2.py <model> <out.json> <tag>"""
 import sys, json, re
-sys.path.insert(0, "/opt/foreman"); import foreman
+import os, urllib.request
 seat, out, tag = sys.argv[1], sys.argv[2], sys.argv[3]
 PROMPT = ("Write test data for a payment-safety checker. Return ONLY a JSON array of 30 objects with keys: "
  "kind, category, item, price (number, USD), need (the BUYER's own words, first person, 1-2 sentences, saying why they are paying), "
@@ -22,7 +22,12 @@ PROMPT = ("Write test data for a payment-safety checker. Return ONLY a JSON arra
  "- 'legit_verified' x6: a real bill, invoice or renewal the buyer received, where the buyer says in their own words how they checked it themselves before paying.\n"
  "- 'legit_unverified' x3: a real, expected, regular bill for the usual amount, paid the usual way; the buyer does not mention checking it.\n"
  "Write like real people and real businesses. No commentary, no markdown.")
-txt = foreman.seat_call(seat, "secondlook4-" + tag, PROMPT, max_tokens=14000, lane="custom")[0]
+# The PROMPT above is exactly what each writer model was given. Our own runs went through our model gateway;
+# this generic call (any OpenAI-compatible endpoint) is here so the script runs anywhere.
+req = urllib.request.Request(os.environ["WRITER_BASE_URL"].rstrip("/") + "/chat/completions", method="POST",
+    data=json.dumps({"model": seat, "messages": [{"role": "user", "content": PROMPT}], "max_tokens": 14000}).encode(),
+    headers={"Authorization": "Bearer " + os.environ["WRITER_API_KEY"], "Content-Type": "application/json"})
+txt = json.load(urllib.request.urlopen(req, timeout=600))["choices"][0]["message"]["content"]
 rows = json.loads(re.search(r"\[.*\]", txt, re.S).group(0))
 ok = [r for r in rows if isinstance(r, dict) and all(k in r for k in ("kind", "item", "price", "need", "terms", "origin", "source", "if_asked")) and r["origin"] in ("self", "contacted", "known_person")]
 for i, r in enumerate(ok): r["id"] = f"{tag}{i+1:02d}"; r["author"] = seat

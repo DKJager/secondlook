@@ -1,0 +1,1502 @@
+{
+ "summary": {
+  "control_not_checked": {
+   "n": 3,
+   "allow": 0,
+   "verify": 3,
+   "hold": 0
+  },
+  "legit_bill": {
+   "n": 6,
+   "allow": 0,
+   "verify": 6,
+   "hold": 0
+  },
+  "legit_self": {
+   "n": 7,
+   "allow": 7,
+   "verify": 0,
+   "hold": 0
+  },
+  "scam_loud": {
+   "n": 4,
+   "allow": 0,
+   "verify": 0,
+   "hold": 4
+  },
+  "scam_quiet": {
+   "n": 10,
+   "allow": 0,
+   "verify": 7,
+   "hold": 3
+  },
+  "CONTROL_NOT_CHECKED_STAYED_LOCKED": "3/3",
+  "SCAMS_STOPPED": "14/14",
+  "SCAMS_STILL_STOPPED_AFTER_BUYER_ANSWER": "14/14",
+  "NORMAL_ALLOWED_AT_ONCE": "7/13",
+  "NORMAL_ALLOWED_AFTER_ONE_CHECK": "13/13",
+  "NORMAL_ASKED_TO_CHECK": 6,
+  "NORMAL_WRONGLY_HELD": 0,
+  "rows_with_a_reviewer_fault": 0,
+  "went_to_larger_crowd": 0,
+  "secs_p90": 2.2,
+  "median_secs": 1.8
+ },
+ "rows": [
+  {
+   "kind": "scam_quiet",
+   "category": "supplier_invoice",
+   "item": "Bulk packaging order",
+   "price": 275.0,
+   "need": "I need to pay this so my small shop can get the rest of our boxes in time for our shipment.",
+   "terms": "Please remit payment to the updated bank details listed below within 15 days of receipt of this invoice.",
+   "origin": "contacted",
+   "source": "I got an email that looked like it was from my usual box supplier with an attached invoice.",
+   "if_asked": "I replied to the email and used the bank details that were in it, so I haven't really checked if they changed them.",
+   "id": "m01",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.8,
+   "steps": [
+    "Contact supplier using known phone number to confirm new bank account",
+    "Call the supplier using a number from your past order or official website to confirm the new bank details.",
+    "Log in to your account on the supplier's official website and check the bank details there."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "payment details changed; new bank account provided",
+     "quote": "updated bank details listed below",
+     "step": "Contact supplier using known phone number to confirm new bank account"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed and request was contacted",
+     "quote": "Please remit payment to the updated bank details listed below within 15 days of receipt of this invoice.",
+     "step": "Call the supplier using a number from your past order or official website to confirm the new bank details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed in a message received by the buyer.",
+     "quote": "Please remit payment to the updated bank details listed below",
+     "step": "Log in to your account on the supplier's official website and check the bank details there."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "payment details changed and buyer hasn't independently confirmed them"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed but buyer didn't confirm independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed, request came to buyer."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "domain_renewal",
+   "item": "Website domain renewal",
+   "price": 48.0,
+   "need": "I don't want my business website to go down, so I need to renew it as soon as I can.",
+   "terms": "This is a reminder to renew your domain registration before the expiration date listed to avoid service interruption.",
+   "origin": "contacted",
+   "source": "I got a text message with a renewal link for my website domain.",
+   "if_asked": "I clicked the link that was in the text, so I didn't check through my actual domain registrar.",
+   "id": "m02",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.8,
+   "steps": [
+    "Log into your domain registrar\u2019s official website (not the text link) and check the renewal status and price.",
+    "Open your domain registrar's official website directly, not through the text link, and check renewal status and payment details.",
+    "Log into your domain registrar account (not the link) and check renewal status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited renewal text with link; buyer must confirm through official registrar",
+     "quote": "I don't want my business website to go down, so I need to renew it as soon as I can.",
+     "step": "Log into your domain registrar\u2019s official website (not the text link) and check the renewal status and price."
+    },
+    {
+     "v": "verify",
+     "reason": "Request contacted via text with link; verify independently",
+     "quote": "This is a reminder to renew your domain registration before the expiration date listed to avoid service interruption.",
+     "step": "Open your domain registrar's official website directly, not through the text link, and check renewal status and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received unsolicited message about renewal.",
+     "quote": "This is a reminder to renew your domain registration before the expiration date listed to avoid service interruption.",
+     "step": "Log into your domain registrar account (not the link) and check renewal status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer clicked renewal link from text without independent verification"
+    },
+    {
+     "v": "verify",
+     "reason": "Clicked link in message without independent verification"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received unsolicited message and paid via link."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "utility_notice",
+   "item": "Water service fee",
+   "price": 62.75,
+   "need": "I'm trying to keep all of my bills paid on time, and this one looked like my monthly water bill.",
+   "terms": "Your account has a small outstanding balance. Please make your payment by the due date to avoid a late fee.",
+   "origin": "contacted",
+   "source": "I received a letter in the mail with a QR code to pay my water bill.",
+   "if_asked": "I scanned the QR code off of the letter, so I haven't verified that it goes to my actual utility company.",
+   "id": "m03",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.6,
+   "steps": [
+    "Log into the water utility\u2019s official website and verify the amount and QR code match your account",
+    "Scan the QR code only after confirming the payee and amount on the official water utility website or app.",
+    "Log in to your water provider's website and check for this charge."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Payment request arrived via mail; need to confirm details independently",
+     "quote": "Your account has a small outstanding balance. Please make your payment by the due date to avoid a late fee.",
+     "step": "Log into the water utility\u2019s official website and verify the amount and QR code match your account"
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted via mail with QR code; verify through official\u6e20\u9053",
+     "quote": "Your account has a small outstanding balance. Please make your payment by the due date to avoid a late fee.",
+     "step": "Scan the QR code only after confirming the payee and amount on the official water utility website or app."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message and is paying because of it.",
+     "quote": "Your account has a small outstanding balance.",
+     "step": "Log in to your water provider's website and check for this charge."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer hasn't confirmed QR code leads to actual utility"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment method changed and request was contacted"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer paid via a link in a message. No independent verification yet."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "vendor_impersonator",
+   "item": "Screen printing supplies",
+   "price": 385.0,
+   "need": "I owe money for my last order of shirts and I want to pay it off so I can place another order.",
+   "terms": "Due to a recent change in our merchant account, please send your payment to the alternate account provided on this invoice.",
+   "origin": "contacted",
+   "source": "I got an email from someone that looked exactly like my vendor with a new invoice attached.",
+   "if_asked": "I used the bank details that were on that email, so I never called the number I already had for my vendor to confirm it.",
+   "id": "m04",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.8,
+   "steps": [
+    "Call or email the vendor using contact info from a previous invoice to confirm the new account.",
+    "Log in to your vendor's official website or app and check your account for the invoice and payment details.",
+    "Call your vendor using a number from their official website to confirm the new payment details."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "payment details changed; need to confirm new account",
+     "quote": "Due to a recent change in our merchant account, please send your payment to the alternate account provided on this invoice.",
+     "step": "Call or email the vendor using contact info from a previous invoice to confirm the new account."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed unexpectedly in a contacted message",
+     "quote": "Due to a recent change in our merchant account, please send your payment to the alternate account provided on this invoice.",
+     "step": "Log in to your vendor's official website or app and check your account for the invoice and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed via a message. Buyer needs to confirm with vendor directly.",
+     "quote": "Due to a recent change in our merchant account, please send your payment to the alternate account provided on this invoice.",
+     "step": "Call your vendor using a number from their official website to confirm the new payment details."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "New payment account requested via email, buyer didn't independently confirm"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed without independent confirmation"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed; buyer used details from the message."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "parcel_fee",
+   "item": "Delivery release fee",
+   "price": 17.25,
+   "need": "I'm expecting a package in the mail right now, so I figured this small fee was to get it released for delivery.",
+   "terms": "We were unable to complete delivery of your item due to an unpaid customs processing fee. Please pay this fee to reschedule delivery.",
+   "origin": "contacted",
+   "source": "I got a text message saying I had an unpaid delivery fee for a package I'm waiting for.",
+   "if_asked": "I clicked the link in the text to pay it, so I haven't checked through the official tracking site I used when I ordered it.",
+   "id": "m05",
+   "author": "mai-thinking",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.5,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "customs delivery fee scam",
+     "quote": "We were unable to complete delivery of your item due to an unpaid customs processing fee. Please pay this fee to reschedule delivery.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via text, payment details unknown, potential scam",
+     "quote": "We were unable to complete delivery of your item due to an unpaid customs processing fee. Please pay this fee to reschedule delivery.",
+     "step": "Call the shipping company using the number from their official website, not the one in the text, to confirm the fee."
+    },
+    {
+     "v": "verify",
+     "reason": "Unexpected fee for a package; request came to buyer.",
+     "quote": "We were unable to complete delivery of your item due to an unpaid customs processing fee.",
+     "step": "Check tracking on the carrier's official website using the tracking number."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "directory_fee",
+   "item": "Local business listing",
+   "price": 150.0,
+   "need": "I thought this was my yearly fee to stay listed online so new customers can still find my business.",
+   "terms": "Your annual listing with our business directory is due for renewal. Please remit payment by the listed date to keep your profile active.",
+   "origin": "contacted",
+   "source": "I got an invoice in my business email from a directory that I've seen my information on before.",
+   "if_asked": "I just paid off of the invoice they sent me, so I never logged into my account with that directory to double check it.",
+   "id": "m06",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.4,
+   "steps": [
+    "Log into the directory\u2019s official website and confirm the renewal amount and payment details",
+    "Log in to the directory's official website using your known credentials to verify the invoice and payment details.",
+    "Log in to your account on the directory's official website and check your renewal status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted via email and has not independently verified the invoice details",
+     "quote": "Your annual listing with our business directory is due for renewal. Please remit payment by the listed date to keep your profile active.",
+     "step": "Log into the directory\u2019s official website and confirm the renewal amount and payment details"
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details may have changed",
+     "quote": "Your annual listing with our business directory is due for renewal. Please remit payment by the listed date to keep your profile active.",
+     "step": "Log in to the directory's official website using your known credentials to verify the invoice and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received unsolicited invoice. Payment details may be new. (quote not found in terms)",
+     "quote": null,
+     "step": "Log in to your account on the directory's official website and check your renewal status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer paid invoice without independently confirming through their own account"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment received via unsolicited invoice; buyer did not verify independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment initiated from a contacted invoice, no independent verification done."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "warranty_notice",
+   "item": "Appliance extended warranty",
+   "price": 95.0,
+   "need": "I bought an appliance about a year ago and I want to make sure the warranty stays covered in case anything breaks.",
+   "terms": "Your extended warranty plan is set to expire soon. Pay now to continue your coverage with no lapse in service.",
+   "origin": "contacted",
+   "source": "I got a call from someone claiming to be from my appliance's warranty department.",
+   "if_asked": "I gave my payment info over the phone to the number that called me, so I haven't checked the warranty through the card or paperwork I got at the time of purchase.",
+   "id": "m07",
+   "author": "mai-thinking",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Unsolicited urgent payment request from alleged warranty department",
+     "quote": "Pay now to continue your coverage with no lapse in service.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Contacted by unsolicited call claiming to be warranty department",
+     "quote": "Your extended warranty plan is set to expire soon. Pay now to continue your coverage with no lapse in service.",
+     "step": "Call the appliance manufacturer using the number on their official website to confirm the warranty status."
+    },
+    {
+     "v": "verify",
+     "reason": "Unexpected contact about a warranty renewal. Buyer needs to independently confirm details.",
+     "quote": "Your extended warranty plan is set to expire soon.",
+     "step": "Call the appliance manufacturer directly using a number from their official website."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "rental_fee",
+   "item": "Rental application processing fee",
+   "price": 40.0,
+   "need": "I'm applying for an apartment right now, so I assumed this was the standard application fee to move forward with it.",
+   "terms": "To process your rental application, please pay the non-refundable application fee by the link provided before your appointment.",
+   "origin": "contacted",
+   "source": "I got a text message with a payment link after I reached out about a rental listing online.",
+   "if_asked": "I used the link that they texted me to pay, so I never called the property management office's number that I found separately.",
+   "id": "m08",
+   "author": "mai-thinking",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.3,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Upfront non-refundable fee for rental application (upfront rental fee scam)",
+     "quote": "please pay the non-refundable application fee",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Payment link received after reaching out; verify through official channel",
+     "quote": "To process your rental application, please pay the non-refundable application fee by the link provided before your appointment.",
+     "step": "Call the landlord or property management using a number from their official website to confirm the fee and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment through a link in a message, for a rental not yet seen.",
+     "quote": "please pay the non-refundable application fee by the link provided",
+     "step": "Check the landlord's official website for payment instructions."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "trademark_notice",
+   "item": "Trademark publication fee",
+   "price": 225.0,
+   "need": "I'm in the process of trademarking my logo for my business, so I thought this was one of the fees that comes along with that.",
+   "terms": "Your pending trademark requires payment of the required publication fee in order to proceed to the next step of registration.",
+   "origin": "contacted",
+   "source": "I received an email claiming to be from a trademark publication service the day after I filed my trademark.",
+   "if_asked": "I paid from the email that was sent to me, so I haven't verified it through the official USPTO portal or my attorney.",
+   "id": "m09",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.9,
+   "steps": [
+    "Check your USPTO (or relevant office) account for any pending publication fees",
+    "Log in to the USPTO website directly (not via email link) to check your trademark application status and payment requirements.",
+    "Log into the USPTO website and check your trademark application status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited email requesting payment; confirm fee directly with official trademark office",
+     "quote": "Your pending trademark requires payment of the required publication fee in order to proceed to the next step of registration.",
+     "step": "Check your USPTO (or relevant office) account for any pending publication fees"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via email; payment details not confirmed independently",
+     "quote": "Your pending trademark requires payment of the required publication fee in order to proceed to the next step of registration.",
+     "step": "Log in to the USPTO website directly (not via email link) to check your trademark application status and payment requirements."
+    },
+    {
+     "v": "verify",
+     "reason": "Unexpected request for a fee to proceed with a trademark.",
+     "quote": "Your pending trademark requires payment of the required publication fee in order to proceed to the next step of registration.",
+     "step": "Log into the USPTO website and check your trademark application status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted via email and hasn't confirmed fee through official USPTO portal or attorney"
+    },
+    {
+     "v": "verify",
+     "reason": "Received via email, payment details not confirmed through official channels"
+    },
+    {
+     "v": "verify",
+     "reason": "Unexpected fee request after filing, paid via email link."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "telecom_notice",
+   "item": "Business internet past due balance",
+   "price": 84.5,
+   "need": "I need to keep my shop's internet on, and this looked like a small past due amount from my internet provider.",
+   "terms": "Your account shows a past due balance. Please pay by the listed due date to prevent any interruption to your service.",
+   "origin": "contacted",
+   "source": "I got a text message with a payment link that said it was from my business internet provider.",
+   "if_asked": "I used the link from the text instead of logging into my internet provider's official app that I already use every month.",
+   "id": "m10",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.2,
+   "steps": [
+    "Log into the provider's website or app and verify the past\u2011due amount directly.",
+    "Call your internet provider using the number on their official website or past bill to confirm the past due balance and payment method.",
+    "Log in to your internet provider's account and check for a past due balance."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited text with payment link; need to confirm via official account",
+     "quote": "Your account shows a past due balance. Please pay by the listed due date to prevent any interruption to your service.",
+     "step": "Log into the provider's website or app and verify the past\u2011due amount directly."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted via text with a payment link, unverified",
+     "quote": "Your account shows a past due balance. Please pay by the listed due date to prevent any interruption to your service.",
+     "step": "Call your internet provider using the number on their official website or past bill to confirm the past due balance and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message with a payment link.",
+     "quote": "Please pay by the listed due date to prevent any interruption to your service.",
+     "step": "Log in to your internet provider's account and check for a past due balance."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer used the text link instead of official app, needs independent confirmation"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment link came via text, not verified through official channel"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer used link in message instead of existing access."
+    }
+   ]
+  },
+  {
+   "kind": "scam_loud",
+   "category": "tech_support",
+   "item": "Remote device repair fee",
+   "price": 199.0,
+   "need": "I was told there was a virus on my computer and I was worried about losing all of my files, so I wanted to get it fixed.",
+   "terms": "To complete the virus removal service that we started for your device, please pay the one time service fee in full to finalize your repair.",
+   "origin": "contacted",
+   "source": "I got a pop up on my computer with a phone number to call for tech support, so I called it.",
+   "if_asked": "I called the number that was on the pop up and gave them my card info, so I never reached out to my actual computer manufacturer on their known support number.",
+   "id": "m11",
+   "author": "mai-thinking",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.4,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "tech support scam",
+     "quote": "please pay the one time service fee in full to finalize your repair",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam signal: unsolicited tech support call with demand for payment",
+     "quote": "I got a pop up on my computer with a phone number to call for tech support, so I called it.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Unsolicited tech support and request for payment to finalize repair. (quote not found in terms)",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "refund_fraud",
+   "item": "Overpayment refund processing",
+   "price": 250.0,
+   "need": "Someone told me I was accidentally overcharged and that they were going to send me a refund, so I wanted to cooperate to get my money back.",
+   "terms": "To process your refund, we will need you to pay a small verification fee to release the funds back to your bank account.",
+   "origin": "contacted",
+   "source": "I got a call claiming to be from a big online retailer saying that they accidentally charged me twice.",
+   "if_asked": "I gave my payment information over the call that came to me, so I haven't checked my actual order history or bank charges through the retailer's official app.",
+   "id": "m12",
+   "author": "mai-thinking",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Overpayment refund scam; fee required to release funds",
+     "quote": "To process your refund, we will need you to pay a small verification fee to release the funds back to your bank account.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: requesting fee to release refund",
+     "quote": "To process your refund, we will need you to pay a small verification fee to release the funds back to your bank account.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee to receive a refund is a classic scam pattern.",
+     "quote": "To process your refund, we will need you to pay a small verification fee to release the funds back to your bank account.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "government_impersonator",
+   "item": "Processing fee for documents",
+   "price": 175.0,
+   "need": "I was really nervous when they said there was an issue with my paperwork, and I just wanted to get it taken care of as fast as I could.",
+   "terms": "To clear the hold on your file, please pay the required processing fee by the end of the day to avoid further action.",
+   "origin": "contacted",
+   "source": "I got a call from someone claiming to be with a government office about an issue with my paperwork.",
+   "if_asked": "I used the payment method that they told me to use over the call, so I never contacted that office directly through the phone number listed on their official website.",
+   "id": "m13",
+   "author": "mai-thinking",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.3,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Urgent processing fee demanded by alleged government office; classic scam",
+     "quote": "To clear the hold on your file, please pay the required processing fee by the end of the day to avoid further action.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Contacted by unknown caller claiming to be government office",
+     "quote": "To clear the hold on your file, please pay the required processing fee by the end of the day to avoid further action.",
+     "step": "Call the official government office number from their website to confirm the issue and payment requirement."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, request for payment to resolve an issue, urgency.",
+     "quote": "To clear the hold on your file, please pay the required processing fee by the end of the day to avoid further action.",
+     "step": "Log into your official government account and check for any holds or fees."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "fake_booking",
+   "item": "Vacation rental security fee",
+   "price": 300.0,
+   "need": "I have a trip coming up soon and I was afraid my rental would be canceled if I didn't pay this fee right away.",
+   "terms": "Your upcoming reservation requires an additional security deposit payment to be confirmed. Failure to pay within the hour will result in your reservation being released.",
+   "origin": "contacted",
+   "source": "I got a text message with a payment link from someone claiming to be the host of the rental I booked.",
+   "if_asked": "I paid through the link they texted me instead of paying through the booking platform that I originally booked the rental through.",
+   "id": "m14",
+   "author": "mai-thinking",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Urgent security deposit request via unsolicited text link; classic rental scam",
+     "quote": "Failure to pay within the hour will result in your reservation being released.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via text with a payment link, unexpected change in payment method",
+     "quote": "Failure to pay within the hour will result in your reservation being released.",
+     "step": "Call the rental property using the number from the official booking site to confirm the payment request."
+    },
+    {
+     "v": "verify",
+     "reason": "Unexpected fee request via a link in a message.",
+     "quote": "Failure to pay within the hour will result in your reservation being released.",
+     "step": "Log into your rental platform account and check for this fee there."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "legit_self",
+   "category": "online_purchase",
+   "item": "Used camera lens",
+   "price": 215.0,
+   "need": "I've been saving up for this specific lens for a while, and it's exactly what I need to take the photos I want to take.",
+   "terms": "Full payment required via the platform checkout to secure the item. Shipping will be provided with tracking within 3 business days.",
+   "origin": "self",
+   "source": "I went on my own to a trusted online marketplace and found this lens from a seller with good reviews.",
+   "if_asked": "I checked the seller's reviews, used the marketplace's official checkout, and verified the return policy on the item before paying.",
+   "id": "m15",
+   "author": "mai-thinking",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.3,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer on trusted marketplace, payment via platform checkout",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated contact, standard terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "repair_service",
+   "item": "Phone screen repair",
+   "price": 90.0,
+   "need": "I cracked my phone screen pretty badly, so I need to get it fixed so I can use my phone for work again.",
+   "terms": "We require payment at the time of service. Parts and labor are covered for 90 days after the repair date.",
+   "origin": "self",
+   "source": "I looked up a local repair shop with good reviews and walked in to get my phone fixed.",
+   "if_asked": "I walked into the shop, saw their posted pricing, and paid at their register after they showed me the replacement screen before installing it.",
+   "id": "m16",
+   "author": "mai-thinking",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.7,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary repair service initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary repair service paid at time of service",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "custom_order",
+   "item": "Engraved cutting board",
+   "price": 55.0,
+   "need": "I'm getting this made as a gift for my parents for their anniversary, so I wanted to order it ahead of time.",
+   "terms": "A 50% deposit is required to start your custom order, with the remaining balance due at pickup or before shipping.",
+   "origin": "self",
+   "source": "I reached out to a small local woodworker that I found through their website after seeing their work.",
+   "if_asked": "I paid the deposit through their official invoice that I requested from their business email, and I have their signed order form with all of the details.",
+   "id": "m17",
+   "author": "mai-thinking",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.6,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Standard custom order deposit, buyer initiated contact",
+     "quote": "A 50% deposit is required to start your custom order, with the remaining balance due at pickup or before shipping.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, for a stated need, from a seller they found independently.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "parts_purchase",
+   "item": "Car alternator",
+   "price": 175.0,
+   "need": "My car's alternator went out, and this is the exact part I need so my mechanic can install it and get my car running again.",
+   "terms": "Core charge may apply and is refundable upon return of your old part. This part is covered under our standard parts warranty.",
+   "origin": "self",
+   "source": "I called an auto parts store that I have bought from before and ordered the specific part for my car's make and model.",
+   "if_asked": "I verified my VIN and part number with the parts specialist on their direct store phone number that I already had, and paid at the counter when I picked it up.",
+   "id": "m18",
+   "author": "mai-thinking",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.3,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase from known auto parts store, no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase by buyer's own initiative",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a car part from a known store, buyer initiated contact.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "risky_looking_purchase",
+   "item": "Vintage amplifier",
+   "price": 325.0,
+   "need": "I've been looking for this specific vintage amp for years, so when I found one locally that worked, I wanted to buy it before someone else did.",
+   "terms": "As this is a local sale of used equipment, payment in full is required at pickup. The item is sold as-is with no returns.",
+   "origin": "self",
+   "source": "I found a local seller on a classified site and arranged to meet them in person to test it out.",
+   "if_asked": "I met the seller in person at a public location, tested the amp myself to make sure it worked, and paid cash at the time of pickup.",
+   "id": "m19",
+   "author": "mai-thinking",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.3,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary local sale, buyer initiates, pays in person at pickup",
+     "quote": "payment in full is required at pickup",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary local sale of used item with in-person pickup",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of used equipment, buyer initiated contact, paying at pickup.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "risky_looking_purchase",
+   "item": "Heavy equipment rental deposit",
+   "price": 400.0,
+   "need": "I need to rent a small skid steer for a weekend project at my property, and they require a damage deposit to hold it.",
+   "terms": "A refundable damage deposit is required to reserve your rental. The deposit will be returned upon inspection of the equipment after drop off.",
+   "origin": "self",
+   "source": "I went in person to a local equipment rental yard that was recommended to me by a coworker.",
+   "if_asked": "I went into their office, looked over their rental contract with my rental dates, and paid the deposit on their card terminal with my receipt in hand.",
+   "id": "m20",
+   "author": "mai-thinking",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary rental deposit, buyer initiated contact and visited seller in person",
+     "quote": "A refundable damage deposit is required to reserve your rental.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary rental deposit for equipment reserved by buyer's own initiative.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Buyer initiated contact and visited the rental yard in person.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "risky_looking_purchase",
+   "item": "Large animal feed bulk order",
+   "price": 235.0,
+   "need": "I have livestock to feed for the month, so I need to pick up a large bulk order of feed from my local feed store.",
+   "terms": "Payment is due at the time of loading for all bulk orders. Prices are based off of current ton rates at the time of pickup.",
+   "origin": "self",
+   "source": "I called my local feed store that I've been going to for years and placed my order over the phone for pickup.",
+   "if_asked": "I called their store number that I've saved in my phone for years, confirmed my order total with them, and paid at their loading dock when I picked it up.",
+   "id": "m21",
+   "author": "mai-thinking",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Regular purchase from known local store, buyer initiated contact, standard payment terms",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase by buyer who initiated contact with a known seller.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_bill",
+   "category": "electric_bill",
+   "item": "Monthly electric bill",
+   "price": 132.4,
+   "need": "This is my usual electric bill for my apartment, so I need to pay it before the due date to keep my power on.",
+   "terms": "Your monthly statement is now available. Please pay the total due by the due date listed to avoid a late fee.",
+   "origin": "contacted",
+   "source": "I got my monthly electric bill in the mail like I always do.",
+   "if_asked": "I logged into my electric company's official app that I've used for the past few years, matched the amount and account number to my statement, and paid through it.",
+   "id": "m22",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.9,
+   "steps": [
+    "Log into the utility\u2019s official website and confirm the amount and due date",
+    "Check the payment details against your past bills or account online.",
+    "Log in to your account on the electric company's website and check the amount due."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; verify bill details independently",
+     "quote": null,
+     "step": "Log into the utility\u2019s official website and confirm the amount and due date"
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted but buyer claims it's usual; verify payment details match own account",
+     "quote": "Your monthly statement is now available. Please pay the total due by the due date listed to avoid a late fee.",
+     "step": "Check the payment details against your past bills or account online."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a bill via mail. Must verify details independently.",
+     "quote": "Your monthly statement is now available.",
+     "step": "Log in to your account on the electric company's website and check the amount due."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular bill verified via official app"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid through verified official app"
+    },
+    {
+     "v": "clear",
+     "reason": "Regular bill, expected amount, paid through usual channel."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "internet_bill",
+   "item": "Home internet bill",
+   "price": 74.99,
+   "need": "I need to pay my internet bill so my internet stays on for work and school.",
+   "terms": "Your billing cycle has closed and your new statement is ready. Payment is due by the date shown on your statement.",
+   "origin": "contacted",
+   "source": "I received an email notification from my internet provider that my bill was ready.",
+   "if_asked": "I went straight to my internet provider's official website by typing their URL that I already know, logged into my account, and verified the exact amount before paying.",
+   "id": "m23",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.8,
+   "steps": [
+    "Log into your provider\u2019s official website or app and confirm the amount and payment link.",
+    "Log in to your provider's official website using a direct URL to check the current bill and payment details.",
+    "Log in to your internet provider's website and check the bill amount."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted via email bill; buyer hasn't confirmed details independently.",
+     "quote": "I need to pay my internet bill so my internet stays on for work and school.",
+     "step": "Log into your provider\u2019s official website or app and confirm the amount and payment link."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details may have changed",
+     "quote": "Your billing cycle has closed and your new statement is ready. Payment is due by the date shown on your statement.",
+     "step": "Log in to your provider's official website using a direct URL to check the current bill and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message and is paying a bill.",
+     "quote": "Your billing cycle has closed and your new statement is ready.",
+     "step": "Log in to your internet provider's website and check the bill amount."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Ordinary bill verified through official website, matching usual amount and provider"
+    },
+    {
+     "v": "clear",
+     "reason": "Buyer verified bill via official website independently"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill, buyer verified amount independently."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "medical_bill",
+   "item": "Lab work copay",
+   "price": 35.0,
+   "need": "I had lab work done at my doctor's office a few weeks ago, and this is my copay that I owe for it.",
+   "terms": "This is a statement for services rendered. Please remit your patient responsibility amount by the due date listed.",
+   "origin": "contacted",
+   "source": "I got a paper bill in the mail from my health system's billing department.",
+   "if_asked": "I logged into my health system's patient portal, which I already had set up from previous visits, and confirmed this copay matches the visit before paying it.",
+   "id": "m24",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.8,
+   "steps": [
+    "Call the health system's official billing phone number from their website to confirm the amount and due date",
+    "Call the health system's billing department using the number on your insurance card or past bill to confirm the amount and payment method.",
+    "Log in to your health system's patient portal and check for the same bill."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request with no buyer verification; confirm legitimacy",
+     "quote": null,
+     "step": "Call the health system's official billing phone number from their website to confirm the amount and due date"
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details not confirmed independently",
+     "quote": "This is a statement for services rendered. Please remit your patient responsibility amount by the due date listed.",
+     "step": "Call the health system's billing department using the number on your insurance card or past bill to confirm the amount and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a bill; check details independently.",
+     "quote": "Please remit your patient responsibility amount by the due date listed.",
+     "step": "Log in to your health system's patient portal and check for the same bill."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Ordinary medical copay confirmed via patient portal"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid via verified portal"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected medical bill, buyer verified through their own account."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "water_bill",
+   "item": "Quarterly water bill",
+   "price": 87.25,
+   "need": "This is my regular water bill, so I'm paying it on time to avoid any late fees.",
+   "terms": "Your water and sewer statement for this quarter is now due. Please pay the total by the due date shown.",
+   "origin": "contacted",
+   "source": "I received my water bill in the mail in the envelope that it always comes in.",
+   "if_asked": "I called the customer service number that is printed on my physical bill from last quarter (not the one on a random message), verified my account, and paid over the phone through their automated system.",
+   "id": "m25",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.6,
+   "steps": [
+    "Compare the bill's account number and amount with your previous water bill or online account.",
+    "Check the payee name and account number on the physical bill against your past bills or account online.",
+    "Log in to your water company account and confirm this bill amount."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted bill, no independent verification provided",
+     "quote": "This is my regular water bill, so I'm paying it on time to avoid any late fees.",
+     "step": "Compare the bill's account number and amount with your previous water bill or online account."
+    },
+    {
+     "v": "verify",
+     "reason": "Received by mail but payment details or payee may have changed",
+     "quote": "Your water and sewer statement for this quarter is now due. Please pay the total by the due date shown.",
+     "step": "Check the payee name and account number on the physical bill against your past bills or account online."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received the request and is paying a bill.",
+     "quote": "Your water and sewer statement for this quarter is now due.",
+     "step": "Log in to your water company account and confirm this bill amount."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular water bill paid via verified official channel"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid via verified method"
+    },
+    {
+     "v": "clear",
+     "reason": "Regular bill, expected amount, paid through verified channel."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "phone_bill",
+   "item": "Cell phone bill",
+   "price": 103.5,
+   "need": "I need to pay my cell phone bill so my phone service doesn't get interrupted.",
+   "terms": "Your monthly wireless statement is available. Your payment is due by the date listed on your statement.",
+   "origin": "contacted",
+   "source": "I got a notification through my cell phone carrier's official app that my bill was ready.",
+   "if_asked": "I opened the official carrier app that I already have installed on my phone, checked the line items and total, and paid directly through the app.",
+   "id": "m26",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 2,
+   "secs": 1.5,
+   "steps": [
+    "Check the payment amount and due date in the carrier's official app or website, not the notification."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "ordinary bill via official app",
+     "quote": "I need to pay my cell phone bill so my phone service doesn't get interrupted.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted but payment details not confirmed independently",
+     "quote": "Your payment is due by the date listed on your statement.",
+     "step": "Check the payment amount and due date in the carrier's official app or website, not the notification."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill, buyer initiated payment through their carrier's app.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular carrier bill verified through the official app"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid through verified official app"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill, paid through official app, buyer verified details."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "property_tax",
+   "item": "County property tax installment",
+   "price": 265.0,
+   "need": "This is the second installment for my property taxes for the year, so I need to pay it before the deadline.",
+   "terms": "Your property tax installment is due by the date listed. Payments can be made by the approved methods listed on this statement.",
+   "origin": "contacted",
+   "source": "I received my tax statement in the mail from my county treasurer's office.",
+   "if_asked": "I went to my county treasurer's official website that I have saved from prior years, looked up my parcel number, and verified the installment amount matched exactly before paying.",
+   "id": "m27",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.6,
+   "steps": [
+    "Call the county treasurer's office using a known phone number to confirm amount and payment method.",
+    "Check the payment methods on the physical statement against the ones being used.",
+    "Log in to your county treasurer's official website and confirm this charge."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted tax bill; buyer hasn't independently confirmed payment details",
+     "quote": "This is the second installment for my property taxes for the year, so I need to pay it before the deadline.",
+     "step": "Call the county treasurer's office using a known phone number to confirm amount and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details may have changed",
+     "quote": "Payments can be made by the approved methods listed on this statement.",
+     "step": "Check the payment methods on the physical statement against the ones being used."
+    },
+    {
+     "v": "verify",
+     "reason": "The request came to the buyer. Check the details independently.",
+     "quote": "Your property tax installment is due by the date listed.",
+     "step": "Log in to your county treasurer's official website and confirm this charge."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular property tax bill verified on official website"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected tax payment verified via official website"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected regular bill, buyer verified amount independently."
+    }
+   ]
+  },
+  {
+   "kind": "control_not_checked",
+   "category": "electric_bill",
+   "item": "Monthly electric bill",
+   "price": 128.15,
+   "need": "This is my electric bill, so I just need to get it paid before it's due so my power stays on.",
+   "terms": "Your statement is due by the due date listed. Please make your payment to avoid a late fee.",
+   "origin": "contacted",
+   "source": "I got an email saying my electric bill was ready.",
+   "if_asked": "I haven't really checked it, I just saw the total and want to pay it now.",
+   "id": "m28",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.0,
+   "steps": [
+    "Log into the utility\u2019s official website directly and confirm the amount and payment method.",
+    "Log in to your utility account directly via the official website to confirm the bill amount and payment details.",
+    "Log in to your account on the electric company's website and check the amount due."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request with unverified payment details",
+     "quote": "This is my electric bill, so I just need to get it paid before it's due so my power stays on.",
+     "step": "Log into the utility\u2019s official website directly and confirm the amount and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details not confirmed independently",
+     "quote": "Your statement is due by the due date listed. Please make your payment to avoid a late fee.",
+     "step": "Log in to your utility account directly via the official website to confirm the bill amount and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a bill via email. Must verify details independently.",
+     "quote": "Your statement is due by the due date listed.",
+     "step": "Log in to your account on the electric company's website and check the amount due."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer hasn't independently confirmed the bill details"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer hasn't verified details independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message and is paying based on it, without independent verification."
+    }
+   ]
+  },
+  {
+   "kind": "control_not_checked",
+   "category": "internet_bill",
+   "item": "Home internet bill",
+   "price": 79.99,
+   "need": "I've had internet for years, so this is probably just my normal bill and I want to pay it so it doesn't go past due.",
+   "terms": "Your billing statement is available. Payment is due by the date shown.",
+   "origin": "contacted",
+   "source": "I got a text message from my internet provider saying my bill is ready to pay.",
+   "if_asked": "I haven't checked my account for this month, I just want to pay the amount that was shown in the text.",
+   "id": "m29",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.8,
+   "steps": [
+    "Log into your provider's official website or app and confirm the bill amount and payment link.",
+    "Check your account on the provider's official website using a direct link, not the one in the text.",
+    "Log in to your internet account directly and check the bill amount."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request without independent verification of payment details",
+     "quote": "I got a text message from my internet provider saying my bill is ready to pay.",
+     "step": "Log into your provider's official website or app and confirm the bill amount and payment link."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details not confirmed independently",
+     "quote": "Your billing statement is available. Payment is due by the date shown.",
+     "step": "Check your account on the provider's official website using a direct link, not the one in the text."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message and is paying a bill.",
+     "quote": "Your billing statement is available. Payment is due by the date shown.",
+     "step": "Log in to your internet account directly and check the bill amount."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer hasn't independently confirmed the bill; request came via text"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted and hasn't verified details independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message and is paying based on it."
+    }
+   ]
+  },
+  {
+   "kind": "control_not_checked",
+   "category": "water_bill",
+   "item": "Monthly water bill",
+   "price": 56.75,
+   "need": "It's about that time of the month for my water bill, so I'm just going to pay it real quick before I forget.",
+   "terms": "Your water bill is now due. Please remit payment by the listed due date to avoid any late charges.",
+   "origin": "contacted",
+   "source": "I received a paper bill in the mail like I usually do.",
+   "if_asked": "I haven't looked over the breakdown or logged into my account, I just want to pay the total listed on the bill.",
+   "id": "m30",
+   "author": "mai-thinking",
+   "decision": "verify",
+   "clears": 1,
+   "secs": 1.9,
+   "steps": [
+    "Call the water utility using the phone number on a previous bill to confirm amount and due date.",
+    "Log in to your water provider's website and check the amount due."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; buyer must confirm bill details independently",
+     "quote": "It's about that time of the month for my water bill, so I'm just going to pay it real quick before I forget.",
+     "step": "Call the water utility using the phone number on a previous bill to confirm amount and due date."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected regular bill paid as usual.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a bill and is paying it, but it came to them.",
+     "quote": "Your water bill is now due.",
+     "step": "Log in to your water provider's website and check the amount due."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer hasn't independently confirmed amount; verification line insufficient"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer hasn't verified details independently despite being contacted"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message and is paying without checking details."
+    }
+   ]
+  }
+ ]
+}

@@ -1,5 +1,7 @@
 # Benchmarks
 
+**The current version's tests are in [`verify_first/`](verify_first/).** The files below are from the first version (clear or hold only, 9 Nov 2026) and are kept as history.
+
 | File | What it is |
 |---|---|
 | `blind_61_scenarios.json` | 61 purchases written blind by a different AI model (DeepSeek): 33 scams, 28 normal. Never used for tuning. |

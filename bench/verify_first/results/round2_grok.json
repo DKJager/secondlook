@@ -1,0 +1,1517 @@
+{
+ "summary": {
+  "legit_self": {
+   "n": 7,
+   "allow": 7,
+   "verify": 0,
+   "hold": 0
+  },
+  "legit_unverified": {
+   "n": 3,
+   "allow": 0,
+   "verify": 3,
+   "hold": 0
+  },
+  "legit_verified": {
+   "n": 6,
+   "allow": 0,
+   "verify": 6,
+   "hold": 0
+  },
+  "scam_loud": {
+   "n": 4,
+   "allow": 0,
+   "verify": 0,
+   "hold": 4
+  },
+  "scam_quiet": {
+   "n": 10,
+   "allow": 1,
+   "verify": 8,
+   "hold": 1
+  },
+  "SCAMS_STOPPED": "13/14",
+  "SCAMS_STILL_STOPPED_AFTER_BUYER_ANSWER": "13/14",
+  "NORMAL_ALLOWED_AT_ONCE": "7/16",
+  "NORMAL_ALLOWED_AFTER_ONE_CHECK": "16/16",
+  "NORMAL_ASKED_TO_CHECK": 9,
+  "NORMAL_WRONGLY_HELD": 0,
+  "rows_with_a_reviewer_fault": 0,
+  "went_to_larger_crowd": 0,
+  "secs_p90": 4.0,
+  "median_secs": 2.8
+ },
+ "rows": [
+  {
+   "kind": "scam_quiet",
+   "category": "Vendor invoice",
+   "item": "Q1 marketing materials",
+   "price": 1245.67,
+   "need": "We received our monthly delivery of printed brochures and need to pay this invoice before we place the next order.",
+   "terms": "Please send payment for invoice #47829 in the amount of $1,245.67 to our accounts department.",
+   "origin": "contacted",
+   "source": "The invoice came by email from what looked like our usual printing company.",
+   "if_asked": "It looked exactly like their previous invoices so I scheduled the payment.",
+   "id": "x01",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 4.0,
+   "steps": [
+    "Call the printer's official phone number from a previous invoice to confirm invoice #47829 and amount.",
+    "Call the printing company using a number from their official website to confirm the invoice and payment details.",
+    "Log in to your account on the printing company's website and find invoice #47829 to confirm."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited invoice received; need to confirm details with known contact",
+     "quote": "We received our monthly delivery of printed brochures and need to pay this invoice before we place the next order.",
+     "step": "Call the printer's official phone number from a previous invoice to confirm invoice #47829 and amount."
+    },
+    {
+     "v": "verify",
+     "reason": "Invoice received via email from a new or changed source; payment details not confirmed independently",
+     "quote": "Please send payment for invoice #47829 in the amount of $1,245.67 to our accounts department.",
+     "step": "Call the printing company using a number from their official website to confirm the invoice and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received an invoice via email. Need to check independently.",
+     "quote": "Please send payment for invoice #47829",
+     "step": "Log in to your account on the printing company's website and find invoice #47829 to confirm."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted; verification based only on email appearance, not independent"
+    },
+    {
+     "v": "verify",
+     "reason": "Invoice details not confirmed independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received the request and scheduled payment based on appearance."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Domain renewal",
+   "item": "Website domain renewal",
+   "price": 94.99,
+   "need": "Our main domain is due for renewal next week and I want to make sure the website stays live.",
+   "terms": "Renewal notice: your domain will expire soon. Please pay $94.99 to maintain registration.",
+   "origin": "contacted",
+   "source": "I received a renewal reminder by email that looked like it was from the registrar.",
+   "if_asked": "The email had our exact domain and expiration date so I paid it right away.",
+   "id": "x02",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.1,
+   "steps": [
+    "Log into the registrar\u2019s website directly and verify the renewal amount and due date.",
+    "Log in to your domain registrar's official website directly (not via the email link) to check renewal status and payment details.",
+    "Log in to your account on the registrar's website and check the renewal status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted renewal reminder; payment details not independently confirmed",
+     "quote": "Renewal notice: your domain will expire soon. Please pay $94.99 to maintain registration.",
+     "step": "Log into the registrar\u2019s website directly and verify the renewal amount and due date."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted via email; payment details not confirmed independently",
+     "quote": "Renewal notice: your domain will expire soon. Please pay $94.99 to maintain registration.",
+     "step": "Log in to your domain registrar's official website directly (not via the email link) to check renewal status and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received an unsolicited message.",
+     "quote": "your domain will expire soon",
+     "step": "Log in to your account on the registrar's website and check the renewal status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Paid based on emailed reminder without independent confirmation"
+    },
+    {
+     "v": "verify",
+     "reason": "Email claimed to be from registrar but buyer didn't confirm via official\u6e20\u9053"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer paid after receiving a message. Need independent check."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Software subscription",
+   "item": "Accounting software renewal",
+   "price": 349.0,
+   "need": "We need to renew our accounting program license or we won't be able to send invoices next month.",
+   "terms": "Your annual license is due for renewal. Kindly remit $349.00 using the link below.",
+   "origin": "contacted",
+   "source": "An email came with a renewal link that had all our account details.",
+   "if_asked": "It seemed like our normal renewal notice so I clicked the link and paid.",
+   "id": "x03",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.9,
+   "steps": [
+    "Log into the official software account via known website and verify renewal amount and payment link",
+    "Log in to your account directly via the official website to verify the renewal amount and payment method.",
+    "Log in to your account directly (not via the link) and check your renewal status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited renewal email with payment link; buyer must confirm details independently",
+     "quote": "Kindly remit $349.00 using the link below.",
+     "step": "Log into the official software account via known website and verify renewal amount and payment link"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via email with a link; payment details not independently confirmed",
+     "quote": "Kindly remit $349.00 using the link below.",
+     "step": "Log in to your account directly via the official website to verify the renewal amount and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to buyer via a link in an email.",
+     "quote": "Kindly remit $349.00 using the link below.",
+     "step": "Log in to your account directly (not via the link) and check your renewal status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer used email link without independent verification"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via email with a link, buyer did not independently confirm details"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment initiated from a link in a message. Buyer needs to confirm independently."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Utility bill",
+   "item": "Commercial electricity bill",
+   "price": 1876.44,
+   "need": "The bill for last month's power at the warehouse came and it needs to be paid by Friday.",
+   "terms": "Current charges are $1,876.44. Please pay by the due date to avoid late fees.",
+   "origin": "contacted",
+   "source": "A PDF bill arrived by email that looked exactly like the ones from the power company.",
+   "if_asked": "The logo and our account number looked right so I didn't question it.",
+   "id": "x04",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.1,
+   "steps": [
+    "Log into the power company's official portal and confirm the amount and account number match the email.",
+    "Log in to the power company's official website using a known URL to check the bill and payment status.",
+    "Log in to your power company account and check the bill amount."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; verify payment details and account",
+     "quote": "Please pay by the due date to avoid late fees.",
+     "step": "Log into the power company's official portal and confirm the amount and account number match the email."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details not confirmed independently",
+     "quote": "Current charges are $1,876.44. Please pay by the due date to avoid late fees.",
+     "step": "Log in to the power company's official website using a known URL to check the bill and payment status."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a bill via email. Need to confirm details independently.",
+     "quote": "Please pay by the due date to avoid late fees.",
+     "step": "Log in to your power company account and check the bill amount."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer relied on emailed PDF without independent confirmation"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted and didn't independently confirm details"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received unsolicited bill; verification relies on visual cues from the message."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Delivery fee",
+   "item": "Customs clearance charge",
+   "price": 219.75,
+   "need": "My order from Europe is being held and I need to pay this fee so it can be delivered.",
+   "terms": "Please settle the import fees of $219.75 so we can release your parcel.",
+   "origin": "contacted",
+   "source": "I got a text message with a tracking number and payment link.",
+   "if_asked": "The tracking number matched my order so I used the link they sent.",
+   "id": "x05",
+   "author": "grok-42",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 4.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Customs fee scam: unsolicited payment request for import fees via text link",
+     "quote": "Please settle the import fees of $219.75 so we can release your parcel.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via text with a payment link, unverified",
+     "quote": "Please settle the import fees of $219.75 so we can release your parcel.",
+     "step": "Check the tracking number on the official carrier's website directly, not through the message's link."
+    },
+    {
+     "v": "verify",
+     "reason": "Unexpected message requesting payment for customs; buyer did not initiate.",
+     "quote": "Please settle the import fees of $219.75 so we can release your parcel.",
+     "step": "Check the tracking number on the official courier's website, not the link."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Business directory",
+   "item": "Local chamber listing",
+   "price": 450.0,
+   "need": "We need to renew our business listing so customers can keep finding us in the directory.",
+   "terms": "Your membership renewal is now due. Payment of $450 ensures continued visibility.",
+   "origin": "contacted",
+   "source": "They mailed me a renewal invoice with all our company info on it.",
+   "if_asked": "It had our correct address and member number so it looked legitimate.",
+   "id": "x06",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.7,
+   "steps": [
+    "Log into the chamber\u2019s official website and verify the renewal amount and payee.",
+    "Check the invoice against your account on the chamber's official website.",
+    "Log into your chamber account on their official website and check your membership status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted renewal invoice; buyer hasn't independently confirmed details",
+     "quote": "Your membership renewal is now due. Payment of $450 ensures continued visibility.",
+     "step": "Log into the chamber\u2019s official website and verify the renewal amount and payee."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details may have changed",
+     "quote": "Your membership renewal is now due. Payment of $450 ensures continued visibility.",
+     "step": "Check the invoice against your account on the chamber's official website."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment requested via unsolicited invoice. Need to confirm legitimacy.",
+     "quote": "Your membership renewal is now due.",
+     "step": "Log into your chamber account on their official website and check your membership status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted; verification relies only on invoice details, not independent source"
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and details changed; verify independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment requested via unsolicited message; buyer needs to independently confirm details."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Academic publishing",
+   "item": "Journal publication fee",
+   "price": 1650.0,
+   "need": "My research paper was accepted and now I have to pay the processing charge to get it published.",
+   "terms": "To move forward with publication please pay the processing charge of $1,650.",
+   "origin": "self",
+   "source": "I submitted my paper to this journal I found and they sent the invoice after acceptance.",
+   "if_asked": "The journal website looked professional when I submitted so I just paid.",
+   "id": "x07",
+   "author": "grok-42",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 2.4,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary publication fee requested by journal the buyer chose, no scam signals present.",
+     "quote": "To move forward with publication please pay the processing charge of $1,650.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary publication fee for accepted paper",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Buyer initiated contact and is paying for a service they sought.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Rental application",
+   "item": "Apartment application fee",
+   "price": 50.0,
+   "need": "I'm applying for this apartment I saw online and they need the processing fee first.",
+   "terms": "Your non-refundable application fee is $50. Please pay to begin your background check.",
+   "origin": "contacted",
+   "source": "The person managing the listing emailed me the payment request after I inquired.",
+   "if_asked": "It seemed like a normal fee every landlord charges so I paid it.",
+   "id": "x08",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.3,
+   "steps": [
+    "Call the leasing office using a known phone number to confirm the fee request",
+    "Check the payment details by contacting the property manager using a phone number or email from the official website, not the message.",
+    "Log into your account on the rental website and confirm the fee amount."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Payment request after inquiry; need to confirm legitimacy of fee",
+     "quote": "Your non-refundable application fee is $50. Please pay to begin your background check.",
+     "step": "Call the leasing office using a known phone number to confirm the fee request"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer; payment details not confirmed independently",
+     "quote": "Your non-refundable application fee is $50. Please pay to begin your background check.",
+     "step": "Check the payment details by contacting the property manager using a phone number or email from the official website, not the message."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, fee to begin process.",
+     "quote": "Please pay to begin your background check.",
+     "step": "Log into your account on the rental website and confirm the fee amount."
+    }
+   ],
+   "final": "hold",
+   "second": [
+    {
+     "v": "hold",
+     "reason": "up\u2011front application fee for rental not yet seen (quote not found in terms)"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer; fee not verified independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, paying a fee to unlock something (rental)."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Toll payment",
+   "item": "Unpaid road tolls",
+   "price": 32.75,
+   "need": "I must have missed a toll lane last month and now I have this balance to clear.",
+   "terms": "Pay your outstanding toll balance of $32.75 before additional penalties apply.",
+   "origin": "contacted",
+   "source": "A notice with my license plate on it came in the regular mail.",
+   "if_asked": "It had my plate number and the date I drove so I knew it was real.",
+   "id": "x09",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.1,
+   "steps": [
+    "Log into the toll agency\u2019s website or call their official number to verify the $32.75 balance.",
+    "Call the toll authority using a number from their official website to confirm the balance.",
+    "Log into your toll account or call the official number on a past statement."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; confirm toll balance with official agency",
+     "quote": "Pay your outstanding toll balance of $32.75 before additional penalties apply.",
+     "step": "Log into the toll agency\u2019s website or call their official number to verify the $32.75 balance."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted via mail with license plate, needs independent verification",
+     "quote": "Pay your outstanding toll balance of $32.75 before additional penalties apply.",
+     "step": "Call the toll authority using a number from their official website to confirm the balance."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a notice, needs to check independently.",
+     "quote": "Pay your outstanding toll balance of $32.75 before additional penalties apply.",
+     "step": "Log into your toll account or call the official number on a past statement."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; verification relies on the notice itself, not independent source"
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and contains personal details, but buyer should confirm via official channel"
+    },
+    {
+     "v": "verify",
+     "reason": "Contacted, payment details not checked independently. Plate number is not verification."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Warranty service",
+   "item": "Home appliance warranty",
+   "price": 189.99,
+   "need": "Our fridge warranty is expiring and I want to extend the coverage for peace of mind.",
+   "terms": "Renew your protection plan for $189.99 to continue coverage on your appliance.",
+   "origin": "contacted",
+   "source": "A reminder postcard arrived in the mail with our model number on it.",
+   "if_asked": "The postcard had all the right details about our fridge so I paid online.",
+   "id": "x10",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.0,
+   "steps": [
+    "Call the warranty provider using the phone number on your original contract to verify renewal.",
+    "Call the manufacturer using the number from their official website to confirm the renewal request.",
+    "Call the appliance manufacturer directly using a number from their official website."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted renewal request; confirm legitimacy before paying.",
+     "quote": "Renew your protection plan for $189.99 to continue coverage on your appliance.",
+     "step": "Call the warranty provider using the phone number on your original contract to verify renewal."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted via mail with model number, but buyer didn't verify independently",
+     "quote": "Renew your protection plan for $189.99 to continue coverage on your appliance.",
+     "step": "Call the manufacturer using the number from their official website to confirm the renewal request."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received unsolicited message; needs to confirm details independently.",
+     "quote": "Renew your protection plan for $189.99 to continue coverage on your appliance.",
+     "step": "Call the appliance manufacturer directly using a number from their official website."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "buyer relied on contacted postcard, needs independent confirmation"
+    },
+    {
+     "v": "verify",
+     "reason": "Postcard was contacted, details match but need independent confirmation"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, payment details not independently verified."
+    }
+   ]
+  },
+  {
+   "kind": "scam_loud",
+   "category": "Tech support",
+   "item": "Computer virus removal",
+   "price": 399.0,
+   "need": "My computer started showing scary warnings and the technician who called fixed it remotely but now I owe for the service.",
+   "terms": "Thank you for using our remote technical support. The total for services rendered is $399.",
+   "origin": "contacted",
+   "source": "A pop-up appeared on my screen and I called the number it gave me.",
+   "if_asked": "I used the number from the pop-up warning and let them connect to my computer.",
+   "id": "x11",
+   "author": "grok-42",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "tech support scam",
+     "quote": "remote technical support",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted via a pop-up with a scam signal",
+     "quote": "Thank you for using our remote technical support. The total for services rendered is $399.",
+     "step": "Call the official support number from the company's website to confirm the charge."
+    },
+    {
+     "v": "hold",
+     "reason": "Unsolicited tech support and payment for a service not requested or verified.",
+     "quote": "scary warnings",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "Tax collection",
+   "item": "Outstanding tax balance",
+   "price": 1250.0,
+   "need": "The IRS left a message saying I owe back taxes and I need to pay today to prevent further penalties.",
+   "terms": "Your account shows a balance due. Payment of $1,250 must be made immediately to resolve this matter.",
+   "origin": "contacted",
+   "source": "I received an urgent voicemail from someone claiming to be from the Treasury Department.",
+   "if_asked": "They sounded official on the phone so I paid what they told me to.",
+   "id": "x12",
+   "author": "grok-42",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 3.8,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Tax scam impersonating government agency with urgent payment demand",
+     "quote": "I owe back taxes and I need to pay today to prevent further penalties.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Contacted by unsolicited message claiming to be government agency",
+     "quote": "Your account shows a balance due. Payment of $1,250 must be made immediately to resolve this matter.",
+     "step": "Call the IRS directly using the official number on their website to verify the debt."
+    },
+    {
+     "v": "hold",
+     "reason": "Debt/fine scam: urgent demand for payment to avoid penalties, claiming to be a government agency.",
+     "quote": "Payment of $1,250 must be made immediately to resolve this matter.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "Prize award",
+   "item": "Sweepstakes claim fee",
+   "price": 275.0,
+   "need": "I was notified that I won a big cash prize but they said I have to pay the processing fee first.",
+   "terms": "To release your prize money please pay the applicable administrative fee of $275.",
+   "origin": "contacted",
+   "source": "An email told me I was selected as the winner of their national sweepstakes.",
+   "if_asked": "The email looked official and had a fancy certificate so I paid the fee.",
+   "id": "x13",
+   "author": "grok-42",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 3.4,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Prize fee scam: payment required to claim winnings",
+     "quote": "To release your prize money please pay the applicable administrative fee of $275.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Guaranteed prize with upfront fee is a scam pattern",
+     "quote": "To release your prize money please pay the applicable administrative fee of $275.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee to receive a prize is a classic scam pattern.",
+     "quote": "To release your prize money please pay the applicable administrative fee of $275.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "Online romance",
+   "item": "Emergency travel costs",
+   "price": 850.0,
+   "need": "The woman I've been talking to online for months needs help buying a ticket home after her trip went wrong.",
+   "terms": "Please send the $850 via the payment app so I can purchase my return flight today.",
+   "origin": "contacted",
+   "source": "She sent me a long message explaining the situation after we had been chatting daily.",
+   "if_asked": "We had built up a lot of trust over months of talking so I just sent it.",
+   "id": "x14",
+   "author": "grok-42",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 3.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Romance/emergency travel scam: urgent payment to unknown online contact via app",
+     "quote": "Please send the $850 via the payment app so I can purchase my return flight today.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Contacted request from online acquaintance for urgent payment",
+     "quote": "Please send the $850 via the payment app so I can purchase my return flight today.",
+     "step": "Call her using a number from her profile or previous messages to confirm the request."
+    },
+    {
+     "v": "hold",
+     "reason": "Online contact asking for money for travel is a romance scam.",
+     "quote": "needs help buying a ticket home after her trip went wrong",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Consumer electronics",
+   "item": "Noise cancelling headphones",
+   "price": 129.99,
+   "need": "I needed a good pair of headphones for all my video calls and meetings.",
+   "terms": "Thank you for your Amazon order. Your total today is $129.99 including tax.",
+   "origin": "self",
+   "source": "I looked them up on Amazon and bought them from the official listing.",
+   "if_asked": "I bought them directly in the Amazon app I use all the time.",
+   "id": "x15",
+   "author": "grok-42",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.8,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer on official Amazon listing",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase from official seller by buyer's own initiative",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Used furniture",
+   "item": "Leather sectional sofa",
+   "price": 450.0,
+   "need": "I needed a big couch for the living room and this one was a great local deal.",
+   "terms": "Cash only for local pickup. Item is in excellent condition as shown.",
+   "origin": "self",
+   "source": "I replied to a Craigslist ad and went to see it in person.",
+   "if_asked": "I met the seller at their house, inspected the couch, and paid cash there.",
+   "id": "x16",
+   "author": "grok-42",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 2.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary local cash purchase with in-person pickup, no scam signals",
+     "quote": "I needed a big couch for the living room and this one was a great local deal.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, in-person inspection, cash payment for local pickup.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Buyer found seller on their own, saw the item in person, and is paying in cash.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Web development",
+   "item": "Business website build",
+   "price": 1250.0,
+   "need": "I hired a local freelancer to create a new website for my consulting business.",
+   "terms": "Deposit of $1,250 required to begin work on your 5-page website project.",
+   "origin": "self",
+   "source": "I posted in a local business Facebook group and chose this developer after talking.",
+   "if_asked": "I met him for coffee, saw his portfolio in person, and we signed a simple agreement.",
+   "id": "x17",
+   "author": "grok-42",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.8,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary deposit for a freelance website project chosen by buyer",
+     "quote": "Deposit of $1,250 required to begin work on your 5-page website project.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Event tickets",
+   "item": "Concert tickets",
+   "price": 185.0,
+   "need": "My daughter wanted to go to this concert so I bought us two tickets.",
+   "terms": "Your tickets have been purchased successfully. Digital tickets sent to your account.",
+   "origin": "self",
+   "source": "I bought them straight from Ticketmaster during the public sale.",
+   "if_asked": "I used the official Ticketmaster site that I have used for years.",
+   "id": "x18",
+   "author": "grok-42",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.8,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase from known seller, buyer initiated",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase from a known seller by buyer's own initiative",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated, from a known vendor.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Custom apparel",
+   "item": "Family sweatshirts",
+   "price": 135.8,
+   "need": "I wanted matching holiday sweatshirts with our names on them for the whole family.",
+   "terms": "Thank you for your custom order. We will begin production once payment is received.",
+   "origin": "self",
+   "source": "I found the Etsy shop while searching for personalized gifts and placed the order.",
+   "if_asked": "I read through all the recent reviews on Etsy before I bought.",
+   "id": "x19",
+   "author": "grok-42",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.6,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Buyer initiated purchase on Etsy, normal custom order",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Home services",
+   "item": "Piano lessons for child",
+   "price": 240.0,
+   "need": "I found a piano teacher nearby and I'm paying for the first month of weekly lessons.",
+   "terms": "Monthly tuition for four lessons is $240 payable at the start of each month.",
+   "origin": "self",
+   "source": "I saw her flyer at the community center and called her to set it up.",
+   "if_asked": "I attended the first lesson with my son and paid her in person after.",
+   "id": "x20",
+   "author": "grok-42",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.6,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Groceries",
+   "item": "Weekly grocery delivery",
+   "price": 92.45,
+   "need": "I ordered my regular groceries for the week because I didn't have time to shop.",
+   "terms": "Your Instacart order total including delivery and tip is $92.45.",
+   "origin": "self",
+   "source": "I placed the order through the Instacart app on my phone.",
+   "if_asked": "I used the same Instacart account I've had for two years.",
+   "id": "x21",
+   "author": "grok-42",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Regular grocery order placed directly through Instacart app",
+     "quote": "Your Instacart order total including delivery and tip is $92.45.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_verified",
+   "category": "Utility bill",
+   "item": "Monthly electric bill",
+   "price": 87.32,
+   "need": "Time to pay our regular electric bill for the house again.",
+   "terms": "Your current balance due is $87.32. Please pay by the 18th of the month.",
+   "origin": "contacted",
+   "source": "The bill came in the mail the same way it does every month.",
+   "if_asked": "I logged into my account on the utility website I have bookmarked to confirm the exact amount.",
+   "id": "x22",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 1,
+   "secs": 1.8,
+   "steps": [
+    "Log into the electric company's official portal and verify the balance and due date.",
+    "Call the utility company using the number on your past bill to confirm this amount and due date."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; buyer hasn't independently confirmed details",
+     "quote": "Your current balance due is $87.32. Please pay by the 18th of the month.",
+     "step": "Log into the electric company's official portal and verify the balance and due date."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details unchanged but must confirm via independent channel",
+     "quote": "Your current balance due is $87.32. Please pay by the 18th of the month.",
+     "step": "Call the utility company using the number on your past bill to confirm this amount and due date."
+    },
+    {
+     "v": "clear",
+     "reason": "Regular bill, expected amount, usual payment method.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular electric bill confirmed via own website; no scam signals"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid the usual way with verified account access."
+    },
+    {
+     "v": "clear",
+     "reason": "Regular bill, expected amount, paid the usual way, verified through own account."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "Internet service",
+   "item": "Monthly internet bill",
+   "price": 64.99,
+   "need": "I need to pay our internet bill so the connection doesn't get turned off.",
+   "terms": "Your recurring monthly charge for internet service is $64.99.",
+   "origin": "contacted",
+   "source": "They sent the usual email reminder with the invoice attached.",
+   "if_asked": "I opened the official app I downloaded from the app store and checked my balance there.",
+   "id": "x23",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.8,
+   "steps": [
+    "Log into your ISP account on the official website and verify the amount and payment method.",
+    "Log in to your account directly via the official website to confirm the invoice and payment details.",
+    "Log in to your internet provider's account and check the bill amount."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; need to confirm bill details independently",
+     "quote": "I need to pay our internet bill so the connection doesn't get turned off.",
+     "step": "Log into your ISP account on the official website and verify the amount and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details may have changed",
+     "quote": "Your recurring monthly charge for internet service is $64.99.",
+     "step": "Log in to your account directly via the official website to confirm the invoice and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received a message with an invoice. Must check independently.",
+     "quote": "Your recurring monthly charge for internet service is $64.99.",
+     "step": "Log in to your internet provider's account and check the bill amount."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular recurring internet bill, buyer verified via official app"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid through verified app"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected regular bill, usual amount, paid the usual way, verified in app."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "Home repair",
+   "item": "Plumbing service invoice",
+   "price": 325.0,
+   "need": "The plumber fixed our leaking faucet last week and sent the bill.",
+   "terms": "Thank you for your business. Please remit payment for services completed on January 12.",
+   "origin": "contacted",
+   "source": "He emailed me the invoice a few days after he finished the job.",
+   "if_asked": "I called him using the number I saved when I first got the quote from him.",
+   "id": "x24",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.7,
+   "steps": [
+    "Call the plumber using a known phone number to confirm the invoice",
+    "Check the invoice against your records or contact the plumber using a known number to confirm the amount and details.",
+    "Log in to your email and find the plumber's original email to confirm the invoice amount."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Invoice received via email; buyer hasn't independently confirmed payment details",
+     "quote": "The plumber fixed our leaking faucet last week and sent the bill.",
+     "step": "Call the plumber using a known phone number to confirm the invoice"
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details not confirmed independently",
+     "quote": "Thank you for your business. Please remit payment for services completed on January 12.",
+     "step": "Check the invoice against your records or contact the plumber using a known number to confirm the amount and details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received an invoice via email. Need to confirm details independently.",
+     "quote": "Thank you for your business. Please remit payment for services completed on January 12.",
+     "step": "Log in to your email and find the plumber's original email to confirm the invoice amount."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular invoice from known plumber, verified by calling saved number"
+    },
+    {
+     "v": "clear",
+     "reason": "Buyer verified the plumber using a saved number from prior contact."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary invoice for a service the buyer received, paid with a known number."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "Medical bill",
+   "item": "Doctor visit balance",
+   "price": 45.0,
+   "need": "I went to the doctor last month and now I have to pay my portion of the bill.",
+   "terms": "Patient responsibility amount due is $45.00 for your recent visit.",
+   "origin": "contacted",
+   "source": "A statement arrived in the mail from the doctor's billing office.",
+   "if_asked": "I checked the insurance portal using my own login to see exactly what I owed.",
+   "id": "x25",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.9,
+   "steps": [
+    "Call the billing office using the phone number from a prior statement or official website",
+    "Call the doctor's office using the number from your insurance card or past statement to confirm the balance.",
+    "Log in to your patient portal or call the doctor's office using a number from their website to confirm this balance."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted via mail; verify the bill details before paying",
+     "quote": "Patient responsibility amount due is $45.00 for your recent visit.",
+     "step": "Call the billing office using the phone number from a prior statement or official website"
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted and payment details not confirmed independently",
+     "quote": "Patient responsibility amount due is $45.00 for your recent visit.",
+     "step": "Call the doctor's office using the number from your insurance card or past statement to confirm the balance."
+    },
+    {
+     "v": "verify",
+     "reason": "The request came to the buyer. Check the bill details.",
+     "quote": "Patient responsibility amount due is $45.00 for your recent visit.",
+     "step": "Log in to your patient portal or call the doctor's office using a number from their website to confirm this balance."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Ordinary medical bill verified through insurance portal, no scam signals."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid as usual, verified via independent insurance portal"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected medical bill, buyer verified amount independently."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "Rent",
+   "item": "Monthly apartment rent",
+   "price": 1650.0,
+   "need": "It's the first of the month so I need to pay my rent.",
+   "terms": "Rent for February is now due. Please use your usual payment method.",
+   "origin": "contacted",
+   "source": "My landlord sent his regular text message on the first like he always does.",
+   "if_asked": "I used the Zelle account I have saved for him from the day I signed the lease.",
+   "id": "x26",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.0,
+   "steps": [
+    "Log into your landlord\u2019s portal or call the phone number you have on file to confirm the rent amount.",
+    "Call landlord using number from previous lease or past rent receipt to confirm request",
+    "Log in to your landlord's portal or your bank to confirm the amount and payee."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request without independent verification; need to confirm landlord's payment details",
+     "quote": "Rent for February is now due. Please use your usual payment method.",
+     "step": "Log into your landlord\u2019s portal or call the phone number you have on file to confirm the rent amount."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted but payment method unchanged; verify via landlord's official channel",
+     "quote": "Rent for February is now due. Please use your usual payment method.",
+     "step": "Call landlord using number from previous lease or past rent receipt to confirm request"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted, and it's a regular bill.",
+     "quote": "Rent for February is now due. Please use your usual payment method.",
+     "step": "Log in to your landlord's portal or your bank to confirm the amount and payee."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular rent payment using known Zelle account"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary rent payment via saved Zelle account"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary rent payment using a previously verified payment method."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "Insurance",
+   "item": "Car insurance premium",
+   "price": 578.4,
+   "need": "My car insurance payment for the next six months is due this week.",
+   "terms": "Your semi-annual premium of $578.40 is now payable for continued coverage.",
+   "origin": "contacted",
+   "source": "The insurance company sent me the renewal notice by email.",
+   "if_asked": "I went to the insurance company website I have saved in my browser and verified the amount.",
+   "id": "x27",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.7,
+   "steps": [
+    "Log into the insurer's official website or app and verify the amount and due date.",
+    "Log in to your insurance account directly via the official website to confirm the payment amount and details.",
+    "Log in to your insurance account and check the premium amount."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted renewal notice; buyer must confirm payment details independently",
+     "quote": "Your semi-annual premium of $578.40 is now payable for continued coverage.",
+     "step": "Log into the insurer's official website or app and verify the amount and due date."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted, payment details may have changed",
+     "quote": "Your semi-annual premium of $578.40 is now payable for continued coverage.",
+     "step": "Log in to your insurance account directly via the official website to confirm the payment amount and details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to the buyer via email.",
+     "quote": "Your semi-annual premium of $578.40 is now payable for continued coverage.",
+     "step": "Log in to your insurance account and check the premium amount."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Buyer independently verified amount on saved official website"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected renewal paid the usual way"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected regular bill, buyer verified independently."
+    }
+   ]
+  },
+  {
+   "kind": "legit_unverified",
+   "category": "Streaming service",
+   "item": "Netflix subscription",
+   "price": 15.99,
+   "need": "I pay for Netflix every month so we can watch our shows.",
+   "terms": "Your monthly subscription fee of $15.99 has been charged to the card on file.",
+   "origin": "contacted",
+   "source": "It gets charged automatically every month like clockwork.",
+   "if_asked": "It's just my regular Netflix payment that I never really think about.",
+   "id": "x28",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.6,
+   "steps": [
+    "Log into Netflix on the official website or app and review the current subscription and billing details.",
+    "Check your Netflix account dashboard to confirm the charge matches your usual payment.",
+    "Log into your Netflix account and confirm this charge in your billing history."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted about recurring charge; must confirm through own account",
+     "quote": "I pay for Netflix every month so we can watch our shows.",
+     "step": "Log into Netflix on the official website or app and review the current subscription and billing details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted and payment is automatic, but verification needed",
+     "quote": "Your monthly subscription fee of $15.99 has been charged to the card on file.",
+     "step": "Check your Netflix account dashboard to confirm the charge matches your usual payment."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came to buyer; check charge details independently.",
+     "quote": "Your monthly subscription fee of $15.99 has been charged to the card on file.",
+     "step": "Log into your Netflix account and confirm this charge in your billing history."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular recurring Netflix subscription, usual amount, same payee, no changes detected"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary recurring payment for a known service."
+    },
+    {
+     "v": "clear",
+     "reason": "Regular, expected bill for usual amount, paid the usual way."
+    }
+   ]
+  },
+  {
+   "kind": "legit_unverified",
+   "category": "Cell phone",
+   "item": "Monthly wireless bill",
+   "price": 112.5,
+   "need": "Our family cell phone bill is due again this month.",
+   "terms": "Your January wireless service bill is $112.50. Thank you for being a customer.",
+   "origin": "contacted",
+   "source": "I get the email bill every month on the same day and pay it online.",
+   "if_asked": "This is our usual phone bill that I pay the same way every month.",
+   "id": "x29",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 3,
+   "secs": 1.5,
+   "steps": [
+    "Open the company's own website or app yourself, or call a number you already had, and look for this charge there. Do not use the link, number or reply address in the message."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Regular monthly wireless bill, usual amount and payment method",
+     "quote": "Your January wireless service bill is $112.50.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Expected monthly bill paid the usual way.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Expected regular bill, usual amount, paid the usual way.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular monthly bill, buyer confirms usual amount and payment method"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected regular bill paid the usual way."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected regular bill, usual amount, paid the usual way."
+    }
+   ]
+  },
+  {
+   "kind": "legit_unverified",
+   "category": "Gym membership",
+   "item": "Monthly gym dues",
+   "price": 29.99,
+   "need": "I pay my gym membership so I can keep going to workouts.",
+   "terms": "Your monthly membership payment of $29.99 has been processed as usual.",
+   "origin": "contacted",
+   "source": "It automatically comes out of my checking account on the first like it always does.",
+   "if_asked": "It's the same gym payment I've been making for the last two years.",
+   "id": "x30",
+   "author": "grok-42",
+   "decision": "verify",
+   "clears": 2,
+   "secs": 18.1,
+   "steps": [
+    "Log into the gym\u2019s official website or app and verify the upcoming auto\u2011debit amount and payee."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request, need to confirm payment details independently",
+     "quote": "Your monthly membership payment of $29.99 has been processed as usual.",
+     "step": "Log into the gym\u2019s official website or app and verify the upcoming auto\u2011debit amount and payee."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected recurring payment for a known service.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Regular bill, expected amount, usual payment method.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular recurring gym membership payment, same amount and payee as usual"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected recurring payment for ongoing service."
+    },
+    {
+     "v": "clear",
+     "reason": "Regular bill, expected amount, usual payment method, and buyer confirms history."
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1679 @@
+{
+ "summary": {
+  "legit_self": {
+   "n": 10,
+   "allow": 10,
+   "verify": 0,
+   "hold": 0
+  },
+  "legit_unverified": {
+   "n": 4,
+   "allow": 1,
+   "verify": 2,
+   "hold": 1
+  },
+  "legit_verified": {
+   "n": 8,
+   "allow": 3,
+   "verify": 2,
+   "hold": 3
+  },
+  "scam_loud": {
+   "n": 6,
+   "allow": 1,
+   "verify": 0,
+   "hold": 5
+  },
+  "scam_quiet": {
+   "n": 12,
+   "allow": 5,
+   "verify": 3,
+   "hold": 4
+  },
+  "SCAMS_STOPPED": "12/18",
+  "SCAMS_STILL_STOPPED_AFTER_BUYER_ANSWER": "12/18",
+  "NORMAL_ALLOWED_AT_ONCE": "14/22",
+  "NORMAL_ALLOWED_AFTER_ONE_CHECK": "17/22",
+  "NORMAL_ASKED_TO_CHECK": 4,
+  "NORMAL_WRONGLY_HELD": 4,
+  "rows_with_a_reviewer_fault": 0,
+  "went_to_larger_crowd": 1,
+  "secs_p90": 1.4,
+  "median_secs": 1.1
+ },
+ "rows": [
+  {
+   "kind": "scam_quiet",
+   "category": "utility",
+   "item": "Electric bill",
+   "price": 125,
+   "need": "I need to pay my electric bill to keep the power on at home.",
+   "terms": "Please transfer the amount to this new bank account to avoid service disruption.",
+   "if_asked": "I transferred the payment using the details provided in the email.",
+   "id": "n01",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.8,
+   "steps": [
+    "Call the electric company's official phone number to confirm the payment details.",
+    "Call the utility company using the number on your past bill to confirm the new account details.",
+    "Log in to your account on the electric company's website and find their official payment details."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "New bank account request with urgency to avoid disruption",
+     "quote": "Please transfer the amount to this new bank account to avoid service disruption.",
+     "step": "Call the electric company's official phone number to confirm the payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed unexpectedly; verify via official\u6e20\u9053",
+     "quote": "Please transfer the amount to this new bank account to avoid service disruption.",
+     "step": "Call the utility company using the number on your past bill to confirm the new account details."
+    },
+    {
+     "v": "verify",
+     "reason": "New bank account details for a bill payment.",
+     "quote": "Please transfer the amount to this new bank account",
+     "step": "Log in to your account on the electric company's website and find their official payment details."
+    }
+   ],
+   "final": "hold",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "new bank account request with threat of service disruption"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed unexpectedly; buyer used message's contact."
+    },
+    {
+     "v": "hold",
+     "reason": "New bank account for bill payment is a scam pattern."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "renewal",
+   "item": "Software subscription",
+   "price": 99,
+   "need": "I need to renew my software subscription to keep using the program.",
+   "terms": "Renew now to continue enjoying our services without interruption.",
+   "if_asked": "I followed the renewal link in the email to make the payment.",
+   "id": "n02",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary subscription renewal, no unusual payment method or urgency",
+     "quote": "Renew now to continue enjoying our services without interruption.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary subscription renewal with no scam signals.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "parcel",
+   "item": "Delivery fee",
+   "price": 25,
+   "need": "I need to pay the delivery fee to receive my package.",
+   "terms": "Please settle the delivery fee to receive your parcel.",
+   "if_asked": "I paid the fee using the payment link provided in the text message.",
+   "id": "n03",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 1,
+   "secs": 1.4,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Up\u2011front fee required before receiving goods (delivery fee scam)",
+     "quote": "Please settle the delivery fee to receive your parcel.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came via message not checked independently",
+     "quote": "Please settle the delivery fee to receive your parcel.",
+     "step": "Check your account or order history on the official website or app."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer chose to pay for delivery.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "award",
+   "item": "Award fee",
+   "price": 500,
+   "need": "I need to pay the award fee to receive my prize.",
+   "terms": "Congratulations! Pay the processing fee to claim your award.",
+   "if_asked": "I paid the fee through the link in the award notification email.",
+   "id": "n04",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Prize award fee scam",
+     "quote": "Pay the processing fee to claim your award.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Guaranteed prize with upfront fee",
+     "quote": "Pay the processing fee to claim your award.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee to receive a prize is a classic scam pattern.",
+     "quote": "Pay the processing fee to claim your award.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "rental",
+   "item": "Security deposit",
+   "price": 500,
+   "need": "I need to pay the security deposit to secure the rental property.",
+   "terms": "Transfer the security deposit to this account to confirm your booking.",
+   "if_asked": "I transferred the deposit using the bank details provided in the rental agreement email.",
+   "id": "n05",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.5,
+   "steps": [
+    "Call the landlord using a phone number from the original listing to confirm the account details.",
+    "Check the rental agreement or booking confirmation for the official payment details.",
+    "Confirm the property owner and account details through a separate source."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Private rental, asked to transfer deposit before seeing property",
+     "quote": "Transfer the security deposit to this account to confirm your booking.",
+     "step": "Call the landlord using a phone number from the original listing to confirm the account details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request from a new account not verified by buyer's own check",
+     "quote": "Transfer the security deposit to this account to confirm your booking.",
+     "step": "Check the rental agreement or booking confirmation for the official payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer found seller online, paying before seeing property.",
+     "quote": "Transfer the security deposit to this account to confirm your booking.",
+     "step": "Confirm the property owner and account details through a separate source."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "buyer used email-provided bank details; payment info may be new or changed"
+    },
+    {
+     "v": "clear",
+     "reason": "Payment to secure a rental property using provided bank details in a rental agreement."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary rental deposit, paid as requested, verified against existing agreement."
+    },
+    {
+     "v": "verify",
+     "reason": "no usable answer from this reviewer, so the doubt stands"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment uses bank details from rental email without independent verification of payee or account."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "application",
+   "item": "Job application fee",
+   "price": 75,
+   "need": "I need to pay the application fee to submit my job application.",
+   "terms": "Pay the application fee to proceed with your job application.",
+   "if_asked": "I paid the fee using the payment link in the job application email.",
+   "id": "n06",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 1,
+   "secs": 1.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Job application fee scam",
+     "quote": "Pay the application fee to proceed with your job application.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary job application fee for a position the buyer chose.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee up front to receive a job is a common scam pattern.",
+     "quote": "Pay the application fee to proceed with your job application.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "booking",
+   "item": "Event ticket",
+   "price": 150,
+   "need": "I need to pay for my event ticket to attend the concert.",
+   "terms": "Purchase your ticket now to secure your spot at the event.",
+   "if_asked": "I bought the ticket using the link provided in the event invitation email.",
+   "id": "n07",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary ticket purchase with no scam indicators",
+     "quote": "I need to pay for my event ticket to attend the concert.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a ticket with a stated need. No scam signals present.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "merchant",
+   "item": "Online purchase",
+   "price": 89,
+   "need": "I need to pay for my online purchase from the store.",
+   "terms": "Complete your purchase by transferring the amount to this account.",
+   "if_asked": "I paid for the purchase using the bank details provided on the store's website.",
+   "id": "n08",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 2,
+   "secs": 1.4,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Payment by direct transfer to account, typical wire transfer scam",
+     "quote": "Complete your purchase by transferring the amount to this account.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary online purchase with no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, ordinary reason, no scam signals.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "utility",
+   "item": "Water bill",
+   "price": 75,
+   "need": "I need to pay my water bill to keep the service running.",
+   "terms": "Please transfer the payment to avoid any service interruptions.",
+   "if_asked": "I transferred the payment using the details in the water bill email.",
+   "id": "n09",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary utility bill with standard payment request, no scam indicators",
+     "quote": "Please transfer the payment to avoid any service interruptions.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary bill payment for a service the buyer uses.",
+     "quote": "Please transfer the payment to avoid any service interruptions.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Expected regular bill, ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "renewal",
+   "item": "Domain renewal",
+   "price": 35,
+   "need": "I need to renew my domain to keep my website online.",
+   "terms": "Renew your domain now to avoid any downtime.",
+   "if_asked": "I renewed the domain using the link in the renewal email.",
+   "id": "n10",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary domain renewal with no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary domain renewal for an active website.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, stated need is legitimate, no scam signals present.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "warranty",
+   "item": "Extended warranty",
+   "price": 120,
+   "need": "I need to pay for the extended warranty to cover my device.",
+   "terms": "Purchase the extended warranty to protect your device.",
+   "if_asked": "I paid for the warranty using the payment link in the warranty offer email.",
+   "id": "n11",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of an extended warranty",
+     "quote": "I need to pay for the extended warranty to cover my device.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a warranty for a device.",
+     "quote": "Purchase the extended warranty to protect your device.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer for a valid reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "business",
+   "item": "Business listing fee",
+   "price": 200,
+   "need": "I need to pay the business listing fee to appear in the directory.",
+   "terms": "Pay the listing fee to be featured in our business directory.",
+   "if_asked": "I paid the fee using the payment details provided in the listing confirmation email.",
+   "id": "n12",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 2,
+   "secs": 41.5,
+   "steps": [
+    "Call the directory using a phone number from their official website to confirm the fee",
+    "Find directory's official website yourself and call published number to confirm fee is legitimate."
+   ],
+   "escalated": true,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Private seller, upfront fee before service",
+     "quote": "Pay the listing fee to be featured in our business directory.",
+     "step": "Call the directory using a phone number from their official website to confirm the fee"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary business service payment with no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer chose to list their business.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "no usable answer from this reviewer, so the doubt stands",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Fee to unlock directory listing after unsolicited offer needs independent verification.",
+     "quote": "Pay the listing fee to be featured in our business directory.",
+     "step": "Find directory's official website yourself and call published number to confirm fee is legitimate."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer used email payment details; no independent verification, so confirm fee with official contact"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details in email not independently confirmed"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary business expense, buyer confirms payment details."
+    }
+   ]
+  },
+  {
+   "kind": "scam_loud",
+   "category": "prize",
+   "item": "Lottery win",
+   "price": 300,
+   "need": "I need to pay the processing fee to claim my lottery winnings.",
+   "terms": "Congratulations! Pay the processing fee to receive your prize.",
+   "if_asked": "I paid the fee using the link in the lottery win email.",
+   "id": "n13",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Lottery scam \u2013 processing fee required for prize",
+     "quote": "Pay the processing fee to receive your prize.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: requesting fee to claim lottery prize",
+     "quote": "Pay the processing fee to receive your prize.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Prize scam: paying a fee to receive winnings.",
+     "quote": "Pay the processing fee to receive your prize.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "inheritance",
+   "item": "Inheritance claim",
+   "price": 500,
+   "need": "I need to pay the legal fee to claim my inheritance.",
+   "terms": "Pay the legal fee to proceed with your inheritance claim.",
+   "if_asked": "I paid the fee using the payment details in the inheritance claim email.",
+   "id": "n14",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.3,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "inheritance advance-fee scam",
+     "quote": "Pay the legal fee to proceed with your inheritance claim.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: Paying a fee to claim inheritance is a common scam pattern",
+     "quote": "Pay the legal fee to proceed with your inheritance claim.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Advance fee scam: paying a fee to receive money (inheritance).",
+     "quote": "Pay the legal fee to proceed with your inheritance claim.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "romance",
+   "item": "Emergency funds",
+   "price": 250,
+   "need": "I need to send emergency funds to help a friend in need.",
+   "terms": "Please transfer the funds to help your friend in this critical situation.",
+   "if_asked": "I transferred the funds using the bank details provided in the friend's message.",
+   "id": "n15",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.3,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Friend emergency money request, classic urgency scam",
+     "quote": "I need to send emergency funds to help a friend in need.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request from an unknown contact asking for money without verification",
+     "quote": "Please transfer the funds to help your friend in this critical situation.",
+     "step": "Call the friend directly using a known number to confirm the request."
+    },
+    {
+     "v": "hold",
+     "reason": "Family emergency scam: request for funds to help a friend in a 'critical situation'.",
+     "quote": "Please transfer the funds to help your friend in this critical situation.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "charity",
+   "item": "Donation",
+   "price": 100,
+   "need": "I need to make a donation to support a worthy cause.",
+   "terms": "Please donate now to help those in need.",
+   "if_asked": "I donated using the payment link in the charity request email.",
+   "id": "n16",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 2,
+   "secs": 1.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Urgent donation request",
+     "quote": "Please donate now to help those in need.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary donation with no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary donation with a stated need, no scam signals present.",
+     "quote": "Please donate now to help those in need.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "tech_support",
+   "item": "Computer fix",
+   "price": 150,
+   "need": "I need to pay for technical support to fix my computer issue.",
+   "terms": "Pay for our technical support services to resolve your computer problem.",
+   "if_asked": "I paid for the technical support using the payment link in the tech support email.",
+   "id": "n17",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary technical support service purchase, no scam signals present.",
+     "quote": "Pay for our technical support services to resolve your computer problem.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary service payment for a known need.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a service the buyer chose, with a stated need.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "government",
+   "item": "Fine payment",
+   "price": 200,
+   "need": "I need to pay a fine to avoid legal consequences.",
+   "terms": "Pay the fine now to avoid further legal action.",
+   "if_asked": "I paid the fine using the payment details in the government fine notice email.",
+   "id": "n18",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Fine payment scam: urgent legal threat for payment",
+     "quote": "Pay the fine now to avoid further legal action.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam signal: demand to pay a fine to avoid legal action",
+     "quote": "Pay the fine now to avoid further legal action.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Debt/fine scam: payment demanded to avoid legal action.",
+     "quote": "Pay the fine now to avoid further legal action.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "legit_self",
+   "category": "online",
+   "item": "New laptop",
+   "price": 800,
+   "need": "I need a new laptop for work and personal use.",
+   "terms": "Purchase now and enjoy free shipping.",
+   "if_asked": "I checked the seller's website and read reviews before making the purchase.",
+   "id": "n19",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.8,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary laptop purchase with standard terms, no scam indicators.",
+     "quote": "Purchase now and enjoy free shipping.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, stated need, standard terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "grocery",
+   "item": "Weekly groceries",
+   "price": 150,
+   "need": "I need to buy groceries for the week.",
+   "terms": "Order online and get fresh produce delivered to your door.",
+   "if_asked": "I ordered from my usual grocery delivery service.",
+   "id": "n20",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.7,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary grocery purchase, no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "clothing",
+   "item": "New shoes",
+   "price": 75,
+   "need": "I need a new pair of shoes for work.",
+   "terms": "Buy now and enjoy a 10% discount on your first purchase.",
+   "if_asked": "I bought from a reputable online store I've used before.",
+   "id": "n21",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.8,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase with standard discount, no scam signals",
+     "quote": "Buy now and enjoy a 10% discount on your first purchase.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, ordinary reason, no scam signals.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "entertainment",
+   "item": "Movie tickets",
+   "price": 30,
+   "need": "I need to buy movie tickets for a family outing.",
+   "terms": "Purchase tickets online and save time at the box office.",
+   "if_asked": "I bought the tickets from the official movie theater website.",
+   "id": "n22",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of movie tickets, no scam indicators",
+     "quote": "I need to buy movie tickets for a family outing.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, chosen by the buyer, for a stated need.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "subscription",
+   "item": "Streaming service",
+   "price": 10,
+   "need": "I need to subscribe to a streaming service for entertainment.",
+   "terms": "Sign up now and get a free trial for the first month.",
+   "if_asked": "I subscribed through the official streaming service website.",
+   "id": "n23",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary subscription with free trial, no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer for a stated need.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "online",
+   "item": "Smart home device",
+   "price": 50,
+   "need": "I need a smart home device to improve my home automation.",
+   "terms": "Buy now and get a 20% discount on your first purchase.",
+   "if_asked": "I bought from a trusted online retailer.",
+   "id": "n24",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase with standard discount, no scam signals present.",
+     "quote": "Buy now and get a 20% discount on your first purchase.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase with a standard discount offer.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "travel",
+   "item": "Flight tickets",
+   "price": 300,
+   "need": "I need to buy flight tickets for an upcoming trip.",
+   "terms": "Book now and save on your next flight.",
+   "if_asked": "I booked the tickets through a reputable travel agency.",
+   "id": "n25",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of flight tickets, no scam signals present",
+     "quote": "I need to buy flight tickets for an upcoming trip.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase for a flight ticket with no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, stated need, no scam signals.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "dining",
+   "item": "Restaurant reservation",
+   "price": 100,
+   "need": "I need to make a restaurant reservation for a special occasion.",
+   "terms": "Reserve now and enjoy a 10% discount on your meal.",
+   "if_asked": "I made the reservation through the restaurant's official website.",
+   "id": "n26",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary reservation with discount, no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase for a service with no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer for a legitimate reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "fitness",
+   "item": "Gym membership",
+   "price": 50,
+   "need": "I need a gym membership to stay fit.",
+   "terms": "Join now and get a free month of membership.",
+   "if_asked": "I joined the gym through their official website.",
+   "id": "n27",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase with no scam signals",
+     "quote": "I need a gym membership to stay fit.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase for a personal service with no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase with a normal reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "beauty",
+   "item": "Skincare products",
+   "price": 75,
+   "need": "I need to buy skincare products for my routine.",
+   "terms": "Purchase now and get a free sample with your order.",
+   "if_asked": "I bought from a trusted online beauty retailer.",
+   "id": "n28",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.8,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase with normal terms, no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase with a standard reason and terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_verified",
+   "category": "utility",
+   "item": "Electric bill",
+   "price": 125,
+   "need": "I need to pay my electric bill to keep the power on at home.",
+   "terms": "Please transfer the amount to this new bank account to avoid service disruption.",
+   "if_asked": "I verified the payment details by calling the utility company directly.",
+   "id": "n29",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.3,
+   "steps": [
+    "Log into the electric company's official portal or call their known customer service number to confirm the new account details.",
+    "Call the utility company using the number on your past bill to confirm the new account details.",
+    "Log in to your account on the electric company's website and confirm the new bank details."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "New bank account and urgency to avoid service disruption",
+     "quote": "Please transfer the amount to this new bank account to avoid service disruption.",
+     "step": "Log into the electric company's official portal or call their known customer service number to confirm the new account details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed unexpectedly; verify via official\u6e20\u9053",
+     "quote": "Please transfer the amount to this new bank account to avoid service disruption.",
+     "step": "Call the utility company using the number on your past bill to confirm the new account details."
+    },
+    {
+     "v": "verify",
+     "reason": "New bank account details for a bill payment.",
+     "quote": "Please transfer the amount to this new bank account to avoid service disruption.",
+     "step": "Log in to your account on the electric company's website and confirm the new bank details."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Buyer verified new account with utility directly"
+    },
+    {
+     "v": "clear",
+     "reason": "Buyer verified payment details independently."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill, buyer independently verified with the utility company."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "renewal",
+   "item": "Software subscription",
+   "price": 99,
+   "need": "I need to renew my software subscription to keep using the program.",
+   "terms": "Renew now to continue enjoying our services without interruption.",
+   "if_asked": "I verified the renewal by checking my existing subscription details on the company's website.",
+   "id": "n30",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary subscription renewal with standard terms",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary renewal of a software subscription with no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated, normal reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_verified",
+   "category": "parcel",
+   "item": "Delivery fee",
+   "price": 25,
+   "need": "I need to pay the delivery fee to receive my package.",
+   "terms": "Please settle the delivery fee to receive your parcel.",
+   "if_asked": "I verified the delivery fee by checking the tracking number on the courier's website.",
+   "id": "n31",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 1,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Seller demands payment before delivery, typical delivery fee scam",
+     "quote": "Please settle the delivery fee to receive your parcel.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Payment needed to receive parcel; check via official account or past order",
+     "quote": "Please settle the delivery fee to receive your parcel.",
+     "step": "Log in to your account or check past order to confirm the fee and payment method."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer chose to pay for delivery.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "legit_verified",
+   "category": "rental",
+   "item": "Security deposit",
+   "price": 500,
+   "need": "I need to pay the security deposit to secure the rental property.",
+   "terms": "Transfer the security deposit to this account to confirm your booking.",
+   "if_asked": "I verified the rental agreement by reviewing the signed contract.",
+   "id": "n32",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.4,
+   "steps": [
+    "Call the landlord using a phone number from the original listing to confirm the account details.",
+    "Check the rental agreement or contact the landlord directly using a known phone number or email to confirm the account details.",
+    "Confirm the rental agency and account details through their official website."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Private rental, asked to transfer deposit before seeing property",
+     "quote": "Transfer the security deposit to this account to confirm your booking.",
+     "step": "Call the landlord using a phone number from the original listing to confirm the account details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment to an unknown account for a rental deposit needs verification.",
+     "quote": "Transfer the security deposit to this account to confirm your booking.",
+     "step": "Check the rental agreement or contact the landlord directly using a known phone number or email to confirm the account details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer found seller online, paying before seeing property.",
+     "quote": "Transfer the security deposit to this account to confirm your booking.",
+     "step": "Confirm the rental agency and account details through their official website."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Ordinary security deposit with signed contract verification"
+    },
+    {
+     "v": "clear",
+     "reason": "Buyer verified through signed contract."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary rental deposit for a property the buyer has a contract for."
+    }
+   ]
+  },
+  {
+   "kind": "legit_verified",
+   "category": "application",
+   "item": "Job application fee",
+   "price": 75,
+   "need": "I need to pay the application fee to submit my job application.",
+   "terms": "Pay the application fee to proceed with your job application.",
+   "if_asked": "I verified the job application by checking the company's official website.",
+   "id": "n33",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 1,
+   "secs": 1.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Job application fee scam",
+     "quote": "Pay the application fee to proceed with your job application.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary job application fee for a position the buyer chose.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee up front to receive a job is a common scam pattern.",
+     "quote": "Pay the application fee to proceed with your job application.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "legit_verified",
+   "category": "booking",
+   "item": "Event ticket",
+   "price": 150,
+   "need": "I need to pay for my event ticket to attend the concert.",
+   "terms": "Purchase your ticket now to secure your spot at the event.",
+   "if_asked": "I verified the event ticket by checking the official event website.",
+   "id": "n34",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.8,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary ticket purchase with standard terms, no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase with no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a ticket with a stated need. No scam signals present.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_verified",
+   "category": "merchant",
+   "item": "Online purchase",
+   "price": 89,
+   "need": "I need to pay for my online purchase from the store.",
+   "terms": "Complete your purchase by transferring the amount to this account.",
+   "if_asked": "I verified the online purchase by checking the store's official website.",
+   "id": "n35",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 2,
+   "secs": 1.3,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Payment requested via direct transfer (wire) is a common scam pattern",
+     "quote": "Complete your purchase by transferring the amount to this account.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary online purchase with no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, ordinary reason, no scam signals present.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "legit_verified",
+   "category": "utility",
+   "item": "Water bill",
+   "price": 75,
+   "need": "I need to pay my water bill to keep the service running.",
+   "terms": "Please transfer the payment to avoid any service interruptions.",
+   "if_asked": "I verified the water bill by calling the water company directly.",
+   "id": "n36",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary utility bill, no scam signals",
+     "quote": "Please transfer the payment to avoid any service interruptions.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary bill payment for a service the buyer uses.",
+     "quote": "Please transfer the payment to avoid any service interruptions.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Expected regular bill, ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_unverified",
+   "category": "utility",
+   "item": "Electric bill",
+   "price": 125,
+   "need": "I need to pay my electric bill to keep the power on at home.",
+   "terms": "Please transfer the amount to this new bank account to avoid service disruption.",
+   "if_asked": "I paid the bill using the usual payment method.",
+   "id": "n37",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.3,
+   "steps": [
+    "Call the electric company's official phone number to confirm the new account",
+    "Call the utility company using the number on your past bill to confirm the new account.",
+    "Log in to your account on the electric company's website and find their official payment details."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "New bank account request with urgency to avoid service disruption",
+     "quote": "Please transfer the amount to this new bank account to avoid service disruption.",
+     "step": "Call the electric company's official phone number to confirm the new account"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details changed unexpectedly; verify via official\u6e20\u9053",
+     "quote": "Please transfer the amount to this new bank account to avoid service disruption.",
+     "step": "Call the utility company using the number on your past bill to confirm the new account."
+    },
+    {
+     "v": "verify",
+     "reason": "New bank account details for a bill payment.",
+     "quote": "Please transfer the amount to this new bank account",
+     "step": "Log in to your account on the electric company's website and find their official payment details."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "new bank account request"
+    },
+    {
+     "v": "clear",
+     "reason": "Payment made via usual method, no scam signals present."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill, paid using usual method, no scam signals present."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary electric bill; buyer paid via their usual payment method, independent of the message, ignoring the unsolicited new-account instruction."
+    },
+    {
+     "v": "clear",
+     "reason": "Regular electric bill paid via usual method, bypassing new account request shows independent check."
+    }
+   ]
+  },
+  {
+   "kind": "legit_unverified",
+   "category": "renewal",
+   "item": "Software subscription",
+   "price": 99,
+   "need": "I need to renew my software subscription to keep using the program.",
+   "terms": "Renew now to continue enjoying our services without interruption.",
+   "if_asked": "I renewed the subscription using the usual payment method.",
+   "id": "n38",
+   "author": "nova-pro",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary subscription renewal, no unusual payment method or urgency",
+     "quote": "Renew now to continue enjoying our services without interruption.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary renewal of a software subscription with no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated, normal reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_unverified",
+   "category": "parcel",
+   "item": "Delivery fee",
+   "price": 25,
+   "need": "I need to pay the delivery fee to receive my package.",
+   "terms": "Please settle the delivery fee to receive your parcel.",
+   "if_asked": "I paid the fee using the usual payment method.",
+   "id": "n39",
+   "author": "nova-pro",
+   "decision": "hold",
+   "clears": 1,
+   "secs": 1.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Seller demands payment before delivery, typical delivery fee scam",
+     "quote": "Please settle the delivery fee to receive your parcel.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request came via message not checked independently",
+     "quote": "Please settle the delivery fee to receive your parcel.",
+     "step": "Check your account or contact the delivery service directly using their official number."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase for a delivery fee, buyer initiated the need.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "legit_unverified",
+   "category": "rental",
+   "item": "Security deposit",
+   "price": 500,
+   "need": "I need to pay the security deposit to secure the rental property.",
+   "terms": "Transfer the security deposit to this account to confirm your booking.",
+   "if_asked": "I paid the deposit using the usual payment method.",
+   "id": "n40",
+   "author": "nova-pro",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.4,
+   "steps": [
+    "Call the landlord using a phone number from the original listing to confirm the account details.",
+    "Check the rental agreement or contact the landlord directly using a known phone number or email to confirm the account details.",
+    "Confirm the rental agency and account details through their official website."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "private seller, deposit requested before seeing property",
+     "quote": "Transfer the security deposit to this account to confirm your booking.",
+     "step": "Call the landlord using a phone number from the original listing to confirm the account details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment to an unknown account for a rental deposit needs verification.",
+     "quote": "Transfer the security deposit to this account to confirm your booking.",
+     "step": "Check the rental agreement or contact the landlord directly using a known phone number or email to confirm the account details."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer found seller online, paying before seeing property.",
+     "quote": "Transfer the security deposit to this account to confirm your booking.",
+     "step": "Confirm the rental agency and account details through their official website."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Rental security deposit requested to new account, possible scam"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment method not confirmed as usual; no independent verification of account."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary rental deposit, paid using a known method."
+    }
+   ]
+  }
+ ]
+}

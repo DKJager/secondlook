@@ -1,0 +1,1542 @@
+{
+ "summary": {
+  "control_not_checked": {
+   "n": 3,
+   "allow": 0,
+   "verify": 3,
+   "hold": 0
+  },
+  "legit_bill": {
+   "n": 6,
+   "allow": 1,
+   "verify": 5,
+   "hold": 0
+  },
+  "legit_self": {
+   "n": 7,
+   "allow": 6,
+   "verify": 1,
+   "hold": 0
+  },
+  "scam_loud": {
+   "n": 4,
+   "allow": 0,
+   "verify": 0,
+   "hold": 4
+  },
+  "scam_quiet": {
+   "n": 10,
+   "allow": 0,
+   "verify": 7,
+   "hold": 3
+  },
+  "CONTROL_NOT_CHECKED_STAYED_LOCKED": "3/3",
+  "SCAMS_STOPPED": "14/14",
+  "SCAMS_STILL_STOPPED_AFTER_BUYER_ANSWER": "14/14",
+  "NORMAL_ALLOWED_AT_ONCE": "7/13",
+  "NORMAL_ALLOWED_AFTER_ONE_CHECK": "13/13",
+  "NORMAL_ASKED_TO_CHECK": 6,
+  "NORMAL_WRONGLY_HELD": 0,
+  "rows_with_a_reviewer_fault": 0,
+  "went_to_larger_crowd": 2,
+  "secs_p90": 4.1,
+  "median_secs": 2.4
+ },
+ "rows": [
+  {
+   "kind": "scam_quiet",
+   "category": "Telecom",
+   "item": "Wireless Bill",
+   "price": 82.5,
+   "need": "I need to keep my phone service active for work and don't want any interruptions.",
+   "terms": "Payment is due upon receipt. Please use the enclosed payment slip or follow the instructions provided for online processing.",
+   "origin": "contacted",
+   "source": "I received a text message saying my latest bill was ready and my service would be suspended if I didn't update my payment info.",
+   "if_asked": "I clicked the link in the text message and it took me to a website where I entered my card details.",
+   "id": "z01",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.3,
+   "steps": [
+    "Log into your carrier\u2019s official website or app and view the bill to confirm payment details.",
+    "Call the number on the back of your old bill to confirm the payment details.",
+    "Log in to your account on the provider's official website and pay there."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted via text with threat of suspension; need to confirm bill through official channel",
+     "quote": "Payment is due upon receipt. Please use the enclosed payment slip or follow the instructions provided for online processing.",
+     "step": "Log into your carrier\u2019s official website or app and view the bill to confirm payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via text with urgent threat of suspension",
+     "quote": "Please use the enclosed payment slip or follow the instructions provided for online processing.",
+     "step": "Call the number on the back of your old bill to confirm the payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Message reached buyer, asking for payment. New payment details are implied.",
+     "quote": "Please use the enclosed payment slip or follow the instructions provided for online processing.",
+     "step": "Log in to your account on the provider's official website and pay there."
+    }
+   ],
+   "final": "hold",
+   "second": [
+    {
+     "v": "hold",
+     "reason": "Urgent unsolicited utility text demanding payment via link"
+    },
+    {
+     "v": "verify",
+     "reason": "Clicked link in message from unknown sender"
+    },
+    {
+     "v": "verify",
+     "reason": "Message reached buyer, payment details potentially compromised."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Software",
+   "item": "Antivirus Renewal",
+   "price": 149.99,
+   "need": "My laptop is my main work computer and I can't risk getting a virus.",
+   "terms": "Your subscription is set to auto-renew. To retain continuous protection, please settle the invoice by the due date.",
+   "origin": "contacted",
+   "source": "An invoice showed up in my email saying my protection plan was expiring today.",
+   "if_asked": "I clicked the 'Pay Now' button right there in the email body.",
+   "id": "z02",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.0,
+   "steps": [
+    "Log into your antivirus account on the official website and verify the renewal details and payment method.",
+    "Log in to your account directly via the official website to verify the invoice and payment details.",
+    "Log into your account on the antivirus provider's website and check the renewal status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted via email invoice; need to confirm legitimacy before paying",
+     "quote": "Your subscription is set to auto-renew. To retain continuous protection, please settle the invoice by the due date.",
+     "step": "Log into your antivirus account on the official website and verify the renewal details and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Request contacted via email with new payment details",
+     "quote": "Your subscription is set to auto-renew. To retain continuous protection, please settle the invoice by the due date.",
+     "step": "Log in to your account directly via the official website to verify the invoice and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Invoice received, payment details not checked.",
+     "quote": "Your subscription is set to auto-renew.",
+     "step": "Log into your account on the antivirus provider's website and check the renewal status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Invoice arrived by email; buyer used email link, not independent verification"
+    },
+    {
+     "v": "verify",
+     "reason": "Clicked 'Pay Now' in email; check via official account"
+    },
+    {
+     "v": "verify",
+     "reason": "Invoice received via email, payment details not checked independently."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Office Supplies",
+   "item": "Paper and Toner",
+   "price": 456.2,
+   "need": "We are running low on printer supplies for the home office and need to restock.",
+   "terms": "Net 30 terms apply for established accounts. Please remit payment to the account listed on the statement.",
+   "origin": "contacted",
+   "source": "A lady called saying she was from our regular supplier and they had a special bulk discount ending today.",
+   "if_asked": "She emailed me an invoice with banking details, so I just used that.",
+   "id": "z03",
+   "author": "glm-5-br",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 3.2,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Urgency in unsolicited discount offer",
+     "quote": "special bulk discount ending today",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via unsolicited call with urgency and special offer",
+     "quote": "a special bulk discount ending today",
+     "step": "Call the supplier using the number from your official statement or account portal to confirm the offer and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment details came via a call, not initiated by the buyer.",
+     "quote": "Please remit payment to the account listed on the statement.",
+     "step": "Call your regular supplier using a number you already have to confirm the bank account."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Domain Registration",
+   "item": "Domain Renewal",
+   "price": 285.0,
+   "need": "My website is my primary business portal and I need to keep it active.",
+   "terms": "Failure to renew by the expiration date may result in the loss of your domain name and associated services.",
+   "origin": "contacted",
+   "source": "I got a formal-looking letter in the mail warning that my domain was expiring.",
+   "if_asked": "The letter had a very official logo and a QR code that I scanned to pay.",
+   "id": "z04",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.9,
+   "steps": [
+    "Log into your domain registrar's official website and verify the renewal status and payment details",
+    "Call the domain registrar using the number from their official website, not the letter.",
+    "Log into your domain registrar account to check the renewal status."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Buyer received unsolicited renewal notice; must confirm legitimacy before paying",
+     "quote": null,
+     "step": "Log into your domain registrar's official website and verify the renewal status and payment details"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via mail, payment details unknown, must confirm through official\u6e20\u9053",
+     "quote": "Failure to renew by the expiration date may result in the loss of your domain name and associated services.",
+     "step": "Call the domain registrar using the number from their official website, not the letter."
+    },
+    {
+     "v": "verify",
+     "reason": "Message reached buyer, request for payment.",
+     "quote": "Failure to renew by the expiration date may result in the loss of your domain name and associated services.",
+     "step": "Log into your domain registrar account to check the renewal status."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited renewal request with QR code; buyer hasn't independently confirmed through known channel"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via mail with QR code; check via official website independently"
+    },
+    {
+     "v": "verify",
+     "reason": "The request came to the buyer, and they used a link from it."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Tolls",
+   "item": "Toll Invoice",
+   "price": 24.5,
+   "need": "I drive on the highway often and don't want any late fees.",
+   "terms": "Please settle this amount within 14 days to avoid penalty fees and potential license suspension.",
+   "origin": "contacted",
+   "source": "I got an email saying I had an unpaid toll from my drive last weekend.",
+   "if_asked": "I used the link provided in the email to log in and pay the balance.",
+   "id": "z05",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.7,
+   "steps": [
+    "Log into the official toll authority website or app to view your account for unpaid tolls.",
+    "Check your account on the official toll authority's website using a direct link from their official domain, not the email's link.",
+    "Log in to your toll account and check for this invoice."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; need to confirm invoice is genuine",
+     "quote": "Please settle this amount within 14 days to avoid penalty fees and potential license suspension.",
+     "step": "Log into the official toll authority website or app to view your account for unpaid tolls."
+    },
+    {
+     "v": "verify",
+     "reason": "Request was contacted via email with new payment terms",
+     "quote": "Please settle this amount within 14 days to avoid penalty fees and potential license suspension.",
+     "step": "Check your account on the official toll authority's website using a direct link from their official domain, not the email's link."
+    },
+    {
+     "v": "verify",
+     "reason": "Message received, request for payment.",
+     "quote": "Please settle this amount within 14 days to avoid penalty fees and potential license suspension.",
+     "step": "Log in to your toll account and check for this invoice."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer used email link to pay; needs independent confirmation of invoice"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment link in message must be independently verified"
+    },
+    {
+     "v": "verify",
+     "reason": "Message-initiated payment, link used for login."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Parcel Delivery",
+   "item": "Shipping Fee",
+   "price": 2.99,
+   "need": "I'm waiting for a package and this seems to be the issue holding it up.",
+   "terms": "Your package requires a settlement of fees before final delivery can be attempted.",
+   "origin": "contacted",
+   "source": "I received a text alert about a package with an unpaid shipping surcharge.",
+   "if_asked": "I just clicked the link in the text to give them my card info.",
+   "id": "z06",
+   "author": "glm-5-br",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.8,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "shipping fee scam",
+     "quote": "Your package requires a settlement of fees before final delivery can be attempted.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via text, unexpected fee, new payment step",
+     "quote": "Your package requires a settlement of fees before final delivery can be attempted.",
+     "step": "Check your shipping account or contact the carrier using a number from their official website, not the text."
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee for a package delivery is a common scam pattern.",
+     "quote": "Your package requires a settlement of fees before final delivery can be attempted.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Business Directory",
+   "item": "Listing Fee",
+   "price": 125.0,
+   "need": "More exposure for my business sounds good and the price is reasonable.",
+   "terms": "This annual fee ensures your business remains visible in our national directory for the coming year.",
+   "origin": "contacted",
+   "source": "A form arrived in the mail asking me to confirm my business details for the local chamber directory.",
+   "if_asked": "I filled it out and mailed the check because it looked like a standard government form.",
+   "id": "z07",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 3.1,
+   "steps": [
+    "Call the chamber\u2019s official phone number from their website to confirm the listing fee",
+    "Call the chamber of commerce using their official number from their website to confirm the fee and payment details.",
+    "Check the chamber directory website for the fee amount and payment options."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted with a fee request; verify legitimacy",
+     "quote": null,
+     "step": "Call the chamber\u2019s official phone number from their website to confirm the listing fee"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via mail, new fee, unverified sender",
+     "quote": "This annual fee ensures your business remains visible in our national directory for the coming year.",
+     "step": "Call the chamber of commerce using their official number from their website to confirm the fee and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Message received, fee for visibility.",
+     "quote": "This annual fee ensures your business remains visible in our national directory for the coming year.",
+     "step": "Check the chamber directory website for the fee amount and payment options."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Request was unsolicited; buyer should confirm fee with official chamber source"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via mail, but buyer didn't confirm details independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Contacted unexpectedly, request for a fee."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Rental Property",
+   "item": "Application Fee",
+   "price": 75.0,
+   "need": "My family needs a new place to live and I need to secure a viewing for this apartment.",
+   "terms": "The application fee covers the background check and administrative processing of your tenancy request.",
+   "origin": "contacted",
+   "source": "I saw a great apartment listing on a rental site and the landlord emailed me back immediately.",
+   "if_asked": "I sent the money via the Zelle link they provided in the email before going to see it.",
+   "id": "z08",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 4.1,
+   "steps": [
+    "Call the phone number from the original rental listing to confirm the fee and landlord identity.",
+    "Call the landlord using the number from the rental listing to confirm the fee and payment method.",
+    "Check the landlord's identity and the apartment's legitimacy on the rental site."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Private landlord asks fee before viewing; buyer hasn't dealt before",
+     "quote": "I need to secure a viewing for this apartment.",
+     "step": "Call the phone number from the original rental listing to confirm the fee and landlord identity."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer; fee for tenancy application",
+     "quote": "The application fee covers the background check and administrative processing of your tenancy request.",
+     "step": "Call the landlord using the number from the rental listing to confirm the fee and payment method."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, request for fee before seeing property.",
+     "quote": "The application fee covers the background check and administrative processing of your tenancy request.",
+     "step": "Check the landlord's identity and the apartment's legitimacy on the rental site."
+    }
+   ],
+   "final": "hold",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Private landlord request, payment before viewing the apartment"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment via Zelle link in email from contacted sender"
+    },
+    {
+     "v": "hold",
+     "reason": "Paying a fee upfront to secure a rental not yet seen is a scam pattern."
+    }
+   ]
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Utilities",
+   "item": "Electricity Bill",
+   "price": 110.4,
+   "need": "I don't want my electricity shut off during a heatwave.",
+   "terms": "Notice of pending disconnection: payment must be received within 24 hours to avoid service interruption.",
+   "origin": "contacted",
+   "source": "I got a robocall saying my power bill was overdue and my service would be cut in 30 minutes.",
+   "if_asked": "I called the number back that the voicemail told me to call.",
+   "id": "z09",
+   "author": "glm-5-br",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 4.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Utility disconnection scam",
+     "quote": "Notice of pending disconnection: payment must be received within 24 hours to avoid service interruption.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Robocall claiming disconnection in 30 minutes is a scam signal",
+     "quote": "Notice of pending disconnection: payment must be received within 24 hours to avoid service interruption.",
+     "step": "Call your utility company using the number on your past bill to confirm the bill and payment status."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted about a bill; urgency and potential service interruption.",
+     "quote": "Notice of pending disconnection: payment must be received within 24 hours to avoid service interruption.",
+     "step": "Log in to your electricity account online and check for overdue bills."
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_quiet",
+   "category": "Trademark",
+   "item": "Trademark Filing",
+   "price": 485.0,
+   "need": "I just started a business and need to ensure my brand name is protected legally.",
+   "terms": "This invoice covers the filing period for your registered trademark to maintain active status.",
+   "origin": "contacted",
+   "source": "I received an official-looking document by mail with a Washington D.C. return address.",
+   "if_asked": "The form looked very legal and had a due date, so I mailed a check to the address provided.",
+   "id": "z10",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.9,
+   "steps": [
+    "Call USPTO using the phone number listed on their official website to verify the filing requirement",
+    "Call the USPTO directly using their official number to verify the invoice.",
+    "Log into your USPTO account and check for outstanding fees."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited trademark filing invoice; confirm legitimacy with official source",
+     "quote": "This invoice covers the filing period for your registered trademark to maintain active status.",
+     "step": "Call USPTO using the phone number listed on their official website to verify the filing requirement"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via mail with new details; check via official\u6e20\u9053",
+     "quote": "This invoice covers the filing period for your registered trademark to maintain active status.",
+     "step": "Call the USPTO directly using their official number to verify the invoice."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received unsolicited invoice; payment details may be new.",
+     "quote": "This invoice covers the filing period for your registered trademark",
+     "step": "Log into your USPTO account and check for outstanding fees."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; buyer hasn't independently confirmed details"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via mail with new address; check not confirmed independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer received unsolicited invoice; payment details may be new."
+    }
+   ]
+  },
+  {
+   "kind": "scam_loud",
+   "category": "Crypto Investment",
+   "item": "Bitcoin Purchase",
+   "price": 5000.0,
+   "need": "The returns on this investment are guaranteed and I want to build my savings quickly.",
+   "terms": "Your funds will be managed for high-yield returns with bi-weekly payouts.",
+   "origin": "contacted",
+   "source": "I saw a sponsored post on social media from a famous financial guru recommending a new platform.",
+   "if_asked": "I clicked the ad and signed up on the website, then transferred the money to the wallet address they gave me.",
+   "id": "z11",
+   "author": "glm-5-br",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Guaranteed investment returns scam",
+     "quote": "The returns on this investment are guaranteed",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Guaranteed investment returns are a scam pattern",
+     "quote": "The returns on this investment are guaranteed and I want to build my savings quickly.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Guaranteed investment returns is a classic investment scam.",
+     "quote": "Your funds will be managed for high-yield returns with bi-weekly payouts.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "Prize Lottery",
+   "item": "Prize Redemption Fee",
+   "price": 250.0,
+   "need": "I won a huge cash prize and just need to pay the taxes to unlock it.",
+   "terms": "Winner must pay the applicable tax and processing fee prior to the release of the grand prize funds.",
+   "origin": "contacted",
+   "source": "A man called me on the phone to congratulate me on winning a Publishers Clearing House sweepstakes.",
+   "if_asked": "He stayed on the line with me while I bought gift cards and read him the numbers off the back.",
+   "id": "z12",
+   "author": "glm-5-br",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.4,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Prize advance-fee scam: payment required to claim winnings",
+     "quote": "Winner must pay the applicable tax and processing fee prior to the release of the grand prize funds.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: requesting fee to claim a prize",
+     "quote": "Winner must pay the applicable tax and processing fee prior to the release of the grand prize funds.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Prize requires upfront fee for taxes/processing.",
+     "quote": "Winner must pay the applicable tax and processing fee prior to the release of the grand prize funds.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "Romance",
+   "item": "Travel Money",
+   "price": 1200.0,
+   "need": "My online girlfriend wants to visit me but is stuck at customs in London.",
+   "terms": "Payment is required for the issuance of a travel visa and clearance through border control.",
+   "origin": "contacted",
+   "source": "My girlfriend sent me a message on WhatsApp saying she needed help with a visa.",
+   "if_asked": "I wired the money to the account details she sent me in our chat.",
+   "id": "z13",
+   "author": "glm-5-br",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 2.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Romance visa scam: payment demanded to free online girlfriend stuck at customs",
+     "quote": "My online girlfriend wants to visit me but is stuck at customs in London.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam: fake family in trouble, urgent payment for visa",
+     "quote": "Payment is required for the issuance of a travel visa and clearance through border control.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Family emergency scam: someone claiming to be a loved one in trouble.",
+     "quote": "My online girlfriend wants to visit me but is stuck at customs in London.",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "scam_loud",
+   "category": "Tech Support",
+   "item": "Computer Repair",
+   "price": 350.0,
+   "need": "My computer was frozen with a scary warning and I needed it fixed right away.",
+   "terms": "Service agreement for one-time remote repair and lifetime virus protection suite.",
+   "origin": "contacted",
+   "source": "A pop-up took over my screen and a voice told me to call a support number immediately.",
+   "if_asked": "The woman I called told me to download a program so she could fix the hackers.",
+   "id": "z14",
+   "author": "glm-5-br",
+   "decision": "hold",
+   "clears": 0,
+   "secs": 1.3,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "tech support scam",
+     "quote": "My computer was frozen with a scary warning and I needed it fixed right away.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam signal: fake tech support pop-up demanding immediate call",
+     "quote": "A pop-up took over my screen and a voice told me to call a support number immediately.",
+     "step": null
+    },
+    {
+     "v": "hold",
+     "reason": "Scam pattern: unsolicited contact, urgency, remote access request.",
+     "quote": "scary warning",
+     "step": null
+    }
+   ],
+   "final": "hold"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Electronics",
+   "item": "Used Laptop",
+   "price": 800.0,
+   "need": "I need a budget-friendly laptop for my college coursework.",
+   "terms": "Item sold as-is, fully functional. Payment must clear before shipment or pickup is arranged.",
+   "origin": "self",
+   "source": "I found a listing on a local marketplace app and arranged to buy it from the seller.",
+   "if_asked": "I messaged the seller through the official app and we agreed to meet at the local police station to exchange the laptop for cash.",
+   "id": "z15",
+   "author": "glm-5-br",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.4,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer, no scam signals present",
+     "quote": "Payment must clear before shipment or pickup is arranged.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a used item, buyer initiated contact, no scam signals.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Travel",
+   "item": "Airline Ticket",
+   "price": 450.0,
+   "need": "I need to fly home for a family reunion next month.",
+   "terms": "Non-refundable fare. Includes one personal item; carry-on bags are subject to additional fees.",
+   "origin": "self",
+   "source": "I went to the airline's official website to book a flight for my trip.",
+   "if_asked": "I always book directly on the airline's site and the confirmation email came from their official address.",
+   "id": "z16",
+   "author": "glm-5-br",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Buyer initiated purchase on airline's official site, ordinary transaction",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Online Marketplace",
+   "item": "Video Game Console",
+   "price": 550.0,
+   "need": "My son really wants this specific gaming console for his birthday.",
+   "terms": "Shipped and sold by verified vendor. Standard return policy applies within 30 days.",
+   "origin": "self",
+   "source": "I found the best price through a link on a tech deals forum.",
+   "if_asked": "Even though the price was low, the link took me to the actual Walmart site where I checked out using my account.",
+   "id": "z17",
+   "author": "glm-5-br",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Buyer initiated purchase from verified vendor, normal need, no scam signals",
+     "quote": "Shipped and sold by verified vendor.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated, standard terms.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Luxury Goods",
+   "item": "Vintage Watch",
+   "price": 2200.0,
+   "need": "I have been looking for this specific model for my collection for years.",
+   "terms": "Authentication guaranteed. Wire transfer required; shipping insured by seller.",
+   "origin": "self",
+   "source": "I saw the listing on a dedicated vintage watch forum from a dealer with high feedback.",
+   "if_asked": "I called the dealer at the number listed on his business registration and spoke to him personally before sending the wire.",
+   "id": "z18",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 3,
+   "secs": 14.1,
+   "steps": [
+    "Check the dealer's forum account age and feedback threads, and ask long-standing forum members or a watchmaker to vouch for them before wiring."
+   ],
+   "escalated": true,
+   "verdicts": [
+    {
+     "v": "hold",
+     "reason": "Wire transfer required is a common scam signal",
+     "quote": "Wire transfer required",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase by buyer's own initiative with no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a collectible item, buyer initiated contact, no scam signals.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer found this dealer online, has not dealt with them before, and must wire full payment before seeing the watch; wire is irreversible, so confirm the dealer first.",
+     "quote": "Wire transfer required",
+     "step": "Check the dealer's forum account age and feedback threads, and ask long-standing forum members or a watchmaker to vouch for them before wiring."
+    },
+    {
+     "v": "clear",
+     "reason": "Buyer sought this watch for years and chose this dealer listing themselves; wire for a watch is not a listed scam payment context.",
+     "quote": "Wire transfer required; shipping insured by seller.",
+     "step": null
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Buyer initiated purchase, verified dealer via official registration number, no scam signals"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase by buyer's own initiative with verified seller"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase of a collectible item from a known dealer, buyer initiated contact and verified the seller."
+    }
+   ]
+  },
+  {
+   "kind": "legit_self",
+   "category": "Appliances",
+   "item": "Washing Machine",
+   "price": 650.0,
+   "need": "My old washer broke and I need a new one immediately.",
+   "terms": "Delivery and installation included. Payment due upon order confirmation.",
+   "origin": "self",
+   "source": "I went to the local appliance store to browse and picked one out.",
+   "if_asked": "I paid the clerk inside the physical store using my credit card.",
+   "id": "z19",
+   "author": "glm-5-br",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 0.9,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer at local store, no scam signals",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated contact, no scam signals present.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Freelance Services",
+   "item": "Logo Design",
+   "price": 300.0,
+   "need": "I hired an artist to create a professional logo for my side business.",
+   "terms": "Two initial concepts provided, followed by one round of revisions. Final files delivered upon payment.",
+   "origin": "self",
+   "source": "I found an artist on a freelancing platform and messaged them to discuss the project.",
+   "if_asked": "I checked their portfolio on the platform and paid through the site's secure system, not directly.",
+   "id": "z20",
+   "author": "glm-5-br",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary freelance logo commission initiated by buyer",
+     "quote": "I hired an artist to create a professional logo for my side business.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase initiated by buyer",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_self",
+   "category": "Crypto Exchange",
+   "item": "Bitcoin Purchase",
+   "price": 200.0,
+   "need": "I want to invest a small amount of money into cryptocurrency to learn how it works.",
+   "terms": "Market order executed at current rates. ACH transfer initiated from linked bank account.",
+   "origin": "self",
+   "source": "I signed up for a well-known US-based crypto exchange.",
+   "if_asked": "I logged into the official exchange app, linked my bank account, and verified my identity before buying.",
+   "id": "z21",
+   "author": "glm-5-br",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.1,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary self\u2011initiated crypto purchase via linked bank account",
+     "quote": "I want to invest a small amount of money into cryptocurrency to learn how it works.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase chosen by the buyer, with an ordinary reason.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_bill",
+   "category": "Insurance",
+   "item": "Car Insurance",
+   "price": 125.0,
+   "need": "I need to keep my car legally insured for my commute.",
+   "terms": "Installment payment for policy period 01/01 to 06/30. Please reference policy number on payment.",
+   "origin": "contacted",
+   "source": "I received the standard renewal statement in the mail from my insurance company.",
+   "if_asked": "I logged into my account on the official app and paid the amount shown there.",
+   "id": "z22",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 1,
+   "secs": 1.9,
+   "steps": [
+    "Log into your insurer's official website or app and verify the payment amount and payee before paying.",
+    "Log in to your insurance account and confirm this charge."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted renewal request; need to confirm details independently",
+     "quote": "I need to keep my car legally insured for my commute.",
+     "step": "Log into your insurer's official website or app and verify the payment amount and payee before paying."
+    },
+    {
+     "v": "clear",
+     "reason": "Expected renewal paid the usual way",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Message reached buyer, payment details not checked independently.",
+     "quote": null,
+     "step": "Log in to your insurance account and confirm this charge."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular insurance renewal payment verified via official app"
+    },
+    {
+     "v": "clear",
+     "reason": "None"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, expected bill, paid through buyer's own app."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "Credit Card",
+   "item": "Credit Card Payment",
+   "price": 1450.0,
+   "need": "I need to clear my balance to avoid interest charges this month.",
+   "terms": "Payment due by the 15th. Pay online, by mail, or via phone.",
+   "origin": "contacted",
+   "source": "I got the email notification that my monthly statement was ready.",
+   "if_asked": "I logged onto the bank's secure website to schedule the payment.",
+   "id": "z23",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.6,
+   "steps": [
+    "Log into your bank\u2019s official website or app and verify the amount and payment details.",
+    "Log in to your account directly via the official website to confirm the balance and payment details.",
+    "Log in to your credit card account and confirm the balance and due date."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request; need to confirm bill details independently",
+     "quote": "I need to clear my balance to avoid interest charges this month.",
+     "step": "Log into your bank\u2019s official website or app and verify the amount and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via email, payment details unchanged but unexpected payment",
+     "quote": "Payment due by the 15th. Pay online, by mail, or via phone.",
+     "step": "Log in to your account directly via the official website to confirm the balance and payment details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment request reached buyer via message.",
+     "quote": null,
+     "step": "Log in to your credit card account and confirm the balance and due date."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Regular monthly credit card bill, buyer verified via bank's secure website"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid via usual method after independent verification."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated payment through their own account."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "Subscription",
+   "item": "Software License",
+   "price": 50.0,
+   "need": "I use this design software every day for my job.",
+   "terms": "Monthly subscription fee auto-billed. Fees subject to change with 30 days notice.",
+   "origin": "self",
+   "source": "I knew my subscription was renewing so I updated my payment method.",
+   "if_asked": "This is the same charge I see every month on my bank statement from the company.",
+   "id": "z24",
+   "author": "glm-5-br",
+   "decision": "allow",
+   "clears": 3,
+   "secs": 1.0,
+   "steps": [],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary subscription renewal the buyer initiated",
+     "quote": "I use this design software every day for my job.",
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "None",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer initiated, expected renewal, no scam signals.",
+     "quote": null,
+     "step": null
+    }
+   ],
+   "final": "allow"
+  },
+  {
+   "kind": "legit_bill",
+   "category": "Medical",
+   "item": "Hospital Copay",
+   "price": 250.0,
+   "need": "I visited the ER last month and this is my responsibility after insurance.",
+   "terms": "Due upon receipt. Please include the account number from your statement.",
+   "origin": "contacted",
+   "source": "I received a bill in the mail from the hospital's billing department.",
+   "if_asked": "I called the phone number on the back of my insurance card to verify the amount owed before paying.",
+   "id": "z25",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.7,
+   "steps": [
+    "Call the hospital billing number from a prior statement or official website to confirm amount and account number.",
+    "Check your statement for the account number and confirm it matches the hospital's official records via their verified website or phone number.",
+    "Call the hospital billing department using a number from their official website to confirm this bill."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Bill arrived by mail, buyer hasn't independently verified details",
+     "quote": null,
+     "step": "Call the hospital billing number from a prior statement or official website to confirm amount and account number."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer; account number on statement needed for confirmation",
+     "quote": "Please include the account number from your statement.",
+     "step": "Check your statement for the account number and confirm it matches the hospital's official records via their verified website or phone number."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, request for account number.",
+     "quote": "Please include the account number from your statement.",
+     "step": "Call the hospital billing department using a number from their official website to confirm this bill."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Ordinary hospital bill, no scam signals, buyer verified via known insurance number"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid the usual way, no scam signals."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer contacted, bill received. Check needed despite insurance verification."
+    },
+    {
+     "v": "clear",
+     "reason": "ER copay bill verified independently by calling the number on the buyer's own insurance card, confirming the amount owed; no changed payment details."
+    },
+    {
+     "v": "clear",
+     "reason": "Contacted bill but buyer independently verified amount via insurance card, ordinary copay with no scam signals."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "Utilities",
+   "item": "Water Bill",
+   "price": 38.5,
+   "need": "I have to pay the city for my water usage.",
+   "terms": "Payment delinquent after the 20th. Service subject to disconnection for non-payment.",
+   "origin": "contacted",
+   "source": "The city sent me my quarterly bill via email.",
+   "if_asked": "I went to the city's official website I've used for years to pay the balance.",
+   "id": "z26",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.4,
+   "steps": [
+    "Log into the city\u2019s official website or portal and verify the amount and account number.",
+    "Check the payment details in the city's official website or app using your account number.",
+    "Log in to your city's water account and check the bill amount."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted bill; need to confirm details independently",
+     "quote": "Payment delinquent after the 20th.",
+     "step": "Log into the city\u2019s official website or portal and verify the amount and account number."
+    },
+    {
+     "v": "verify",
+     "reason": "Request contacted the buyer with new payment details or urgency",
+     "quote": "Payment delinquent after the 20th. Service subject to disconnection for non-payment.",
+     "step": "Check the payment details in the city's official website or app using your account number."
+    },
+    {
+     "v": "verify",
+     "reason": "Message reached buyer, requesting payment.",
+     "quote": "Payment delinquent after the 20th.",
+     "step": "Log in to your city's water account and check the bill amount."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Contacted bill; buyer must confirm details via known city portal"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill paid via official website"
+    },
+    {
+     "v": "clear",
+     "reason": "Expected bill, paid through buyer's usual channel."
+    },
+    {
+     "v": "clear",
+     "reason": "Regular quarterly water bill; buyer verified by going to the city's official website they have used for years, independent of the emailed bill."
+    },
+    {
+     "v": "clear",
+     "reason": "Buyer independently verified contacted water bill via official city website used for years, confirming charge outside message."
+    }
+   ]
+  },
+  {
+   "kind": "legit_bill",
+   "category": "Rent",
+   "item": "Monthly Rent",
+   "price": 1500.0,
+   "need": "This is my monthly rent payment for my apartment.",
+   "terms": "Payable on the 1st of each month. Late fees apply after the 5th.",
+   "origin": "known_person",
+   "source": "My landlord emailed me a reminder that rent is due.",
+   "if_asked": "I paid through the resident portal app that I've been using since I moved in, which matches my lease.",
+   "id": "z27",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 2,
+   "secs": 12.7,
+   "steps": [
+    "Check your rental agreement or past payment records for the correct payee and account details.",
+    "Check your signed lease or usual rent portal for the $1,500 amount and payee, or call your landlord at a number you already had.",
+    "Log into your lease portal or call your landlord on a number from your lease to confirm amount and payee before paying."
+   ],
+   "escalated": true,
+   "verdicts": [
+    {
+     "v": "clear",
+     "reason": "Ordinary rent payment to known landlord",
+     "quote": "This is my monthly rent payment for my apartment.",
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Payment requested by a known person but via email reminder; verify details independently",
+     "quote": "My landlord emailed me a reminder that rent is due.",
+     "step": "Check your rental agreement or past payment records for the correct payee and account details."
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, buyer knows the payee, and paying rent is a normal expense.",
+     "quote": null,
+     "step": null
+    },
+    {
+     "v": "verify",
+     "reason": "Rent reminder arrived by email with no independent verification; a genuine reminder and a fake one read the same, so confirm before paying.",
+     "quote": "My landlord emailed me a reminder that rent is due.",
+     "step": "Check your signed lease or usual rent portal for the $1,500 amount and payee, or call your landlord at a number you already had."
+    },
+    {
+     "v": "verify",
+     "reason": "Landlord emailed reminder that rent is due - unsolicited bill received with no independent verification.",
+     "quote": "My landlord emailed me a reminder that rent is due.",
+     "step": "Log into your lease portal or call your landlord on a number from your lease to confirm amount and payee before paying."
+    }
+   ],
+   "final": "allow",
+   "second": [
+    {
+     "v": "clear",
+     "reason": "Ordinary rent payment through known portal"
+    },
+    {
+     "v": "clear",
+     "reason": "None"
+    },
+    {
+     "v": "clear",
+     "reason": "Ordinary purchase, regular bill, paid through established channel."
+    }
+   ]
+  },
+  {
+   "kind": "control_not_checked",
+   "category": "Internet",
+   "item": "Internet Bill",
+   "price": 75.0,
+   "need": "My internet is essential and I want to keep it on.",
+   "terms": "Standard monthly service fee. Equipment rental included.",
+   "origin": "contacted",
+   "source": "I got an email saying my bill was ready, so I just went ahead and paid it.",
+   "if_asked": "I really didn't check anything specific; it looked like my normal bill so I just paid the amount it said.",
+   "id": "z28",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 2.5,
+   "steps": [
+    "Log into your ISP account directly to confirm the bill amount and payment details",
+    "Check the bill in your official account or contact the provider using a number from your past bill.",
+    "Log in to your internet account and confirm this $75 charge."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Contacted request, buyer hasn't independently confirmed the bill",
+     "quote": null,
+     "step": "Log into your ISP account directly to confirm the bill amount and payment details"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via email, payment details not confirmed independently",
+     "quote": "I got an email saying my bill was ready, so I just went ahead and paid it.",
+     "step": "Check the bill in your official account or contact the provider using a number from your past bill."
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer paid after being contacted; payment details not checked independently.",
+     "quote": null,
+     "step": "Log in to your internet account and confirm this $75 charge."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Buyer paid without independent verification of the bill"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted and didn't verify details independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Message-initiated payment, buyer did not independently verify details."
+    }
+   ]
+  },
+  {
+   "kind": "control_not_checked",
+   "category": "Membership",
+   "item": "Gym Membership",
+   "price": 45.0,
+   "need": "I want to keep going to the gym.",
+   "terms": "Monthly dues billed automatically. Cancellation requires 30-day notice.",
+   "origin": "contacted",
+   "source": "I noticed a charge on my statement and assumed it was for the gym.",
+   "if_asked": "I didn't actually check the contract or the website, I just paid it because the amount sounded right.",
+   "id": "z29",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.6,
+   "steps": [
+    "Log into the gym's member portal or call the gym's known phone number to confirm the $45 charge",
+    "Check the gym's official website or app to confirm the membership status and billing details.",
+    "Log in to your gym account and check the billing details to confirm this charge."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Buyer saw a charge but hasn't confirmed it with the gym directly",
+     "quote": null,
+     "step": "Log into the gym's member portal or call the gym's known phone number to confirm the $45 charge"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted and unsure of request origin",
+     "quote": "I noticed a charge on my statement and assumed it was for the gym.",
+     "step": "Check the gym's official website or app to confirm the membership status and billing details."
+    },
+    {
+     "v": "verify",
+     "reason": "Payment initiated due to a charge noticed by the buyer; details need confirmation.",
+     "quote": null,
+     "step": "Log in to your gym account and check the billing details to confirm this charge."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Contacted charge, buyer didn't check official source"
+    },
+    {
+     "v": "verify",
+     "reason": "Buyer was contacted and didn't verify details independently"
+    },
+    {
+     "v": "verify",
+     "reason": "Payment initiated after receiving a message; no independent verification."
+    }
+   ]
+  },
+  {
+   "kind": "control_not_checked",
+   "category": "Charity",
+   "item": "Donation",
+   "price": 100.0,
+   "need": "I want to support a good cause.",
+   "terms": "One-time donation. Your contribution is tax-deductible to the extent allowed by law.",
+   "origin": "contacted",
+   "source": "A friend sent me a link to a fundraiser on social media.",
+   "if_asked": "My friend shared the link so I trust it; I didn't look up the charity independently or anything like that.",
+   "id": "z30",
+   "author": "glm-5-br",
+   "decision": "verify",
+   "clears": 0,
+   "secs": 1.4,
+   "steps": [
+    "Check the fundraiser\u2019s official website or contact the organization using known, independent contact details.",
+    "Check the fundraiser page directly in your browser using the official organization's website, not the link shared.",
+    "Check the charity's legitimacy on a site like Charity Navigator."
+   ],
+   "escalated": false,
+   "verdicts": [
+    {
+     "v": "verify",
+     "reason": "Unsolicited donation request received via friend link",
+     "quote": "I want to support a good cause.",
+     "step": "Check the fundraiser\u2019s official website or contact the organization using known, independent contact details."
+    },
+    {
+     "v": "verify",
+     "reason": "Request came via contact, not initiated by buyer",
+     "quote": "A friend sent me a link to a fundraiser on social media.",
+     "step": "Check the fundraiser page directly in your browser using the official organization's website, not the link shared."
+    },
+    {
+     "v": "verify",
+     "reason": "Donation request reached the buyer via a link.",
+     "quote": null,
+     "step": "Check the charity's legitimacy on a site like Charity Navigator."
+    }
+   ],
+   "final": "verify",
+   "second": [
+    {
+     "v": "verify",
+     "reason": "Unverified donation request received via friend\u2019s link"
+    },
+    {
+     "v": "verify",
+     "reason": "Request came to buyer via social media link; no independent verification"
+    },
+    {
+     "v": "verify",
+     "reason": "The request reached the buyer via a link. Buyer relies on a friend's trust, not independent verification."
+    }
+   ]
+  }
+ ]
+}

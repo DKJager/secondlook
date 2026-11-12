@@ -10,6 +10,8 @@ Built on **[3Dogs Nexus](https://3dogs.ai) wisdom of crowds**: independent model
 
 Open the live demo: https://aq6ru66fbvzlo3usums757vbxy0qlaav.lambda-url.us-east-2.on.aws/
 
+Watch the demo video (under 3 minutes): https://youtu.be/t9WNCSsEir4
+
 | Do this | See this |
 |---|---|
 | **Load scam example**, then **Ask the crowd** | HOLD. Each reviewer quotes the buyer ("My grandson is in jail and needs bail tonight..."). The pay button stays locked. |
